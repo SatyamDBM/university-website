@@ -1,0 +1,76 @@
+/* ================= CMS PAGE LAYOUT ================= */
+
+.cms-wrapper {
+    background: #f9fafb;
+    padding-top: 6rem;   /* 🔥 header ke liye space */
+    padding-bottom: 4rem;
+}
+
+.cms-container {
+    max-width: 950px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 3rem 3rem 3.5rem;
+    /* border-radius: 12px; */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+/* ================= TITLE ================= */
+
+.cms-page-title {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.25rem;
+}
+
+.cms-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin-bottom: 2.5rem;
+}
+
+/* ================= CONTENT ================= */
+
+.cms-content {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #374151;
+}
+
+/* Headings */
+.cms-content h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: #111827;
+}
+
+.cms-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+}
+
+/* Paragraphs */
+.cms-content p {
+    margin-bottom: 0.5rem; /* 🔥 gap controlled */
+}
+
+/* Lists */
+.cms-content ul {
+    padding-left: 1.25rem;
+    margin: 0.75rem 0 1.25rem;
+}
+
+.cms-content li {
+    margin-bottom: 0.4rem;
+    list-style: disc;
+}
+
+/* Strong */
+.cms-content strong {
+    font-weight: 600;
+    color: #111827;
+}

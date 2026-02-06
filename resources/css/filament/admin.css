@@ -1,0 +1,40 @@
+/* =================================================
+   FILAMENT SIDEBAR – NAVBAR LIKE CLEAN LOOK
+   ================================================= */
+
+/* Base backgrounds */
+:root {
+    --fi-body-background: #ffffff;        /* page */
+    --fi-main-background: #ffffff;        /* content */
+    --fi-sidebar-background: #ffffff;     /* sidebar */
+}
+
+/* Sidebar container */
+.fi-sidebar {
+    border-right: 1px solid #f1f5f9;      /* very light */
+}
+
+/* Sidebar group titles */
+.fi-sidebar-group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;                       /* slate-500 */
+    text-transform: none;
+}
+
+/* Sidebar items */
+.fi-sidebar-item {
+    border-radius: 0.375rem;
+    font-weight: 400;
+}
+
+/* Active item (nav-like underline feel) */
+.fi-sidebar-item-active {
+    background-color: #f8fafc;            /* almost white */
+    font-weight: 500;
+}
+
+/* Hover (very subtle like nav) */
+.fi-sidebar-item:hover {
+    background-color: #f8fafc;
+}
