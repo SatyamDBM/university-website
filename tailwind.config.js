@@ -5,12 +5,17 @@ import typography from '@tailwindcss/typography';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
+        './app/Filament/**/*.php',
+        './app/Livewire/**/*.php',
+
         './resources/views/**/*.blade.php',
         './resources/views/cms/**/*.blade.php',
+        './resources/views/filament/**/*.blade.php',
+
         './resources/js/**/*.js',
+        './resources/**/*.vue',
+        './vendor/filament/**/*.blade.php',
     ],
-
-
 
     theme: {
         extend: {
@@ -22,8 +27,6 @@ export default {
 
     plugins: [
         forms,
-        typography, 
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
+        typography,
     ],
 };

@@ -13,7 +13,6 @@ Route::get('/', function () {
 Route::get('/universities', function () {
     return view('universities.index');
 });
-Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
 /*
 |--------------------------------------------------------------------------
 | DASHBOARD REDIRECT HUB
@@ -57,3 +56,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
