@@ -16,10 +16,10 @@ class University extends Model
         'mobile',
         'user_id',
     ];
-    public function user()
-    {
-        return $this->belongsTo(\App\Models\User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(\App\Models\User::class);
+    // }
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -30,5 +30,25 @@ class University extends Model
         return $this->role === 'university';
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 
+
+
+    public function profile()
+    {
+        return $this->hasOne(UniversityProfile::class);
+    }
+
+    public function facilities()
+    {
+        return $this->hasMany(UniversityFacility::class);
+    }
+
+    public function media()
+    {
+        return $this->hasMany(UniversityMedia::class);
+    }
 }

@@ -56,9 +56,15 @@ class User extends Authenticatable
         ];
     }
 
+
     public function university()
     {
-        return $this->hasOne(\App\Models\University::class);
+        return $this->belongsTo(University::class);
+    }
+
+    public function linkingRequests()
+    {
+        return $this->hasMany(UniversityLinkingRequest::class);
     }
 
     public function isAdmin(): bool
