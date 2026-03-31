@@ -12,6 +12,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/css/university.css', 'resources/js/app.js'])
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -26,10 +27,11 @@
     @include('layouts.sidebar')
 
     {{-- RIGHT CONTENT --}}
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col md:ml-64">
 
-        {{-- TOP NAVBAR --}}
-        @include('layouts.navigation')
+        <div class="sticky top-0 z-30">
+            @include('layouts.navigation')
+        </div>
 
         {{-- PAGE HEADER --}}
         @isset($header)
