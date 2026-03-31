@@ -981,3 +981,12 @@ body {
     transform: translateY(-70%) rotate(45deg);
     pointer-events: none;
 }
+.fi-sidebar-group-label {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+.fi-breadcrumbs{
+    display: none;
+}

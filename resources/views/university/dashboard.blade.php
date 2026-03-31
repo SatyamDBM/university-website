@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="uni-header">
         <div class="uni-header-left">
-            <h1>🏫 University Dashboard</h1>
+            <h1>🏛️ University Dashboard</h1>
             <p>Welcome back! Here's your university overview for today.</p>
         </div>
         <div class="uni-header-right">

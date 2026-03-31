@@ -55,24 +55,33 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([])
             ->navigationGroups([
-                    NavigationGroup::make('Dashboard'),
+                NavigationGroup::make('Dashboard')
+                    ->icon('heroicon-o-home'),
 
-                    NavigationGroup::make('Universities'),
+                NavigationGroup::make('Universities')
+                    ->icon('heroicon-o-academic-cap'),
 
-                    NavigationGroup::make('Universities Account'),
+                NavigationGroup::make('Universities Account')
+                    ->icon('heroicon-o-building-library'),
 
-                    NavigationGroup::make('Leads'),
+                NavigationGroup::make('Leads')
+                    ->icon('heroicon-o-chart-bar'),
 
-                    NavigationGroup::make('Subscriptions'),
+                NavigationGroup::make('Subscriptions')
+                    ->icon('heroicon-o-credit-card'),
 
-                    NavigationGroup::make('Banner Management'),
+                NavigationGroup::make('Banner Management')
+                    ->icon('heroicon-o-photo'),
 
-                    NavigationGroup::make('Payments'),
+                NavigationGroup::make('Payments')
+                    ->icon('heroicon-o-banknotes'),
 
-                    NavigationGroup::make('Notifications'),
+                NavigationGroup::make('Notifications')
+                    ->icon('heroicon-o-bell'),
 
-                    NavigationGroup::make('Settings'),
-                ])
+                NavigationGroup::make('Settings')
+                    ->icon('heroicon-o-cog-6-tooth'),
+            ])
 
             ->middleware([
                 EncryptCookies::class,
