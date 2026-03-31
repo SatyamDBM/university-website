@@ -17,7 +17,7 @@ class CmsPagesTable
 
             ->striped()
 
-            ->paginated([10, 25, 50])
+            ->paginated([5, 10, 25, 50])
 
             ->defaultSort('updated_at', 'desc')
 
