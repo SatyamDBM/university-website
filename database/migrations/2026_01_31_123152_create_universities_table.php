@@ -18,12 +18,18 @@ return new class extends Migration
             // Contact
             $table->string('email')->nullable();
             $table->string('mobile')->nullable();
+            $table->text('description')->nullable();
+            $table->string('logo')->nullable();
+
+            $table->string('country');
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
 
             // Relation with users
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
-                ->cascadeOnDelete();
+                ->nullOnDelete(); // better than cascade for nullable FK
 
             // Admin control
             $table->boolean('is_verified')->default(false);
