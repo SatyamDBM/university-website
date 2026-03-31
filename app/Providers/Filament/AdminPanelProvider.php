@@ -32,6 +32,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->sidebarCollapsibleOnDesktop()
+            ->topNavigation(false)
             ->darkMode(false)
             ->brandName(null)
             ->brandLogo(asset('storage/logo/logo.jpeg'))

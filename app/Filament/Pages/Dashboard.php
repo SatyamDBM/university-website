@@ -3,9 +3,27 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
+use App\Models\University;
+use App\Models\User;
 
 class Dashboard extends BaseDashboard
 {
-    // static hatao, sirf protected likho
     protected string $view = 'filament.pages.dashboard';
+
+    public function getViewData(): array
+    {
+        return [
+            'totalUniversities' => University::count(),
+
+            'activeUsers' => User::where('status', 'active')->count(),
+
+            // Aaj register hue users
+            'todayUsers' => User::whereDate('created_at', today())->count(),
+
+            // Aaj active hue users agar updated_at dekhna ho
+            // 'todayActiveUsers' => User::where('status', 'active')
+            //     ->whereDate('updated_at', today())
+            //     ->count(),
+        ];
+    }
 }

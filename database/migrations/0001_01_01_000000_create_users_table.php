@@ -17,9 +17,25 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
             $table->enum('role', ['admin', 'university'])->default('university');
+
+            // OTP Columns
+            $table->string('email_otp')->nullable();
+            $table->timestamp('email_otp_expiry')->nullable();
+            $table->boolean('is_email_verified')->default(false);
+
+            // Status Column
+            $table->enum('status', [
+                'active',
+                'inactive',
+                'pending_approval'
+            ])->default('pending_approval');
+
             $table->rememberToken();
+
             $table->timestamps();
+            $table->softDeletes(); // deleted_at
         });
         
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'email_otp',
+        'email_otp_expiry',
+        'is_email_verified',
+        'status',
     ];
 
     /**
@@ -31,23 +37,52 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_otp',
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at'   => 'datetime',
+            'email_otp_expiry'    => 'datetime',
+            'is_email_verified'   => 'boolean',
+            'deleted_at'          => 'datetime',
+            'password'            => 'hashed',
         ];
     }
+
     public function university()
     {
         return $this->hasOne(\App\Models\University::class);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUniversity(): bool
+    {
+        return $this->role === 'university';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    public function isPendingApproval(): bool
+    {
+        return $this->status === 'pending_approval';
+    }
+
+    public function isInactive(): bool
+    {
+        return $this->status === 'inactive';
+    }
 }
