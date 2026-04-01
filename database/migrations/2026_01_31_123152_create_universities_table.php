@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('logo')->nullable();
 
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
 

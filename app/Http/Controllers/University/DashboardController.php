@@ -13,10 +13,14 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
-        if (Auth::user()->role !== 'university') {
+        $user = Auth::user();
+
+        if ($user->role !== 'university') {
             abort(403);
         }
 
-        return view('university.dashboard');
+        return view('university.dashboard', [
+            'status' => $user->status
+        ]);
     }
 }

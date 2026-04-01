@@ -1,4 +1,47 @@
 <x-app-layout>
+
+@php
+    $status = auth()->user()->linking_status ?? 'not_linked';
+    $isLocked = in_array($status, ['not_linked', 'pending', 'rejected']);
+@endphp
+
+{{-- ✅ If not linked, show the full linking page INSTEAD of dashboard --}}
+@if($isLocked)
+
+<div class="bg-gray-50 min-h-screen p-6">
+
+    {{-- Page Title --}}
+    <h2 class="text-xl font-semibold text-gray-800 mb-6">🔗 Link Your University</h2>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+
+        @if($status === 'pending')
+        {{-- Pending State --}}
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="text-6xl mb-4">⏳</div>
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Request Under Review</h3>
+            <p class="text-gray-500 text-sm max-w-sm">
+                Your university linking request has been submitted and is currently under admin review. You'll be notified once approved.
+            </p>
+        </div>
+
+        @elseif($status === 'rejected')
+        {{-- Rejected State --}}
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-red-700 text-sm font-medium">⚠️ Your previous request was rejected. Please resubmit with correct details.</p>
+        </div>
+        @include('university.linking')
+
+        @else
+        {{-- Not Linked — show form --}}
+        @include('university.linking')
+        @endif
+
+    </div>
+</div>
+
+@else
+{{-- ✅ If linked, show the dashboard --}}
 <div class="uni-wrap bg-white p-4 rounded">
 
     <!-- Header -->
@@ -368,4 +411,5 @@
     </div>
 
 </div>
+@endif
 </x-app-layout>

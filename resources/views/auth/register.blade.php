@@ -16,7 +16,7 @@
         </div>
 
         <!-- University -->
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             <x-input-label value="Select University" />
             <select name="university_name" required
                 class="block w-full mt-1 rounded-md border-gray-300">
@@ -28,7 +28,7 @@
                 <option value="Lovely Professional University">Lovely Professional University</option>
             </select>
             <x-input-error :messages="$errors->get('university_name')" />
-        </div>
+        </div> --}}
 
         <!-- Mobile (🔥 FIXED) -->
         <div class="mt-4">

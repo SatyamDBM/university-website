@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('mobile')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
@@ -28,9 +29,16 @@ return new class extends Migration
             // Status Column
             $table->enum('status', [
                 'active',
-                'inactive',
-                'pending_approval'
-            ])->default('pending_approval');
+                'inactive'
+            ])->default('active');
+
+            $table->enum('linking_status', [
+                'not_linked',
+                'pending',
+                'approved',
+                'rejected'
+            ])->default('not_linked');
+
 
             $table->rememberToken();
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\University\DashboardController;
+use App\Http\Controllers\UniversityLinkingController;
 use App\Http\Controllers\CmsPageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,13 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/university/dashboard', [DashboardController::class, 'index'])
         ->name('university.dashboard');
+
+
+    Route::get('/university/linking', [UniversityLinkingController::class, 'index'])
+        ->name('university.linking');
+
+    Route::post('/university/linking', [UniversityLinkingController::class, 'store'])
+        ->name('university.linking.store');
 });
 
 /*
@@ -55,5 +63,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
