@@ -8,7 +8,7 @@
 {{-- ✅ If not linked, show the full linking page INSTEAD of dashboard --}}
 @if($isLocked)
 
-<div class="bg-gray-50 min-h-screen p-6">
+<div class="bg-gray-50 p-6">
 
     {{-- Page Title --}}
     <h2 class="text-xl font-semibold text-gray-800 mb-6">🔗 Link Your University</h2>

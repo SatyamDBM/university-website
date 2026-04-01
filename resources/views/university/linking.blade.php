@@ -90,7 +90,7 @@
                     type="text"
                     x-model="search"
                     @focus="open = true"
-                    @click.outside="open = false"
+                    @click.outside="open = true"
                     placeholder="Type university name..."
                     autocomplete="off"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm pr-8 focus:outline-none focus:ring-2 focus:ring-purple-400"
