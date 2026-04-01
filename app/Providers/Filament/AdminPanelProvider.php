@@ -22,7 +22,7 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Css;
 use Illuminate\Support\Facades\Vite;
-
+use Filament\Navigation\MenuItem;
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -31,7 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
+            ->passwordReset(\App\Filament\Pages\Auth\ForgotPassword::class)
             ->sidebarCollapsibleOnDesktop()
             ->topNavigation(false)
             ->darkMode(false)
@@ -82,6 +83,17 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Settings')
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
+            ->userMenuItems([
+                    'profile' => MenuItem::make()
+                        ->label('Profile')
+                        ->icon('heroicon-o-user')
+                        ->url(fn (): string => \App\Filament\Pages\AdminProfile::getUrl()),
+
+                    'settings' => MenuItem::make()
+                        ->label('Account Settings')
+                        ->icon('heroicon-o-cog-6-tooth')
+                        ->url(fn (): string => \App\Filament\Pages\AdminAccountSettings::getUrl()),
+                ])
 
             ->middleware([
                 EncryptCookies::class,

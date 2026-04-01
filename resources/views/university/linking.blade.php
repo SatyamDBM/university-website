@@ -1,4 +1,3 @@
-
 <div class="w-full px-6 py-8">
     <div class="bg-white border border-gray-200 rounded-2xl p-8 w-full max-w-2xl mx-auto shadow-sm">
 
@@ -15,7 +14,6 @@
     </div>
 
     @if($status === 'pending')
-    {{-- Pending State --}}
     <div class="flex flex-col items-center text-center py-6">
         <div class="w-14 h-14 rounded-full flex items-center justify-center mb-4"
              style="background:#FEF3C7;">
@@ -28,7 +26,6 @@
     </div>
 
     @elseif($status === 'rejected')
-    {{-- Rejected Banner --}}
     <div class="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5">
         <svg class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
@@ -90,7 +87,7 @@
                     type="text"
                     x-model="search"
                     @focus="open = true"
-                    @click.outside="open = false"
+                    @blur="setTimeout(() => { open = false }, 200)"
                     placeholder="Type university name..."
                     autocomplete="off"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm pr-8 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -102,13 +99,12 @@
 
                 <div
                     x-show="open && filtered.length > 0"
-                    @click.outside="open = false"
                     class="absolute z-20 w-full bg-white border border-gray-200 rounded-lg mt-1 shadow-lg overflow-auto"
                     style="max-height:200px; display:none;"
                 >
                     <template x-for="uni in filtered" :key="uni">
                         <div
-                            @click="selected = uni; search = uni; open = false"
+                            @mousedown.prevent="selected = uni; search = uni; open = false"
                             :class="selected === uni
                                 ? 'bg-purple-50 text-purple-800 font-medium'
                                 : 'text-gray-700 hover:bg-gray-50'"
