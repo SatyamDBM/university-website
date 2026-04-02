@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\University\DashboardController;
-use App\Http\Controllers\UniversityLinkingController;
+use App\Http\Controllers\University\UniversityLinkingController;
 use App\Http\Controllers\CmsPageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -64,4 +64,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
+// Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
+Route::get('/{slug}', [CmsPageController::class, 'show'])
+    ->where('slug', '^(?!admin|dashboard|university|profile|login|register).*$')
+    ->name('cms.page');

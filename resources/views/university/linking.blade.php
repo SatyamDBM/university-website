@@ -38,92 +38,42 @@
     <form method="POST" action="{{ route('university.linking.store') }}" enctype="multipart/form-data">
         @csrf
 
-        {{-- Search University --}}
-        <div class="mb-5"
-             x-data="{
-                open: false,
-                search: '',
-                selected: '',
-                universities: [
-                    'Amity University',
-                    'Chandigarh University',
-                    'Mumbai University',
-                    'Delhi University',
-                    'Pune University',
-                    'Lovely Professional University',
-                    'Manipal University',
-                    'SRM University',
-                    'VIT University',
-                    'Symbiosis International University',
-                    'Jamia Millia Islamia',
-                    'Aligarh Muslim University',
-                    'Banaras Hindu University',
-                    'Anna University',
-                    'Osmania University',
-                    'Jadavpur University',
-                    'Calcutta University',
-                    'Hyderabad University',
-                    'Pondicherry University',
-                    'Tezpur University'
-                ],
-                get filtered() {
-                    if (!this.search) return this.universities;
-                    return this.universities.filter(u =>
-                        u.toLowerCase().includes(this.search.toLowerCase())
-                    );
-                }
-             }"
-        >
-            <label class="block text-sm font-medium text-gray-600 mb-1.5">
-                <svg class="inline w-3.5 h-3.5 mr-1 -mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
-                </svg>
-                Search University
-            </label>
+        {{-- Select University (Static Dropdown) --}}
+        <div class="mb-5">
+            <label class="block text-sm font-medium text-gray-600 mb-1.5">Select University</label>
+          <select name="university_id" required
+    class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">
+    
+    <option value="">-- Select University --</option>
 
-            <div class="relative">
-                <input
-                    type="text"
-                    x-model="search"
-                    @focus="open = true"
-                    @blur="setTimeout(() => { open = false }, 200)"
-                    placeholder="Type university name..."
-                    autocomplete="off"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm pr-8 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                >
-                <svg class="absolute right-2.5 top-3 w-4 h-4 text-gray-400 pointer-events-none"
-                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                </svg>
-
-                <div
-                    x-show="open && filtered.length > 0"
-                    class="absolute z-20 w-full bg-white border border-gray-200 rounded-lg mt-1 shadow-lg overflow-auto"
-                    style="max-height:200px; display:none;"
-                >
-                    <template x-for="uni in filtered" :key="uni">
-                        <div
-                            @mousedown.prevent="selected = uni; search = uni; open = false"
-                            :class="selected === uni
-                                ? 'bg-purple-50 text-purple-800 font-medium'
-                                : 'text-gray-700 hover:bg-gray-50'"
-                            class="px-4 py-2.5 text-sm cursor-pointer border-b border-gray-100 last:border-0"
-                            x-text="uni"
-                        ></div>
-                    </template>
-                </div>
-            </div>
-
-            <input type="hidden" name="university_name" :value="selected">
-
-            @error('university_name')
+    <option value="1">Amity University</option>
+    <option value="2">Chandigarh University</option>
+    <option value="3">Mumbai University</option>
+    <option value="4">Delhi University</option>
+    <option value="5">Pune University</option>
+    <option value="6">Lovely Professional University</option>
+    <option value="7">Manipal University</option>
+    <option value="8">SRM University</option>
+    <option value="9">VIT University</option>
+    <option value="10">Symbiosis International University</option>
+    <option value="11">Jamia Millia Islamia</option>
+    <option value="12">Aligarh Muslim University</option>
+    <option value="13">Banaras Hindu University</option>
+    <option value="14">Anna University</option>
+    <option value="15">Osmania University</option>
+    <option value="16">Jadavpur University</option>
+    <option value="17">Calcutta University</option>
+    <option value="18">Hyderabad University</option>
+    <option value="19">Pondicherry University</option>
+    <option value="20">Tezpur University</option>
+</select>
+            @error('university_id')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Upload Document --}}
-        <div class="mb-6" x-data="{ fileName: '' }">
+        {{-- <div class="mb-6" x-data="{ fileName: '' }">
             <label class="block text-sm font-medium text-gray-600 mb-1.5">
                 Upload Authorization Document
             </label>
@@ -138,7 +88,7 @@
             @error('document')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
-        </div>
+        </div> --}}
 
         {{-- Submit --}}
         <button type="submit"
@@ -150,14 +100,7 @@
     </form>
     @endif
 
-    {{-- Footer --}}
-    <p class="text-center text-xs text-gray-400 mt-4">
-        Need help?
-        <form method="POST" action="{{ route('logout') }}" class="inline">
-            @csrf
-            <button type="submit" class="text-purple-600 font-medium hover:underline">Logout</button>
-        </form>
-    </p>
+
 
 </div>
 </div>

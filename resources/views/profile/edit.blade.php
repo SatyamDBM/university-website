@@ -3,7 +3,7 @@
 
     {{-- Page Header --}}
     <div class="prof-header">
-        <h1>👤 My Profile</h1>
+        <h1> My Profile</h1>
         <p>Manage your account information and security settings.</p>
     </div>
 

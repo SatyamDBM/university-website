@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->string('requested_university_name')->nullable();
 
-            $table->string('document_path');
+            $table->string('document_path')->nullable();
 
             $table->enum('status', [
                 'pending',

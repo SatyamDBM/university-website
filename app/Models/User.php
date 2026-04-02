@@ -22,12 +22,15 @@ class User extends Authenticatable implements CanResetPasswordContract
         'email_otp_expiry',
         'is_email_verified',
         'status',
+        'university_id',
+        'linking_status',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
         'email_otp',
+        'linking_status',
     ];
 
     protected function casts(): array
