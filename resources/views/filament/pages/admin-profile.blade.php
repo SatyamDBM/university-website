@@ -5,13 +5,13 @@
         <div class="overflow-hidden rounded border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
 
             {{-- Top Banner --}}
-            <div class="h-20 bg-gradient-to-r from-violet-600 to-violet-400"></div>
+            <div class="h-20" style="background: linear-gradient(to right, #775042, #a07060);"></div>
 
             {{-- Avatar + Info --}}
             <div class="px-6 pb-5">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div class="flex items-end gap-4 -mt-8">
-                        <div class="flex h-16 w-16 items-center justify-center rounded border-4 border-white bg-violet-600 text-xl font-bold text-white shadow-md dark:border-gray-900">
+                        <div class="flex h-16 w-16 items-center justify-center rounded border-4 border-white text-xl font-bold text-white shadow-md dark:border-gray-900" style="background:#775042;">
                             {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
                         </div>
                         <div class="pb-1">
@@ -36,7 +36,7 @@
                 {{-- Section Label --}}
                 <div class="px-6 pt-5 pb-4">
                     <div class="flex items-center gap-3">
-                        <span class="text-xs font-semibold uppercase tracking-widest text-violet-600 dark:text-violet-400">Profile Information</span>
+                        <span class="text-xs font-semibold uppercase tracking-widest dark:text-[#a07060]" style="color:#775042;">Profile Information</span>
                         <div class="h-px flex-1 bg-gray-100 dark:bg-gray-800"></div>
                     </div>
                 </div>
@@ -53,8 +53,12 @@
                             <input
                                 type="text"
                                 wire:model="name"
+                                value="{{ $admin->name ?? '-' }}"
                                 placeholder="Enter full name"
-                                class="w-full rounded border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/15 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-violet-500"
+                                class="w-full rounded border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                style="--tw-ring-color: rgba(119,80,66,0.15);"
+                                onfocus="this.style.borderColor='#775042'; this.style.boxShadow='0 0 0 2px rgba(119,80,66,0.15)';"
+                                onblur="this.style.borderColor=''; this.style.boxShadow='';"
                             >
                         </div>
                         @error('name')
@@ -74,8 +78,11 @@
                             <input
                                 type="email"
                                 wire:model="email"
+                                value="{{ $admin->email ?? '-' }}"
                                 placeholder="Enter email address"
-                                class="w-full rounded border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/15 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-violet-500"
+                                class="w-full rounded border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 outline-none transition focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                                onfocus="this.style.borderColor='#775042'; this.style.boxShadow='0 0 0 2px rgba(119,80,66,0.15)';"
+                                onblur="this.style.borderColor=''; this.style.boxShadow='';"
                             >
                         </div>
                         @error('email')
@@ -135,9 +142,9 @@
                             </span>
                             <input
                                 type="text"
-                                value="{{ $admin->is_email_verified ? 'Verified' : 'Not Verified' }}"
+                                value="{{ $admin->email_verified_at ? 'Verified' : 'Not Verified' }}"
                                 readonly
-                                class="w-full rounded-lg border border-gray-100 bg-gray-100 py-2.5 pl-9 pr-3 text-sm text-gray-400 outline-none cursor-not-allowed dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-500"
+                                class="w-full rounded border border-gray-100 bg-gray-100 py-2.5 pl-9 pr-3 text-sm text-gray-400 outline-none cursor-not-allowed dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-500"
                             >
                         </div>
                     </div>
@@ -156,7 +163,7 @@
                                 type="text"
                                 value="{{ $admin->created_at ? $admin->created_at->format('d M Y, h:i A') : '-' }}"
                                 readonly
-                                class="w-full rounded-lg border border-gray-100 bg-gray-100 py-2.5 pl-9 pr-3 text-sm text-gray-400 outline-none cursor-not-allowed dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-500"
+                                class="w-full rounded border border-gray-100 bg-gray-100 py-2.5 pl-9 pr-3 text-sm text-gray-400 outline-none cursor-not-allowed dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-500"
                             >
                         </div>
                     </div>
@@ -171,7 +178,10 @@
                     </div>
                     <button
                         type="submit"
-                        class="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-violet-500/25 transition hover:-translate-y-px hover:bg-violet-700 active:translate-y-0"
+                        class="inline-flex items-center gap-1.5 rounded px-4 py-2 text-xs font-semibold text-white transition hover:-translate-y-px active:translate-y-0"
+                        style="background:#775042; box-shadow: 0 4px 12px rgba(119,80,66,0.25);"
+                        onmouseover="this.style.background='#5e3d31';"
+                        onmouseout="this.style.background='#775042';"
                     >
                         <x-heroicon-o-check class="h-3.5 w-3.5" />
                         Save Changes
