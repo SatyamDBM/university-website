@@ -4,20 +4,18 @@
             <div class="flex items-center justify-between px-6 py-1">
                 <div>
                     <h2 class="font-semibold text-[var(--color-text-dark)]">
-                        All Packages
+                        University Requests
                     </h2>
 
                     <p class="text-xs text-[var(--color-text-subtle)]">
-                        View and manage all subscription packages.
+                        View all pending university linking requests.
                     </p>
                 </div>
 
-                <a
-                    href="{{ route('filament.admin.pages.create-package') }}"
-                    class="inline-flex items-center rounded bg-[#775042] px-4 py-2 text-sm font-medium text-white"
-                   >
-                    + Create Package
-                </a>
+                <div class="inline-flex items-center gap-2 rounded-[5px] border border-[var(--color-border-light)] bg-[var(--color-bg-subtle)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
+                    <span class="h-2 w-2 rounded-full bg-yellow-500"></span>
+                    Pending Requests
+                </div>
             </div>
 
             <div class="p-2">
