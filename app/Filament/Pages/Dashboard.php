@@ -13,9 +13,11 @@ class Dashboard extends BaseDashboard
     public function getViewData(): array
     {
         return [
-            'totalUniversities' => University::count(),
+            'totalUniversities' => User::where('role', 'university')->count(),
 
-            'activeUsers' => User::where('status', 'active')->count(),
+            'activeUsers' => User::where('role', 'university')
+                                ->where('linking_status', 'approved')
+                                ->count(),
 
             // Aaj register hue users
             'todayUsers' => User::whereDate('created_at', today())->count(),
