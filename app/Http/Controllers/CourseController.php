@@ -91,4 +91,14 @@ class CourseController extends Controller
         // Notify university (event/notification)
         return response()->json(['success' => true, 'message' => 'Course rejected']);
     }
+
+    public function toggleActive(Course $course, Request $request)
+    {
+        $course->update(['is_active' => $request->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Course status updated.'
+        ]);
+    }
 }

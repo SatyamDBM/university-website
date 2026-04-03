@@ -1,3 +1,4 @@
+    
 @php
     $status = auth()->user()->linking_status ?? 'not_linked';
     $isLocked = in_array($status, ['not_linked', 'pending', 'rejected']);
@@ -61,6 +62,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"/>
             </svg>
             <span>Departments</span>
+        </a>
+            <a href="{{ route('university.gallery.index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
+                  {{ request()->routeIs('university.gallery*') ? 'bg-white/15 text-white font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
+            <span>Campus Gallery</span>
         </a>
 
         {{-- Admissions --}}

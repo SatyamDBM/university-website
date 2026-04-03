@@ -30,13 +30,17 @@
                 method="POST"
                 action="{{ route('courses.store') }}"
                 enctype="multipart/form-data"
-                class="space-y-6"
+                    class="border border-gray-200 rounded-xl p-6 bg-white space-y-6"
             >
                 @csrf
 
                 @include('university.courses.partials.form')
 
                 <div class="flex flex-wrap items-center justify-end gap-3 border-t border-gray-200 pt-6">
+                    <a href="{{ route('courses.index') }}"
+                        class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
+                                ← Back
+                            </a>
                     <button
                         type="submit"
                         name="save_as_draft"

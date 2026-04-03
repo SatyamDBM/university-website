@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Controllers\ProfileController;
@@ -47,8 +48,20 @@ Route::middleware(['auth'])->group(function () {
 
     // Course Management
     Route::resource('courses', App\Http\Controllers\CourseController::class);
+    Route::post('courses/{course}/toggle-active', [App\Http\Controllers\CourseController::class, 'toggleActive'])->name('courses.toggleActive');
     Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
     Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
+
+    // University Campus Gallery
+    Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
+        'index' => 'university.gallery.index',
+        'create' => 'university.gallery.create',
+        'store' => 'university.gallery.store',
+        'show' => 'university.gallery.show',
+        'edit' => 'university.gallery.edit',
+        'update' => 'university.gallery.update',
+        'destroy' => 'university.gallery.destroy',
+    ]);
 });
 
 /*
