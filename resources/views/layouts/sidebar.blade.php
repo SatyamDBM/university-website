@@ -8,7 +8,7 @@
            transform transition-transform duration-300
            -translate-x-full md:translate-x-0"
     :class="{ 'translate-x-0': sidebarOpen }"
-    style="background-color: #6b7063;"
+    style="background-color: #000000;"
 >
     {{-- Logo at top center --}}
     <div class="flex flex-col items-center justify-center py-6 border-b border-white/10 flex-shrink-0">

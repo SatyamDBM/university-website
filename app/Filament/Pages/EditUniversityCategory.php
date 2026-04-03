@@ -6,20 +6,16 @@ use App\Models\Category;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Str;
-use UnitEnum;
-use BackedEnum;
 
-class CreateUniversityCategory extends Page
+class EditUniversityCategory extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-plus-circle';
-
-    protected static string|UnitEnum|null $navigationGroup = 'Categories';
-
     protected static bool $shouldRegisterNavigation = false;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $slug = 'edit-university-category/{record}';
 
-    protected string $view = 'filament.pages.create-university-category';
+    protected string $view = 'filament.pages.edit-university-category';
+
+    public Category $category;
 
     public $name = '';
 
@@ -27,7 +23,16 @@ class CreateUniversityCategory extends Page
 
     public $status = 'active';
 
-    public function createCategory(): void
+    public function mount($record): void
+    {
+        $this->category = Category::findOrFail($record);
+
+        $this->name = $this->category->name;
+        $this->description = $this->category->description;
+        $this->status = $this->category->status;
+    }
+
+    public function updateCategory(): void
     {
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -39,12 +44,16 @@ class CreateUniversityCategory extends Page
         $slug = $baseSlug;
         $count = 1;
 
-        while (Category::where('slug', $slug)->exists()) {
+        while (
+            Category::where('slug', $slug)
+                ->where('id', '!=', $this->category->id)
+                ->exists()
+        ) {
             $slug = $baseSlug . '-' . $count;
             $count++;
         }
 
-        Category::create([
+        $this->category->update([
             'name' => $this->name,
             'slug' => $slug,
             'description' => $this->description,
@@ -52,16 +61,9 @@ class CreateUniversityCategory extends Page
         ]);
 
         Notification::make()
-            ->title('Category created successfully')
+            ->title('Category updated successfully')
             ->success()
             ->send();
-
-        $this->reset([
-            'name',
-            'description',
-        ]);
-
-        $this->status = 'active';
 
         $this->redirect('/admin/university-categories');
     }

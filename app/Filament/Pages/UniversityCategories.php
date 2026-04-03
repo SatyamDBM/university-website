@@ -23,7 +23,7 @@ class UniversityCategories extends Page implements HasTable
 
     protected static ?string $navigationLabel = 'All Categories';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected string $view = 'filament.pages.university-categories';
 

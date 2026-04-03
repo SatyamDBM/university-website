@@ -21,113 +21,113 @@
     <!-- KPI Cards — Row 1 -->
     <div class="kpi-grid" style="margin-bottom:1rem;">
 
-        <div class="kpi-card c-blue">
+        <a href="{{ url('admin/universities-list') }}" class="kpi-card c-blue">
             <div class="kpi-icon">🎓</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Universities</div>
                 <div class="kpi-value">{{ $totalUniversities }}</div>
                 <div class="kpi-sub up">↑ +12% this month</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-green">
+        <a href="" class="kpi-card c-green">
             <div class="kpi-icon">📈</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0% this week</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-amber">
+        <a href="" class="kpi-card c-amber">
             <div class="kpi-icon">💳</div>
             <div class="kpi-body">
                 <div class="kpi-label">Subscriptions</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub warn">⚠ 0 pending renewals</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-red">
+        <a href="" class="kpi-card c-red">
             <div class="kpi-icon">💰</div>
             <div class="kpi-body">
                 <div class="kpi-label">Revenue</div>
                 <div class="kpi-value">₹ 0</div>
                 <div class="kpi-sub up">↑ +0% from last month</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-orange">
+        <a href="" class="kpi-card c-orange">
             <div class="kpi-icon">📩</div>
             <div class="kpi-body">
                 <div class="kpi-label">Pending Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub down">⚡ Needs attention</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-cyan">
-            <div class="kpi-icon">👥</div>
-            <div class="kpi-body">
-                <div class="kpi-label">Active Users</div>
-                <div class="kpi-value">{{$activeUsers}}</div>
-                <div class="kpi-sub up">↑ +{{$todayUsers}} new today</div>
-            </div>
-        </div>
+            <a href="" class="kpi-card c-cyan">
+                    <div class="kpi-icon">👥</div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Active Users</div>
+                        <div class="kpi-value">{{$activeUsers}}</div>
+                        <div class="kpi-sub up">↑ +{{$todayUsers}} new today</div>
+                    </div>
+            </a>
+            <a href="{{ url('/admin/all-banners') }}" class="kpi-card c-purple">
+                <div class="kpi-icon">🖼️</div>
 
-        <div class="kpi-card c-purple">
-            <div class="kpi-icon">🖼️</div>
-            <div class="kpi-body">
-                <div class="kpi-label">Banners Live</div>
-                <div class="kpi-value">0</div>
-                <div class="kpi-sub info">ℹ 0 approval pending</div>
-            </div>
-        </div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Banners Live</div>
+                    <div class="kpi-value">0</div>
+                    <div class="kpi-sub info">ℹ 0 approval pending</div>
+                </div>
+            </a>
 
-        <div class="kpi-card c-pink">
-            <div class="kpi-icon">💸</div>
-            <div class="kpi-body">
-                <div class="kpi-label">Transactions</div>
-                <div class="kpi-value">0</div>
-                <div class="kpi-sub up">↑ ₹ 0 this week</div>
-            </div>
-        </div>
+            <a href="" class="kpi-card c-pink">
+                <div class="kpi-icon">💸</div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Transactions</div>
+                    <div class="kpi-value">0</div>
+                    <div class="kpi-sub up">↑ ₹ 0 this week</div>
+                </div>
+            </a>
 
-        <div class="kpi-card c-indigo">
+        <a href="" class="kpi-card c-indigo">
             <div class="kpi-icon">🏫</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Courses</div>
-                <div class="kpi-value">0</div>
-                <div class="kpi-sub up">↑ +0 added this week</div>
+                <div class="kpi-value">{{ $totalCourses }}</div>
+                {{-- <div class="kpi-sub up">↑ +{{ $newCoursesThisWeek }} added this week</div> --}}
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-teal">
+        <a href="" class="kpi-card c-teal">
             <div class="kpi-icon">✅</div>
             <div class="kpi-body">
                 <div class="kpi-label">Converted Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ 0% conv. rate</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-green">
+        <a href="" class="kpi-card c-green">
             <div class="kpi-icon">📋</div>
             <div class="kpi-body">
                 <div class="kpi-label">Active Plans</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub info">ℹ 0 expire this week</div>
             </div>
-        </div>
+        </a>
 
-        <div class="kpi-card c-blue">
+        <a href="" class="kpi-card c-blue">
             <div class="kpi-icon">🌐</div>
             <div class="kpi-body">
                 <div class="kpi-label">Page Views</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0 % vs last week</div>
             </div>
-        </div>
+        </a>
 
     </div>
 
@@ -331,27 +331,27 @@
                     </h3>
                 </div>
                 <div class="qa-grid">
-                    <button class="qa-btn qa-indigo" onclick="window.location.href='#'">
+                    {{-- <button class="qa-btn qa-indigo" onclick="window.location.href='#'">
                         <span class="qa-icon">🎓</span>
                         Add University
-                    </button>
+                    </button> --}}
                     <button class="qa-btn qa-green" onclick="window.location.href='#'">
                         <span class="qa-icon">📈</span>
-                        Add Lead
+                        Leads Management
                     </button>
                     <button class="qa-btn qa-amber" onclick="window.location.href='#'">
                         <span class="qa-icon">💳</span>
                         Subscriptions
                     </button>
-                    <button class="qa-btn qa-rose" onclick="window.location.href='#'">
+                    <button class="qa-btn qa-rose" onclick="window.location.href='{{ url('/admin/all-banners') }}'">
                         <span class="qa-icon">🖼️</span>
                         Manage Banners
                     </button>
-                    <button class="qa-btn qa-teal" onclick="window.location.href='#'">
+                    {{-- <button class="qa-btn qa-teal" onclick="window.location.href='#'">
                         <span class="qa-icon">📊</span>
                         View Reports
-                    </button>
-                    <button class="qa-btn qa-slate" onclick="window.location.href='#'">
+                    </button> --}}
+                    <button class="qa-btn qa-slate" onclick="window.location.href='{{ url('/admin/general-settings') }}'">
                         <span class="qa-icon">⚙️</span>
                         Settings
                     </button>
