@@ -1206,6 +1206,7 @@ body {
     height: 5px !important;
 }
 .fi-modal-window {
+    max-width: 400px !important;
     border-radius: 5px !important;
 }
 
@@ -1241,4 +1242,14 @@ body {
 .fi-input-wrp-content-ctn{
     border: none !important;
     box-shadow: none !important;
+}
+.fi-modal-footer-actions .fi-btn:not([type="submit"]) {
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+}
+
+.fi-modal-footer-actions .fi-btn:not([type="submit"]):hover {
+    background-color: #e5e7eb !important;
+    color: #111827 !important;
 }

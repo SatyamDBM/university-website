@@ -93,7 +93,6 @@ class UniversitiesList extends Page implements HasTable
                                     'not_linked' => 'Not Linked',
                                     'pending' => 'Pending',
                                     'approved' => 'Approved',
-                                    'rejected' => 'Rejected',
                                 ])
                                 ->required(),
                         ])
