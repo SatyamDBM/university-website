@@ -17,6 +17,7 @@ class UniversityLinkingController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'university_id' => 'required|exists:universities,id',
             // 'document' => 'required|file|mimes:pdf,jpg,png|max:2048',

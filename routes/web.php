@@ -44,6 +44,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/university/dashboard', [DashboardController::class, 'index'])->name('university.dashboard');
     Route::get('/university/linking', [UniversityLinkingController::class, 'index'])->name('university.linking');
     Route::post('/university/linking', [UniversityLinkingController::class, 'store'])->name('university.linking.store');
+
+    // Course Management
+    Route::resource('courses', App\Http\Controllers\CourseController::class);
+    Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
+    Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
 });
 
 /*

@@ -15,12 +15,11 @@
         </p>
 
         <div class="mt-8 flex justify-center">
-            <a href="/universities"
+            <a href="register/university"
                class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
                 Browse Universities
             </a>
         </div>
-
     </div>
 </section>
 

@@ -412,4 +412,20 @@
 
 </div>
 @endif
+@if(session('success'))
+    <div id="successModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:32px 24px;max-width:350px;width:100%;text-align:center;position:relative;">
+            <button onclick="document.getElementById('successModal').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;font-size:22px;line-height:1;cursor:pointer;">&times;</button>
+            <div style="margin-bottom:16px;">
+                <div style="background:#e6f9ed;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+                    <span style="color:#22c55e;font-size:32px;">&#10003;</span>
+                </div>
+            </div>
+            <div style="color:#22c55e;font-weight:600;font-size:18px;margin-bottom:8px;">SUCCESS</div>
+            <div style="color:#222;font-size:16px;margin-bottom:8px;">Your university linking has been submitted!</div>
+            <div style="color:#666;font-size:14px;margin-bottom:18px;">Once approved by the admin, you can access all the features</div>
+            <button onclick="document.getElementById('successModal').style.display='none'" style="background:#6b4a36;color:#fff;padding:8px 32px;border:none;border-radius:6px;font-size:16px;cursor:pointer;">Done</button>
+        </div>
+    </div>
+@endif
 </x-app-layout>

@@ -44,7 +44,8 @@
 
         {{-- PAGE CONTENT --}}
         <main class="flex-1 p-6">
-            {{ $slot }}
+           {{ $slot ?? '' }}
+    @yield('content')
         </main>
 
     </div>
