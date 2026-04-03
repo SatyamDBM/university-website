@@ -47,14 +47,11 @@
 
                             <input
                                 type="text"
-                                wire:model="packageSlug"
-                                placeholder="package-slug"
-                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
+                                value="{{ \Illuminate\Support\Str::slug($name) }}"
+                                readonly
+                                placeholder="Package slug will be auto generated"
+                                class="w-full rounded-[5px] border border-gray-200 bg-gray-100 px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
                             >
-
-                            @error('packageSlug')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
                         </div>
 
                         <div>
@@ -131,6 +128,26 @@
                                 <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm font-medium text-gray-700">
+                            Coverage Type
+                        </label>
+
+                        <select
+                            wire:model="coverage_type"
+                            class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
+                        >
+                            <option value="">Select Coverage Type</option>
+                            <option value="city_level">City Level</option>
+                            <option value="state_level">State Level</option>
+                            <option value="multi_city">Multi-City</option>
+                            <option value="national">National</option>
+                        </select>
+
+                        @error('coverage_type')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div wire:ignore>
