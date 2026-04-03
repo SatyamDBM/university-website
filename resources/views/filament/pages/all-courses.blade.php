@@ -4,20 +4,13 @@
             <div class="flex items-center justify-between px-6 py-1">
                 <div>
                     <h2 class="font-semibold text-[var(--color-text-dark)]">
-                        All Banners
+                        All Courses
                     </h2>
 
                     <p class="text-xs text-[var(--color-text-subtle)]">
-                        View and manage all banner packages.
+                        View and manage all course requests.
                     </p>
                 </div>
-
-                <a
-                    href="{{ url('/admin/create-banner') }}"
-                    class="rounded-[5px] bg-[#775042] px-4 py-2 text-sm font-medium text-white"
-                >
-                    + Create Banner
-                </a>
             </div>
 
             <div class="p-2">

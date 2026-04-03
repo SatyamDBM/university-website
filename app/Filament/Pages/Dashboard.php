@@ -5,7 +5,7 @@ namespace App\Filament\Pages;
 use Filament\Pages\Dashboard as BaseDashboard;
 use App\Models\University;
 use App\Models\User;
-
+use App\Models\Course;
 class Dashboard extends BaseDashboard
 {
     protected string $view = 'filament.pages.dashboard';
@@ -20,7 +20,9 @@ class Dashboard extends BaseDashboard
                                 ->count(),
 
             // Aaj register hue users
-            'todayUsers' => User::whereDate('created_at', today())->count(),
+            'todayUsers' => User::where('role', 'university')
+                 ->whereDate('created_at', today())->count(),
+            'totalCourses' => Course::count(),
 
             // Aaj active hue users agar updated_at dekhna ho
             // 'todayActiveUsers' => User::where('status', 'active')

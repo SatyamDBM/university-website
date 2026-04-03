@@ -1231,3 +1231,14 @@ body {
 .fi-ta-header-cell-label {
     color: #fff !important;
 }
+.fi-icon-btn-badge-ctn{
+    display: none !important;
+}
+.fi-fo-select  {
+    border: 1px solid var(--color-border) !important;
+    background: var(--color-bg-white) !important;
+}
+.fi-input-wrp-content-ctn{
+    border: none !important;
+    box-shadow: none !important;
+}
