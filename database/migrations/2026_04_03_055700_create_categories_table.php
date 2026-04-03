@@ -11,27 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
             $table->string('slug')->unique();
-
-            $table->decimal('price', 10, 2)->default(0);
-
-            $table->integer('duration')->default(1);
-            $table->enum('duration_type', ['days', 'months', 'years'])->default('months');
-
-            $table->enum('coverage_type', [
-                'city_level',
-                'state_level',
-                'multi_city',
-                'national'
-            ])->default('city_level');
+            $table->text('description')->nullable();
 
             $table->enum('status', ['active', 'inactive'])->default('active');
-
-            $table->text('description')->nullable();
 
             $table->timestamps();
         });
@@ -42,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('categories');
     }
 };

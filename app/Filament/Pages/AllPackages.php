@@ -51,6 +51,21 @@ class AllPackages extends Page implements HasTable
                     ->label('Price')
                     ->money('INR')
                     ->sortable(),
+                Tables\Columns\BadgeColumn::make('coverage_type')
+                        ->label('Coverage Type')
+                        ->colors([
+                            'primary' => 'city_level',
+                            'warning' => 'state_level',
+                            'success' => 'multi_city',
+                            'danger' => 'national',
+                        ])
+                        ->formatStateUsing(fn ($state) => match ($state) {
+                            'city_level' => 'City Level',
+                            'state_level' => 'State Level',
+                            'multi_city' => 'Multi-City',
+                            'national' => 'National',
+                            default => '-',
+                        }),
 
                 Tables\Columns\TextColumn::make('duration')
                     ->label('Duration')

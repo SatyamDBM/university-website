@@ -61,6 +61,8 @@ class AdminPanelProvider extends PanelProvider
 
                 NavigationGroup::make('Universities')
                     ->icon('heroicon-o-academic-cap'),
+                NavigationGroup::make('Categories')
+                    ->icon('heroicon-o-tag'),
 
                 NavigationGroup::make('Universities Account')
                     ->icon('heroicon-o-building-library'),

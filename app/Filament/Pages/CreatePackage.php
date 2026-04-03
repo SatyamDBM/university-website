@@ -23,8 +23,6 @@ class CreatePackage extends Page
 
     public $name = '';
 
-    public $packageSlug = '';
-
     public $description = '';
 
     public $price = '';
@@ -33,23 +31,23 @@ class CreatePackage extends Page
 
     public $duration_type = 'months';
 
+    public $coverage_type = 'city_level';
+
     public $status = 'active';
 
     public function createPackage(): void
     {
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'packageSlug' => ['nullable', 'string', 'max:255', 'unique:packages,slug'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric'],
             'duration' => ['required', 'integer'],
             'duration_type' => ['required', 'in:days,months,years'],
+            'coverage_type' => ['required', 'in:city_level,state_level,multi_city,national'],
             'status' => ['required', 'in:active,inactive'],
         ]);
 
-        $slug = filled($this->packageSlug)
-            ? Str::slug($this->packageSlug)
-            : Str::slug($this->name);
+        $slug = Str::slug($this->name);
 
         Package::create([
             'name' => $this->name,
@@ -58,16 +56,7 @@ class CreatePackage extends Page
             'price' => $this->price,
             'duration' => $this->duration,
             'duration_type' => $this->duration_type,
-            'featured_listing' => 0,
-            'homepage_visibility' => 0,
-            'lead_access' => 1,
-            'lead_limit' => 0,
-            'banner_limit' => 0,
-            'course_limit' => 0,
-            'city_limit' => 0,
-            'state_limit' => 0,
-            'support_type' => 'Basic Support',
-            'priority_rank' => 0,
+            'coverage_type' => $this->coverage_type,
             'status' => $this->status,
         ]);
 
@@ -78,14 +67,15 @@ class CreatePackage extends Page
 
         $this->reset([
             'name',
-            'packageSlug',
             'description',
             'price',
             'duration',
         ]);
 
         $this->duration_type = 'months';
+        $this->coverage_type = 'city_level';
         $this->status = 'active';
+
         $this->redirect('/admin/all-packages');
     }
 }

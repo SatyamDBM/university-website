@@ -16,23 +16,11 @@ class Package extends Model
         'price',
         'duration',
         'duration_type',
-        'featured_listing',
-        'homepage_visibility',
-        'lead_access',
-        'lead_limit',
-        'banner_limit',
-        'course_limit',
-        'city_limit',
-        'state_limit',
-        'support_type',
-        'priority_rank',
+        'coverage_type',
         'status',
     ];
 
     protected $casts = [
-        'featured_listing' => 'boolean',
-        'homepage_visibility' => 'boolean',
-        'lead_access' => 'boolean',
         'price' => 'decimal:2',
     ];
 
