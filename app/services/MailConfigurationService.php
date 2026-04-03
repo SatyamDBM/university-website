@@ -38,24 +38,26 @@ class MailConfigurationService
 {
     public static function setMailConfig(): void
     {
-        // ✅ Prevent crash during migration
-        if (!Schema::hasTable('general_settings')) {
-            return;
+        try {
+            if (!Schema::hasTable('general_settings')) {
+                return;
+            }
+
+            $settings = GeneralSetting::pluck('value', 'key');
+
+            Config::set('mail.default', $settings['mail_driver'] ?? 'smtp');
+
+            Config::set('mail.mailers.smtp.transport', 'smtp');
+            Config::set('mail.mailers.smtp.host', $settings['mail_host'] ?? null);
+            Config::set('mail.mailers.smtp.port', $settings['mail_port'] ?? null);
+            Config::set('mail.mailers.smtp.encryption', $settings['mail_encryption'] ?? null);
+            Config::set('mail.mailers.smtp.username', $settings['mail_username'] ?? null);
+            Config::set('mail.mailers.smtp.password', $settings['mail_password'] ?? null);
+
+            Config::set('mail.from.address', $settings['mail_from_address'] ?? null);
+            Config::set('mail.from.name', $settings['mail_from_name'] ?? null);
+        } catch (\Exception $e) {
+            // ❗ silently ignore DB errors during boot
         }
-
-        // ✅ Fetch all settings in ONE query (performance fix)
-        $settings = GeneralSetting::pluck('value', 'key');
-
-        Config::set('mail.default', $settings['mail_driver'] ?? 'smtp');
-
-        Config::set('mail.mailers.smtp.transport', 'smtp');
-        Config::set('mail.mailers.smtp.host', $settings['mail_host'] ?? null);
-        Config::set('mail.mailers.smtp.port', $settings['mail_port'] ?? null);
-        Config::set('mail.mailers.smtp.encryption', $settings['mail_encryption'] ?? null);
-        Config::set('mail.mailers.smtp.username', $settings['mail_username'] ?? null);
-        Config::set('mail.mailers.smtp.password', $settings['mail_password'] ?? null);
-
-        Config::set('mail.from.address', $settings['mail_from_address'] ?? null);
-        Config::set('mail.from.name', $settings['mail_from_name'] ?? null);
     }
 }

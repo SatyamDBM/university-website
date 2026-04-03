@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\MailConfigurationService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        MailConfigurationService::setMailConfig();
+        if (!App::runningInConsole()) {
+            MailConfigurationService::setMailConfig();
+        }
     }
 }
