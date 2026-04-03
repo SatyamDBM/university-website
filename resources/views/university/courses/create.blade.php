@@ -1,28 +1,59 @@
 <x-app-layout>
+    <div class="mx-auto w-full">
+        <div class="rounded-[10px] border border-gray-200 bg-white p-6 shadow-sm">
+            <div class="mb-6 border-b border-gray-200 pb-4">
+                <h1 class="text-2xl font-bold text-gray-900">
+                    Add New Course
+                </h1>
 
-<div class="container max-w-3xl mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Add New Course</h1>
-
-    @if ($errors->any())
-        <div class="mb-4">
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                <p class="mt-1 text-sm text-gray-500">
+                    Fill in the details below to create a new course.
+                </p>
             </div>
-        </div>
-    @endif
 
-    <form id="courseForm" method="POST" action="{{ route('courses.store') }}" enctype="multipart/form-data">
-        @csrf
-        @include('university.courses.partials.form')
-        <div class="flex gap-3 mt-6">
-            <button type="submit" name="save_as_draft" value="1" class="btn btn-secondary">Save as Draft</button>
-            <button type="submit" class="btn btn-primary">Submit for Approval</button>
-        </div>
-    </form>
-</div>
+            @if ($errors->any())
+                <div class="mb-6 rounded-[6px] border border-red-200 bg-red-50 px-4 py-3">
+                    <div class="mb-2 text-sm font-semibold text-red-700">
+                        Please fix the following errors:
+                    </div>
 
+                    <ul class="list-disc space-y-1 pl-5 text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form
+                id="courseForm"
+                method="POST"
+                action="{{ route('courses.store') }}"
+                enctype="multipart/form-data"
+                class="space-y-6"
+            >
+                @csrf
+
+                @include('university.courses.partials.form')
+
+                <div class="flex flex-wrap items-center justify-end gap-3 border-t border-gray-200 pt-6">
+                    <button
+                        type="submit"
+                        name="save_as_draft"
+                        value="1"
+                        class="rounded-[5px] border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                    >
+                        Save as Draft
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="rounded-[5px] bg-[#775042] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#5e3d31]"
+                    >
+                        Submit for Approval
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </x-app-layout>

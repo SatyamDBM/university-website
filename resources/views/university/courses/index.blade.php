@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
-@include('partials.swal')
-@if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            showSwal('success', @json(session('success')));
-        });
-    </script>
-@endif
+    @include('partials.swal')
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showSwal('success', @json(session('success')));
+            });
+        </script>
+    @endif
 
 <div class="p-6">
 

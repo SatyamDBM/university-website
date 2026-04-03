@@ -17,7 +17,7 @@ class CourseController extends Controller
         $courses = Course::where('university_id', Auth::user()->university_id ?? null)
             ->orderByDesc('created_at')
             ->paginate(15);
-        return view('courses.index', compact('courses'));
+        return view('university.courses.index', compact('courses'));
     }
 
     public function create()
