@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\Package;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Illuminate\Support\Str;
 
 class EditPackage extends Page
 {
@@ -19,8 +18,6 @@ class EditPackage extends Page
 
     public $name = '';
 
-    public $packageSlug = '';
-
     public $description = '';
 
     public $price = '';
@@ -29,6 +26,8 @@ class EditPackage extends Page
 
     public $duration_type = 'months';
 
+    public $coverage_type = 'city_level';
+
     public $status = 'active';
 
     public function mount($record): void
@@ -36,11 +35,11 @@ class EditPackage extends Page
         $this->package = Package::findOrFail($record);
 
         $this->name = $this->package->name;
-        $this->packageSlug = $this->package->slug;
         $this->description = $this->package->description;
         $this->price = $this->package->price;
         $this->duration = $this->package->duration;
         $this->duration_type = $this->package->duration_type;
+        $this->coverage_type = $this->package->coverage_type;
         $this->status = $this->package->status;
     }
 
@@ -48,30 +47,21 @@ class EditPackage extends Page
     {
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'packageSlug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'unique:packages,slug,' . $this->package->id,
-            ],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric'],
             'duration' => ['required', 'integer'],
             'duration_type' => ['required', 'in:days,months,years'],
+            'coverage_type' => ['required', 'in:city_level,state_level,multi_city,national'],
             'status' => ['required', 'in:active,inactive'],
         ]);
 
-        $slug = filled($this->packageSlug)
-            ? Str::slug($this->packageSlug)
-            : Str::slug($this->name);
-
         $this->package->update([
             'name' => $this->name,
-            'slug' => $slug,
             'description' => $this->description,
             'price' => $this->price,
             'duration' => $this->duration,
             'duration_type' => $this->duration_type,
+            'coverage_type' => $this->coverage_type,
             'status' => $this->status,
         ]);
 
@@ -79,6 +69,7 @@ class EditPackage extends Page
             ->title('Package updated successfully')
             ->success()
             ->send();
+
         $this->redirect('/admin/all-packages');
     }
 }
