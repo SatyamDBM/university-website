@@ -87,7 +87,7 @@ class AllCourses extends Page implements HasTable
                         default => 'gray',
                     }),
 
-              Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -111,25 +111,15 @@ class AllCourses extends Page implements HasTable
                         'Live' => 'Live',
                         'Rejected' => 'Rejected',
                     ]),
-
-                Tables\Filters\SelectFilter::make('admission_status')
-                    ->options([
-                        'Open' => 'Open',
-                        'Closed' => 'Closed',
-                    ]),
-
-                Tables\Filters\SelectFilter::make('mode')
-                    ->options([
-                        'Online' => 'Online',
-                        'Offline' => 'Offline',
-                        'Hybrid' => 'Hybrid',
-                    ]),
             ])
             ->actions([
                 Action::make('approve')
-                    ->label('Approve')
+                    ->label('')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
+                    ->extraAttributes([
+                        'class' => 'approve-btn',
+                    ])
                     ->visible(fn (Course $record) => $record->status === 'Pending')
                     ->requiresConfirmation()
                     ->modalHeading('Approve Course')
@@ -148,9 +138,12 @@ class AllCourses extends Page implements HasTable
                     }),
 
                 Action::make('reject')
-                    ->label('Reject')
+                    ->label('')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
+                    ->extraAttributes([
+                        'class' => 'reject-btn',
+                    ])
                     ->visible(fn (Course $record) => in_array($record->status, ['Pending', 'Live']))
                     ->form([
                         Textarea::make('admin_feedback')
@@ -175,9 +168,12 @@ class AllCourses extends Page implements HasTable
                     }),
 
                 Action::make('delete')
-                    ->label('Delete')
+                    ->label('')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
+                    ->extraAttributes([
+                        'class' => 'delete-btn',
+                    ])
                     ->requiresConfirmation()
                     ->modalHeading('Delete Course')
                     ->modalDescription('Are you sure you want to delete this course?')
@@ -191,6 +187,7 @@ class AllCourses extends Page implements HasTable
                             ->send();
                     }),
             ])
+            ->actionsColumnLabel('Actions')
             ->defaultSort('id', 'desc')
             ->striped()
             ->paginated([10, 25, 50]);

@@ -87,18 +87,21 @@ class AllPackages extends Page implements HasTable
             ])  
             ->actions([
                 Action::make('edit')
-                ->label('Edit')
+                ->label('')
                 ->icon('heroicon-o-pencil-square')
                 ->color('primary')
+                ->extraAttributes([
+                        'class' => 'edit-btn',
+                    ])
                 ->url(fn (Package $record) => url('/admin/edit-package/' . $record->id)),
 
                Action::make('delete')
-                    ->label('Delete')
+                    ->label('')
                     ->icon('heroicon-o-trash')
                     ->color('primary')
                     ->link()
                     ->extraAttributes([
-                        'style' => 'color:#111827 !important; font-weight:700 !important; text-decoration:none !important;',
+                        'class' => 'delete-btn',
                     ])
                     ->requiresConfirmation()
                     ->modalHeading('Delete Package')
@@ -113,6 +116,7 @@ class AllPackages extends Page implements HasTable
                             ->send();
                     }),
             ])
+            ->actionsColumnLabel('Actions')
             ->paginated([10, 25, 50]);
     }
 }
