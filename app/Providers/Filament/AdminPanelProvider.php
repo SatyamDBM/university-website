@@ -10,8 +10,6 @@ use App\Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -19,15 +17,34 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup;
-use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Css;
 use Illuminate\Support\Facades\Vite;
 use Filament\Navigation\MenuItem;
+use Illuminate\Support\Facades\DB;
+
 class AdminPanelProvider extends PanelProvider
 {
+    protected function getBranding(string $key): ?string
+    {
+        try {
+            $value = DB::table('general_settings')
+                ->where('group', 'branding')
+                ->where('key', $key)
+                ->value('value');
+
+            return $value ?: null;
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $brandLogo   = $this->getBranding('admin_logo');
+        $favicon     = $this->getBranding('favicon');
+        $brandName   = $this->getBranding('brand_name');
+
+        $panel = $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -36,15 +53,12 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->topNavigation(false)
             ->darkMode(false)
-            ->brandName(null)
-            ->brandLogo(asset('storage/logo/logo.jpeg'))
+            ->brandName($brandName ?? config('app.name'))
             ->brandLogoHeight('2.5rem')
-            ->favicon(asset('storage/favicon/favicon.png'))
             ->assets([
-                    Css::make('admin-theme', resource_path('css/filament/admin.css')),
-                    Css::make('app-css', Vite::asset('resources/css/app.css')),
-                ])
-
+                Css::make('admin-theme', resource_path('css/filament/admin.css')),
+                Css::make('app-css', Vite::asset('resources/css/app.css')),
+            ])
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -58,45 +72,36 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('Dashboard')
                     ->icon('heroicon-o-home'),
-
                 NavigationGroup::make('Universities')
                     ->icon('heroicon-o-academic-cap'),
                 NavigationGroup::make('Categories')
                     ->icon('heroicon-o-tag'),
-
                 NavigationGroup::make('Universities Account')
                     ->icon('heroicon-o-building-library'),
-
                 NavigationGroup::make('Leads')
                     ->icon('heroicon-o-chart-bar'),
-
                 NavigationGroup::make('Subscriptions')
                     ->icon('heroicon-o-credit-card'),
-
                 NavigationGroup::make('Banner Management')
                     ->icon('heroicon-o-photo'),
-
                 NavigationGroup::make('Payments')
                     ->icon('heroicon-o-banknotes'),
-
                 NavigationGroup::make('Notifications')
                     ->icon('heroicon-o-bell'),
-
                 NavigationGroup::make('Settings')
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->userMenuItems([
-                    'profile' => MenuItem::make()
-                        ->label('Profile')
-                        ->icon('heroicon-o-user')
-                        ->url(fn (): string => \App\Filament\Pages\AdminProfile::getUrl()),
+                'profile' => MenuItem::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user')
+                    ->url(fn (): string => \App\Filament\Pages\AdminProfile::getUrl()),
 
-                    'settings' => MenuItem::make()
-                        ->label('Account Settings')
-                        ->icon('heroicon-o-cog-6-tooth')
-                        ->url(fn (): string => \App\Filament\Pages\AdminAccountSettings::getUrl()),
-                ])
-
+                'settings' => MenuItem::make()
+                    ->label('Account Settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->url(fn (): string => \App\Filament\Pages\AdminAccountSettings::getUrl()),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -108,11 +113,25 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            
             ->authMiddleware([
                 Authenticate::class,
                 'admin.only',
             ]);
-            
+
+        // Apply logo only if set in DB
+        if ($brandLogo) {
+            $panel->brandLogo(asset($brandLogo));
+        } else {
+            $panel->brandLogo(asset('storage/logo/logo.jpeg'));
+        }
+
+        // Apply favicon only if set in DB
+        if ($favicon) {
+            $panel->favicon(asset($favicon));
+        } else {
+            $panel->favicon(asset('storage/favicon/favicon.png'));
+        }
+
+        return $panel;
     }
 }

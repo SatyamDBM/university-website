@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
-@import '../../../vendor/filament/filament/resources/css/theme.css';
 
 @source "../../../app/Filament";
 @source "../../../resources/views";
@@ -1252,4 +1251,117 @@ body {
 .fi-modal-footer-actions .fi-btn:not([type="submit"]):hover {
     background-color: #e5e7eb !important;
     color: #111827 !important;
+}
+.fi-ta-actions .approve-btn{
+    stroke: #16a34a !important;
+    color: #16a34a !important;
+}
+.fi-ta-actions .edit-btn{
+    stroke: #16a34a !important;
+    color: #16a34a !important;
+}
+.fi-ta-actions .view-btn{
+    stroke: #2563eb !important;
+    color: #2563eb !important;
+}
+.fi-ta-actions .change-status-btn{
+    stroke: #d97706 !important;
+    color: #d97706 !important;
+}
+.fi-ta-actions .delete-btn{
+    stroke: #dc2626 !important;
+    color: #dc2626 !important;
+}
+.fi-ta-actions .reject-btn{
+    stroke: #dc7e26 !important;
+    color: #dc7e26 !important;
+}
+
+/* ─── Filter Dropdown ─── */
+.fi-dropdown-panel {
+    border: 1px solid var(--color-border) !important;
+    border-radius: 5px !important;
+    background: var(--color-bg-white) !important;
+    box-shadow: 0 10px 30px var(--shadow-card) !important;
+    padding: 16px !important;
+}
+
+/* Filters + Reset header row */
+.fi-ta-filters-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 12px !important;
+}
+
+.fi-ta-filters-heading {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: var(--color-text-medium) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* Reset button */
+.fi-ta-filters-header a,
+.fi-ta-filters-header button {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: var(--color-brand) !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.fi-ta-filters-header a:hover,
+.fi-ta-filters-header button:hover {
+    color: var(--color-primary-hover) !important;
+    text-decoration: underline !important;
+}
+
+/* Select input inside filter */
+.fi-ta-filters-dropdown .fi-input-wrp {
+    border-radius: 5px !important;
+    border: 1px solid var(--color-border-input) !important;
+    background: var(--color-bg-white) !important;
+}
+
+.fi-ta-filters-dropdown .fi-input-wrp:focus-within {
+    border-color: var(--color-brand) !important;
+    box-shadow: 0 0 0 3px var(--color-primary-ring) !important;
+}
+
+/* Apply filters button */
+.fi-ta-filters-dropdown .fi-btn {
+    background-color: var(--color-brand) !important;
+    color: #ffffff !important;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    border: none !important;
+    box-shadow: 0 2px 8px var(--color-primary-shadow) !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+    margin-top: 12px !important;
+}
+
+.fi-ta-filters-dropdown .fi-btn:hover {
+    background-color: var(--color-primary-hover) !important;
+    box-shadow: 0 4px 12px var(--color-primary-shadow-hover) !important;
+    transform: translateY(-1px) !important;
+}
+/* Filter Select input border-radius fix */
+.fi-ta-filters-dropdown .fi-select-input,
+.fi-ta-filters-dropdown select {
+    border-radius: 5px !important;
+}
+
+.fi-ta-filters-dropdown .fi-input-wrp {
+    border-radius: 5px !important;
+    overflow: hidden !important;
+}
+
+.fi-ta-filters-dropdown .fi-input-wrp-content-ctn {
+    border-radius: 5px !important;
 }

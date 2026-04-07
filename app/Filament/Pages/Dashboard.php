@@ -21,6 +21,7 @@ class Dashboard extends BaseDashboard
 
             // Aaj register hue users
             'todayUsers' => User::where('role', 'university')
+                 ->where('linking_status', 'approved')
                  ->whereDate('created_at', today())->count(),
             'totalCourses' => Course::count(),
 

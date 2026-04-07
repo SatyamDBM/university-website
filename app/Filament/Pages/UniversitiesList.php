@@ -10,8 +10,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Filters\SelectFilter;
 
 class UniversitiesList extends Page implements HasTable
 {
@@ -78,32 +80,78 @@ class UniversitiesList extends Page implements HasTable
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
+            ->filters([
+                SelectFilter::make('linking_status')
+                    ->label('Linking Status')
+                    ->options([
+                        'not_linked' => 'Not Linked',
+                        'pending'    => 'Pending',
+                        'approved'   => 'Approved',
+                        'rejected'   => 'Rejected',
+                    ])
+                    ->placeholder('All Statuses'),
+            ])
             ->actions([
-                    Action::make('change_status')
-                        ->label('Change Status')
-                        ->icon('heroicon-o-pencil-square')
-                        ->color('primary')
-                        ->fillForm(fn (User $record): array => [
-                            'linking_status' => $record->linking_status,
-                        ])
-                        ->form([
-                            Select::make('linking_status')
-                                ->label('Linking Status')
-                                ->options([
-                                    'not_linked' => 'Not Linked',
-                                    'pending' => 'Pending',
-                                    'approved' => 'Approved',
-                                ])
-                                ->required(),
-                        ])
-                        ->action(function (array $data, User $record): void {
-                            $record->linking_status = $data['linking_status'];
-                            $record->save();
-                        })
-                        ->modalHeading('Change Linking Status')
-                        ->modalSubmitActionLabel('Update Status')
-                        ->successNotificationTitle('Linking status updated successfully'),
-                ])
+                Action::make('view')
+                    ->label('')
+                    ->icon('heroicon-o-eye')
+                    ->color('info')
+                    ->extraAttributes([
+                        'class' => 'view-btn',
+                    ])
+                    ->url(fn (User $record): string => UniversityRequestView::getUrl([
+                        'id' => $record->id,
+                    ])),
+
+                Action::make('change_status')
+                    ->label('')
+                    ->icon('heroicon-o-pencil-square')
+                    ->color('primary')
+                    ->extraAttributes([
+                        'class' => 'change-status-btn',
+                    ])
+                    ->fillForm(fn (User $record): array => [
+                        'linking_status' => $record->linking_status,
+                    ])
+                    ->form([
+                        Select::make('linking_status')
+                            ->label('Linking Status')
+                            ->options([
+                                'not_linked' => 'Not Linked',
+                                'pending' => 'Pending',
+                                'approved' => 'Approved',
+                            ])
+                            ->required(),
+                    ])
+                    ->action(function (array $data, User $record): void {
+                        $record->linking_status = $data['linking_status'];
+                        $record->save();
+                    })
+                    ->modalHeading('Change Linking Status')
+                    ->modalSubmitActionLabel('Update Status')
+                    ->successNotificationTitle('Linking status updated successfully'),
+
+                Action::make('delete')
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->extraAttributes([
+                        'class' => 'delete-btn',
+                    ])
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete University')
+                    ->modalDescription('Are you sure you want to delete this university?')
+                    ->modalSubmitActionLabel('Yes, Delete')
+                    ->action(function (User $record): void {
+                        $record->delete();
+
+                        Notification::make()
+                            ->title('University deleted successfully')
+                            ->success()
+                            ->send();
+                    }),
+            ])
+            ->actionsColumnLabel('Actions')
             ->paginated([10, 25, 50]);
     }
 
