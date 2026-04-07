@@ -26,18 +26,18 @@
             <div class="kpi-body">
                 <div class="kpi-label">Total Universities</div>
                 <div class="kpi-value">{{ $totalUniversities }}</div>
-                <div class="kpi-sub up">↑ +12% this month</div>
+                <div class="kpi-sub up">↑ +{{$currentMonthUniversities}}% this month</div>
             </div>
         </a>
 
-        <a href="" class="kpi-card c-green">
+        {{-- <a href="" class="kpi-card c-green">
             <div class="kpi-icon">📈</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0% this week</div>
             </div>
-        </a>
+        </a> --}}
 
         <a href="" class="kpi-card c-amber">
             <div class="kpi-icon">💳</div>
@@ -57,30 +57,29 @@
             </div>
         </a>
 
-        <a href="" class="kpi-card c-orange">
+        {{-- <a href="" class="kpi-card c-orange">
             <div class="kpi-icon">📩</div>
             <div class="kpi-body">
                 <div class="kpi-label">Pending Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub down">⚡ Needs attention</div>
             </div>
-        </a>
+        </a> --}}
 
-            <a href="" class="kpi-card c-cyan">
+            <a href="{{ url('admin/universities-list') }}" class="kpi-card c-cyan">
                     <div class="kpi-icon">👥</div>
                     <div class="kpi-body">
-                        <div class="kpi-label">Active Users</div>
-                        <div class="kpi-value">{{$activeUsers}}</div>
-                        <div class="kpi-sub up">↑ +{{$todayUsers}} new today</div>
+                        <div class="kpi-label">Active Universities</div>
+                        <div class="kpi-value">{{$activeUniversities}}</div>
+                        <div class="kpi-sub up">↑ +{{$todayUniversities}} new today</div>
                     </div>
             </a>
             <a href="{{ url('/admin/all-banners') }}" class="kpi-card c-purple">
                 <div class="kpi-icon">🖼️</div>
 
                 <div class="kpi-body">
-                    <div class="kpi-label">Banners Live</div>
-                    <div class="kpi-value">0</div>
-                    <div class="kpi-sub info">ℹ 0 approval pending</div>
+                    <div class="kpi-label">Banners</div>
+                    <div class="kpi-value">{{$totalBanners}}</div>
                 </div>
             </a>
 
@@ -93,7 +92,7 @@
                 </div>
             </a>
 
-        <a href="" class="kpi-card c-indigo">
+        <a href="{{ url('/admin/all-courses') }}" class="kpi-card c-indigo">
             <div class="kpi-icon">🏫</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Courses</div>
@@ -101,7 +100,7 @@
                 {{-- <div class="kpi-sub up">↑ +{{ $newCoursesThisWeek }} added this week</div> --}}
             </div>
         </a>
-
+{{-- 
         <a href="" class="kpi-card c-teal">
             <div class="kpi-icon">✅</div>
             <div class="kpi-body">
@@ -109,25 +108,25 @@
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ 0% conv. rate</div>
             </div>
-        </a>
+        </a> --}}
 
-        <a href="" class="kpi-card c-green">
+        <a href="{{url('admin/all-packages')}}" class="kpi-card c-green">
             <div class="kpi-icon">📋</div>
             <div class="kpi-body">
                 <div class="kpi-label">Active Plans</div>
-                <div class="kpi-value">0</div>
-                <div class="kpi-sub info">ℹ 0 expire this week</div>
+                <div class="kpi-value">{{$totalpackages}}</div>
+                <div class="kpi-sub info">📦 Available</div>
             </div>
         </a>
 
-        <a href="" class="kpi-card c-blue">
+        {{-- <a href="" class="kpi-card c-blue">
             <div class="kpi-icon">🌐</div>
             <div class="kpi-body">
                 <div class="kpi-label">Page Views</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0 % vs last week</div>
             </div>
-        </a>
+        </a> --}}
 
     </div>
 

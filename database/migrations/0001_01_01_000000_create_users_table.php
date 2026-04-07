@@ -29,7 +29,9 @@ return new class extends Migration
             // Status Column
             $table->enum('status', [
                 'active',
-                'inactive'
+                'inactive',
+                'suspended',
+                'blocked'
             ])->default('active');
 
             $table->enum('linking_status', [

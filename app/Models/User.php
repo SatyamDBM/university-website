@@ -78,4 +78,13 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->status === 'inactive';
     }
+    public function isBlocked(): bool
+    {
+        return $this->status === 'blocked';
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->status === 'suspended';
+    }
 }
