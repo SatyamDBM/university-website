@@ -5,25 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Album extends Model
+class Facility extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'university_id',
-        'name',
-        'category',
+        'facility_name',
+        'facility_type',
         'description',
-        'date',
+        'capacity',
+        'availability',
+        'gender_specific',
+        'is_featured',
+        'is_top',
+        'is_highlight',
         'status'
     ];
-    protected $dates = ['deleted_at'];
 
-    public function images()
-    {
-        return $this->hasMany(Image::class);
-    }
     public function university()
     {
         return $this->belongsTo(University::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(FacilityImage::class);
     }
 }

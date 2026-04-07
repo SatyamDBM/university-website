@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->date('date')->nullable();
             $table->enum('status', ['Draft', 'Pending', 'Live', 'Rejected'])->default('Draft');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

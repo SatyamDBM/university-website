@@ -52,16 +52,23 @@ Route::middleware(['auth'])->group(function () {
     Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
     Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
 
+    // Department Management
+    Route::resource('departments', App\Http\Controllers\DepartmentController::class);
+
     // University Campus Gallery
     Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
         'index' => 'university.gallery.index',
         'create' => 'university.gallery.create',
         'store' => 'university.gallery.store',
-        'show' => 'university.gallery.show',
         'edit' => 'university.gallery.edit',
         'update' => 'university.gallery.update',
         'destroy' => 'university.gallery.destroy',
     ]);
+    // Direct gallery show route for robust access (like other working views)
+    Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])->name('university.gallery.showById');
+
+    // Facilities Management
+    Route::resource('facilities', App\Http\Controllers\FacilityController::class);
 });
 
 /*

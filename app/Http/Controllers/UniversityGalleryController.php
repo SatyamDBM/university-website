@@ -22,8 +22,12 @@ class UniversityGalleryController extends Controller
 
     public function store(Request $request)
     {
+        $universityId = auth()->user()->university_id;
+        if (is_null($universityId)) {
+            return redirect()->back()->withErrors(['university_id' => 'Your account is not linked to a university. Please contact admin.']);
+        }
         $request->validate([
-            'name' => 'required|string|max:255|unique:albums,name,NULL,id,university_id,' . auth()->user()->university_id,
+            'name' => 'required|string|max:255|unique:albums,name,NULL,id,university_id,' . $universityId,
             'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'date' => 'nullable|date',
@@ -32,7 +36,7 @@ class UniversityGalleryController extends Controller
             'alt_text.*' => 'nullable|string|max:255',
         ]);
         $album = Album::create([
-            'university_id' => auth()->user()->university_id,
+            'university_id' => $universityId,
             'name' => $request->name,
             'category' => $request->category,
             'description' => $request->description,
@@ -54,11 +58,19 @@ class UniversityGalleryController extends Controller
         }
         return redirect()->route('university.gallery.index')->with('success', 'Album and images uploaded!');
     }
-
-    public function show(Album $album)
+    public function showById($id)
     {
+        $album = Album::where('id', $id)
+            ->where('university_id', auth()->user()->university_id)
+            ->first();
+        if (!$album) {
+            abort(404, 'Album not found');
+        }
         $images = $album->images;
-        return view('university.gallery.show', compact('album', 'images'));
+        return view('university.gallery.show', [
+            'album' => $album,
+            'images' => $images,
+        ]);
     }
 
     public function edit(Album $gallery)
@@ -76,6 +88,9 @@ class UniversityGalleryController extends Controller
             'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'date' => 'nullable|date',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'caption.*' => 'nullable|string|max:255',
+            'alt_text.*' => 'nullable|string|max:255',
         ]);
         $gallery->update([
             'name' => $request->name,
@@ -83,6 +98,36 @@ class UniversityGalleryController extends Controller
             'description' => $request->description,
             'date' => $request->date,
         ]);
+        // Handle new image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $idx => $file) {
+                $path = $file->store('gallery', 'public');
+                // Thumbnail logic can be added here
+                \App\Models\Image::create([
+                    'album_id' => $gallery->id,
+                    'image_url' => $path,
+                    'caption' => $request->caption[$idx] ?? null,
+                    'alt_text' => $request->alt_text[$idx] ?? null,
+                    'status' => 'Pending',
+                ]);
+            }
+        }
         return redirect()->route('university.gallery.index')->with('success', 'Album updated successfully!');
+    }
+
+    public function destroy(Album $album)
+    {
+        // Optionally, delete related images
+        foreach ($album->images as $image) {
+            // Delete the image file from storage if needed
+            \Storage::disk('public')->delete($image->image_url);
+            $image->delete();
+        }
+        $album->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Album deleted successfully!']);
+        }
+        return redirect()->route('university.gallery.index')->with('success', 'Album deleted successfully!');
     }
 }
