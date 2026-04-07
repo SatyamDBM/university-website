@@ -15,7 +15,7 @@
         <img src="{{ asset('storage/logo/logo.jpeg') }}"
              class="h-12 w-12 object-contain rounded-full mb-1"
              alt="Logo">
-        <span class="text-gray-500 text-xs tracking-widest uppercase font-medium">
+        <span class="text-gray-500 text-xs tracking-widest uppercase fo nt-medium">
             {{ config('app.name', 'UniPortal') }}
         </span>
     </div>
@@ -211,8 +211,8 @@
     </nav>
 
     {{-- Bottom: User info + version --}}
-    <div class="flex-shrink-0 border-t border-gray-200 p-4">
-        <div class="flex items-center gap-3 mb-3">
+    {{-- <div class="flex-shrink-0 border-t border-gray-200 p-4"> --}}
+        {{-- <div class="flex items-center gap-3 mb-3">
             <div class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-bold text-sm flex-shrink-0">
                 {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
             </div>
@@ -233,15 +233,15 @@
                     </svg>
                 </button>
             </form>
-        </div>
+        </div> --}}
 
         {{-- Version label --}}
-        <div class="text-center">
+        {{-- <div class="text-center">
             <span class="text-gray-400 text-xs tracking-widest uppercase">
                 {{ config('app.name', 'UniPortal') }}
             </span>
             <span class="text-gray-600 text-xs font-bold ml-1">V1.0</span>
-        </div>
-    </div>
+        </div> --}}
+    {{-- </div> --}}
 
 </div>

@@ -48,7 +48,6 @@
     .uni-wrap {
         font-family: 'Plus Jakarta Sans', sans-serif;
         background: var(--bg-app);
-        min-height: 100vh;
         padding: 1.5rem;
         box-sizing: border-box;
     }

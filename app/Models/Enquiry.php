@@ -11,9 +11,11 @@ class Enquiry extends Model
         'name',
         'email',
         'mobile',
+        'course',
         'message',
         'university_id',
     ];
+
     public function university()
     {
         return $this->belongsTo(University::class);

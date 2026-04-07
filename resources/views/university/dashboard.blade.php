@@ -140,12 +140,121 @@
         </div>
 
     </div>
-
-    <!-- Bottom Grid -->
-    <div class="uni-bottom-grid">
+    <div class="w-full flex flex-col lg:flex-row gap-4">
 
         <!-- Recent Activity -->
-        <div class="uni-card">
+        <div class="uni-card w-full lg:w-1/2">
+            <div class="uni-card-header">
+                <h3 class="uni-card-title">
+                    <span class="uni-card-icon" style="background:#eef2ff;">🕐</span>
+                    Recent Activity
+                </h3>
+                <a href="#" class="uni-btn-sm">View All →</a>
+            </div>
+            <div class="uni-activity-list">
+                <div class="uni-activity-item">
+                    <div class="uni-activity-dot" style="background:#ede9fe;">📈</div>
+                    <div class="uni-activity-body">
+                        <strong>New Lead Received</strong>
+                        <span>A student enquired about B.Tech CSE admission.</span>
+                    </div>
+                    <div class="uni-activity-time">3m ago</div>
+                </div>
+                <div class="uni-activity-item">
+                    <div class="uni-activity-dot" style="background:#d1fae5;">✅</div>
+                    <div class="uni-activity-body">
+                        <strong>Lead Converted</strong>
+                        <span>Rahul Sharma confirmed admission for MBA 2025.</span>
+                    </div>
+                    <div class="uni-activity-time">15m ago</div>
+                </div>
+                <div class="uni-activity-item">
+                    <div class="uni-activity-dot" style="background:#fce7f3;">🖼️</div>
+                    <div class="uni-activity-body">
+                        <strong>Banner Submitted</strong>
+                        <span>2 banners submitted for admin approval.</span>
+                    </div>
+                    <div class="uni-activity-time">1h ago</div>
+                </div>
+                <div class="uni-activity-item">
+                    <div class="uni-activity-dot" style="background:#e0f2fe;">💰</div>
+                    <div class="uni-activity-body">
+                        <strong>Payment Received</strong>
+                        <span>₹15,000 subscription payment confirmed.</span>
+                    </div>
+                    <div class="uni-activity-time">2h ago</div>
+                </div>
+                <div class="uni-activity-item">
+                    <div class="uni-activity-dot" style="background:#fef3c7;">📚</div>
+                    <div class="uni-activity-body">
+                        <strong>New Course Added</strong>
+                        <span>B.Sc Data Science added to course listing.</span>
+                    </div>
+                    <div class="uni-activity-time">3h ago</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Top Courses -->
+        <div class="uni-card w-full lg:w-1/2">
+            <div class="uni-card-header">
+                <h3 class="uni-card-title">
+                    <span class="uni-card-icon" style="background:#d1fae5;">🏆</span>
+                    Top Courses
+                </h3>
+                <a href="#" class="uni-btn-sm">View All →</a>
+            </div>
+            <table class="uni-course-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Leads</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>B.Tech CSE</td>
+                        <td>68</td>
+                        <td><span class="uni-pill pill-green">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>MBA</td>
+                        <td>54</td>
+                        <td><span class="uni-pill pill-green">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>BCA</td>
+                        <td>41</td>
+                        <td><span class="uni-pill pill-blue">Popular</span></td>
+                    </tr>
+                    <tr>
+                        <td>B.Sc Data Sci.</td>
+                        <td>29</td>
+                        <td><span class="uni-pill pill-purple">New</span></td>
+                    </tr>
+                    <tr>
+                        <td>B.Com</td>
+                        <td>22</td>
+                        <td><span class="uni-pill pill-green">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>LLB</td>
+                        <td>11</td>
+                        <td><span class="uni-pill pill-amber">Low Traffic</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Bottom Grid -->
+    {{-- <div class="uni-bottom-grid"> --}}
+
+        <!-- Recent Activity -->
+        {{-- <div class="uni-card">
             <div class="uni-card-header">
                 <h3 class="uni-card-title">
                     <span class="uni-card-icon" style="background:#eef2ff;">🕐</span>
@@ -203,10 +312,10 @@
                     <div class="uni-activity-time">5h ago</div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Revenue + Lead Funnel -->
-        <div style="display:flex; flex-direction:column; gap:.85rem;">
+        {{-- <div style="display:flex; flex-direction:column; gap:.85rem;">
 
             <!-- Revenue Summary -->
             <div class="uni-card">
@@ -314,10 +423,10 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
         <!-- Right Column: Quick Actions + Top Courses -->
-        <div style="display:flex; flex-direction:column; gap:.85rem;">
+        {{-- <div style="display:flex; flex-direction:column; gap:.85rem;">
 
             <!-- Quick Actions -->
             <div class="uni-card">
@@ -407,8 +516,8 @@
                 </table>
             </div>
 
-        </div>
-    </div>
+        </div> --}}
+    {{-- </div> --}}
 
 </div>
 @endif
