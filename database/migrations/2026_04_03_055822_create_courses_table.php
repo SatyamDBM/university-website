@@ -48,6 +48,7 @@ return new class extends Migration
             // Status Lifecycle
             $table->enum('status', ['Draft', 'Pending', 'Live', 'Rejected'])->default('Draft');
             $table->text('admin_feedback')->nullable();
+            $table->softDeletes();
 
             $table->timestamps();
         });
