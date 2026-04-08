@@ -175,7 +175,7 @@
                     </div>
                     <div class="activity-time">1h ago</div>
                 </div>
-                <div class="activity-item">
+                {{-- <div class="activity-item">
                     <div class="activity-dot" style="background:#ecfeff;">🖼️</div>
                     <div class="activity-body">
                         <strong>Banner Submitted for Review</strong>
@@ -190,7 +190,7 @@
                         <span>5 leads moved to "Follow-up" stage.</span>
                     </div>
                     <div class="activity-time">3h ago</div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -259,7 +259,7 @@
                             <span class="rev-badge down">4 pending</span>
                         </div>
                     </div>
-                    <div class="rev-row">
+                    {{-- <div class="rev-row">
                         <div class="rev-row-left">
                             <span class="rev-icon">✅</span>
                             <div>
@@ -271,12 +271,12 @@
                             <span class="rev-val">44</span>
                             <span class="rev-badge up">+3 new</span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
             <!-- Lead Funnel -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
                         <span class="card-title-icon" style="background:#fff7ed;">🎯</span>
@@ -315,7 +315,7 @@
                         <span class="funnel-count">32</span>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Right Column: Quick Actions + Top Universities -->
@@ -329,36 +329,28 @@
                         Quick Actions
                     </h3>
                 </div>
-                <div class="qa-grid">
-                    {{-- <button class="qa-btn qa-indigo" onclick="window.location.href='#'">
-                        <span class="qa-icon">🎓</span>
-                        Add University
-                    </button> --}}
-                    <button class="qa-btn qa-green" onclick="window.location.href='#'">
+               <div class="qa-grid">
+                    <a href="{{ url('/admin/direct-leads') }}" class="qa-btn qa-green">
                         <span class="qa-icon">📈</span>
                         Leads Management
-                    </button>
-                    <button class="qa-btn qa-amber" onclick="window.location.href='#'">
+                    </a>
+                    <a href="{{ url('/admin/all-packages') }}" class="qa-btn qa-amber">
                         <span class="qa-icon">💳</span>
                         Subscriptions
-                    </button>
-                    <button class="qa-btn qa-rose" onclick="window.location.href='{{ url('/admin/all-banners') }}'">
+                    </a>
+                    <a href="{{ url('/admin/all-banners') }}" class="qa-btn qa-rose">
                         <span class="qa-icon">🖼️</span>
                         Manage Banners
-                    </button>
-                    {{-- <button class="qa-btn qa-teal" onclick="window.location.href='#'">
-                        <span class="qa-icon">📊</span>
-                        View Reports
-                    </button> --}}
-                    <button class="qa-btn qa-slate" onclick="window.location.href='{{ url('/admin/general-settings') }}'">
+                    </a>
+                    <a href="{{ url('/admin/general-settings') }}" class="qa-btn qa-slate">
                         <span class="qa-icon">⚙️</span>
                         Settings
-                    </button>
+                    </a>
                 </div>
             </div>
 
             <!-- Top Universities Table -->
-            <div class="card" style="flex:1;">
+            {{-- <div class="card" style="flex:1;">
                 <div class="card-header">
                     <h3 class="card-title">
                         <span class="card-title-icon" style="background:#f0fdf4;">🏆</span>
@@ -407,7 +399,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
 
         </div>
     </div>
