@@ -1,7 +1,11 @@
-    
 @php
     $status = auth()->user()->linking_status ?? 'not_linked';
     $isLocked = in_array($status, ['not_linked', 'pending', 'rejected']);
+    $settings = \App\Models\GeneralSetting::whereIn('key', ['website_logo', 'favicon', 'brand_name'])
+                    ->pluck('value', 'key');
+    $websiteLogo = $settings['website_logo'] ?? null;
+    $favicon     = $settings['favicon'] ?? null;
+    $brandName   = $settings['brand_name'] ?? config('app.name', 'UniPortal');
 @endphp
 
 <div
@@ -11,12 +15,26 @@
     :class="{ 'translate-x-0': sidebarOpen }"
 >
     {{-- Logo at top center --}}
-    <div class="flex flex-col items-center justify-center py-6 border-b border-gray-200 flex-shrink-0">
-        <img src="{{ asset('storage/logo/logo.jpeg') }}"
-             class="h-12 w-12 object-contain rounded-full mb-1"
-             alt="Logo">
-        <span class="text-gray-500 text-xs tracking-widest uppercase fo nt-medium">
-            {{ config('app.name', 'UniPortal') }}
+    <div class="flex flex-col items-center justify-center border-b border-gray-200 flex-shrink-0">
+        @if($websiteLogo)
+            <img src="{{ asset($websiteLogo) }}"
+                 class="h-14 w-20 object-contain"
+                 alt="{{ $brandName }}">
+        @elseif($favicon)
+            <img src="{{ asset($favicon) }}"
+                 class="h-14 w-20 object-contain"
+                 alt="{{ $brandName }}">
+        @else
+            {{-- Fallback: Brand name ka pehla letter --}}
+            <div class="h-14 w-20  bg-violet-100 flex items-center justify-center">
+                <span class="text-violet-700 font-bold text-lg">
+                    {{ strtoupper(substr($brandName, 0, 1)) }}
+                </span>
+            </div>
+        @endif
+
+        <span class="text-gray-500 text-xs tracking-widest uppercase mb-2 font-medium">
+            {{ $brandName }}
         </span>
     </div>
 
@@ -62,29 +80,27 @@
             </svg>
             <span>Campus Facility</span>
         </a>
-            <a href="{{ route('university.gallery.index') }}"
+
+        <a href="{{ route('university.gallery.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
                   {{ request()->routeIs('university.gallery*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
             <span>Gallery</span>
         </a>
-              {{-- <span>Campus Facility</span> --}}
-        </a>
-            <a href="{{ route('university.gallery.index') }}"
+
+        <a href="{{ route('university.gallery.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
                   {{ request()->routeIs('university.gallery*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
             <span>Placement</span>
         </a>
 
-         </a>
-            <a href="{{ route('university.gallery.index') }}"
+        <a href="{{ route('university.gallery.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
                   {{ request()->routeIs('university.gallery*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
             <span>Overview</span>
         </a>
-        
 
         {{-- Admissions --}}
         <div class="pt-4 pb-1 px-3">
