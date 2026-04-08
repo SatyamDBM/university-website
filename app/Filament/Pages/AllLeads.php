@@ -53,6 +53,9 @@ class AllLeads extends Page implements HasTable
                 Tables\Columns\TextColumn::make('mobile')
                     ->label('Mobile')
                     ->default('-'),
+                Tables\Columns\TextColumn::make('course')
+                ->label('course')
+                ->default('-'),
 
                 Tables\Columns\TextColumn::make('university.name')
                     ->label('Assigned University')
@@ -60,11 +63,11 @@ class AllLeads extends Page implements HasTable
                     ->sortable()
                     ->default('-'),
 
-                Tables\Columns\TextColumn::make('message')
-                    ->label('Message')
-                    ->limit(50)
-                    ->tooltip(fn (Enquiry $record) => $record->message)
-                    ->default('-'),
+                // Tables\Columns\TextColumn::make('message')
+                //     ->label('Message')
+                //     ->limit(50)
+                //     ->tooltip(fn (Enquiry $record) => $record->message)
+                //     ->default('-'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Assigned At')

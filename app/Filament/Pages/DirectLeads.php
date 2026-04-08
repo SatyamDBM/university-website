@@ -6,12 +6,14 @@ use App\Models\Enquiry;
 use App\Models\University;
 use UnitEnum;
 use BackedEnum;
+use Illuminate\Database\Eloquent\Collection;
 use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Notifications\Notification;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -58,6 +60,12 @@ class DirectLeads extends Page implements HasTable
                     ->label('Mobile')
                     ->default('-'),
 
+                Tables\Columns\TextColumn::make('course')
+                    ->label('Course')
+                    ->searchable()
+                    ->sortable()
+                    ->default('-'),
+
                 Tables\Columns\TextColumn::make('message')
                     ->label('Message')
                     ->limit(60)
@@ -68,6 +76,40 @@ class DirectLeads extends Page implements HasTable
                     ->label('Submitted At')
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\Filter::make('course')
+                    ->form([
+                        TextInput::make('course_search')
+                            ->label('Search Course')
+                            ->placeholder('Type course name...')
+                            ->live(),
+
+                        CheckboxList::make('courses')
+                            ->label('Course')
+                            ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
+                                $search = $get('course_search');
+
+                                return Enquiry::query()
+                                    ->whereNull('university_id')
+                                    ->whereNotNull('course')
+                                    ->when(
+                                        filled($search),
+                                        fn ($query) => $query->where('course', 'like', '%' . $search . '%')
+                                    )
+                                    ->distinct()
+                                    ->orderBy('course')
+                                    ->limit(5)
+                                    ->pluck('course', 'course')
+                                    ->toArray();
+                            })
+                            ->columns(1),
+                    ])
+                    ->query(function ($query, array $data) {
+                        if (!empty($data['courses'])) {
+                            $query->whereIn('course', $data['courses']);
+                        }
+                    }),
             ])
             ->actions([
                 Action::make('assign_university')
@@ -114,18 +156,6 @@ class DirectLeads extends Page implements HasTable
                             ->send();
                     }),
 
-                // Action::make('mark_contacted')
-                //     ->label('')
-                //     ->icon('heroicon-o-phone')
-                //     ->tooltip('Mark as Contacted')
-                //     ->extraAttributes(['class' => 'contacted-btn'])
-                //     ->action(function (): void {
-                //         Notification::make()
-                //             ->title('Lead marked as contacted')
-                //             ->success()
-                //             ->send();
-                //     }),
-
                 Action::make('delete')
                     ->label('')
                     ->icon('heroicon-o-trash')
@@ -140,6 +170,26 @@ class DirectLeads extends Page implements HasTable
 
                         Notification::make()
                             ->title('Lead deleted successfully')
+                            ->success()
+                            ->send();
+                    }),
+            ])
+            ->bulkActions([
+                \Filament\Actions\BulkAction::make('delete_selected')
+                    ->label('Assign University')
+                    ->extraAttributes(['class' => 'bulk-assign-btn'])
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Selected Leads')
+                    ->modalDescription('Are you sure you want to delete selected leads?')
+                    ->modalSubmitActionLabel('Yes, Delete')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records): void {
+                        foreach ($records as $record) {
+                            $record->delete();
+                        }
+
+                        Notification::make()
+                            ->title('Selected leads deleted successfully')
                             ->success()
                             ->send();
                     }),

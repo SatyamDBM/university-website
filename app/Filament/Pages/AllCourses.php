@@ -116,6 +116,7 @@ class AllCourses extends Page implements HasTable
                 Action::make('approve')
                     ->label('')
                     ->icon('heroicon-o-check-circle')
+                    ->tooltip('Approve Course')
                     ->color('success')
                     ->extraAttributes([
                         'class' => 'approve-btn',
@@ -141,6 +142,7 @@ class AllCourses extends Page implements HasTable
                     ->label('')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
+                    ->tooltip('Reject Course')
                     ->extraAttributes([
                         'class' => 'reject-btn',
                     ])
@@ -171,6 +173,7 @@ class AllCourses extends Page implements HasTable
                     ->label('')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
+                    ->tooltip('Delete Course')
                     ->extraAttributes([
                         'class' => 'delete-btn',
                     ])
@@ -184,6 +187,61 @@ class AllCourses extends Page implements HasTable
                         Notification::make()
                             ->title('Course deleted successfully')
                             ->success()
+                            ->send();
+                    }),
+            ])
+            ->bulkActions([
+                \Filament\Actions\BulkAction::make('approve_selected')
+                    ->label('Approve All')
+                    ->icon('')
+                    ->color('success')
+                    ->extraAttributes([
+                        'class' => 'approve-all-btn',
+                    ])
+                    ->requiresConfirmation()
+                    ->modalHeading('Approve Selected Courses')
+                    ->modalDescription('Are you sure you want to approve all selected courses?')
+                    ->modalSubmitActionLabel('Yes, Approve')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (\Illuminate\Database\Eloquent\Collection $records): void {
+                        foreach ($records as $record) {
+                            if ($record->status === 'Pending') {
+                                $record->update([
+                                    'status' => 'Live',
+                                    'admin_feedback' => null,
+                                ]);
+                            }
+                        }
+                        \Filament\Notifications\Notification::make()
+                            ->title('Selected courses approved successfully')
+                            ->success()
+                            ->send();
+                    }),
+
+                \Filament\Actions\BulkAction::make('reject_selected')
+                    ->label('Reject All')
+                    ->icon('')
+                    ->color('danger')
+                    ->extraAttributes([
+                        'class' => 'reject-all-btn',
+                    ])
+                    ->requiresConfirmation()
+                    ->modalHeading('Reject Selected Courses')
+                    ->modalDescription('Are you sure you want to reject all selected courses?')
+                    ->modalSubmitActionLabel('Yes, Reject')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (\Illuminate\Database\Eloquent\Collection $records): void {
+                        foreach ($records as $record) {
+                            if (in_array($record->status, ['Pending', 'Live'])) {
+                                $record->update([
+                                    'status' => 'Rejected',
+                                    'admin_feedback' => 'Bulk rejected by admin.',
+                                ]);
+                            }
+                        }
+                        \Filament\Notifications\Notification::make()
+                            ->title('Selected courses rejected successfully')
+                            ->danger()
                             ->send();
                     }),
             ])

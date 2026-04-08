@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('mobile')->nullable();
+
+            $table->string('course')->nullable();
+
             $table->text('message')->nullable();
 
             // Relation with university

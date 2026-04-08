@@ -1462,3 +1462,30 @@ body {
     border-radius: 5px !important;
 
 }
+.fi-fo-checkbox-list-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.fi-fo-checkbox-list-option label {
+    margin-top: -2px;
+    line-height: 1.4;
+}
+
+.fi-checkbox-input {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+.bulk-assign-btn{
+    padding-top: 4px !important;
+    padding-bottom: 3px !important;
+    border-radius: 5px !important;
+    background-color: var(--color-brand) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    box-shadow: 0 2px 8px var(--color-primary-shadow) !important;
+    transition: all 0.2s ease !important;
+}
