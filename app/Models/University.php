@@ -51,4 +51,8 @@ class University extends Model
     {
         return $this->hasMany(UniversityMedia::class);
     }
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
 }

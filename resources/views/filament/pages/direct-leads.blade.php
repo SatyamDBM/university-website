@@ -12,7 +12,7 @@
                     </p>
                 </div>
                 @php
-                    $totalLeads = \App\Models\Enquiry::whereNull('university_id')->count();
+                    $totalLeads = \App\Models\Enquiry::whereNull('user_id')->count();
                 @endphp
                 <div class="rounded-md bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
                     Total Leads: {{ $totalLeads }}
