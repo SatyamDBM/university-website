@@ -1,12 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-@source "../../../app/Filament";
-@source "../../../resources/views";
-@source "../../../resources/**/*.blade.php";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* ===== Color Variables ===== */
 :root {
@@ -367,7 +361,7 @@ body {
     .dash-wrap {
         font-family: 'Plus Jakarta Sans', sans-serif;
         background: var(--color-bg-app);
-        min-height: 100vh;
+        /* min-height: 100vh; */
         padding: 1.5rem;
     }
 
@@ -1276,7 +1270,51 @@ body {
     stroke: #dc7e26 !important;
     color: #dc7e26 !important;
 }
+.view-btn .fi-icon,
+.view-btn svg {
+    color: #2563eb !important;
+    stroke: #2563eb !important;
+}
 
+.edit-btn .fi-icon,
+.edit-btn svg {
+    color: #16a34a !important;
+    stroke: #16a34a !important;
+}
+.activate-btn .fi-icon,
+.activate-btn svg {
+    color: #16a34a !important;
+    stroke: #16a34a !important;
+}
+
+.change-status-btn .fi-icon,
+.change-status-btn svg {
+    color: #7c3aed !important;
+    stroke: #7c3aed !important;
+}
+
+.soft-delete-btn .fi-icon,
+.soft-delete-btn svg {
+    color: #dc2626 !important;
+    stroke: #dc2626 !important;
+}
+
+.permanent-block-btn .fi-icon,
+.permanent-block-btn svg {
+    color: #991b1b !important;
+    stroke: #991b1b !important;
+}
+
+.more-actions-btn .fi-icon,
+.more-actions-btn svg {
+    color: #6b7280 !important;
+    stroke: #6b7280 !important;
+}
+.suspended-btn .fi-icon,
+.suspended-btn svg {
+    color: #d97706 !important;
+    stroke: #d97706 !important;
+}
 /* ─── Filter Dropdown ─── */
 .fi-dropdown-panel {
     border: 1px solid var(--color-border) !important;
@@ -1364,4 +1402,90 @@ body {
 
 .fi-ta-filters-dropdown .fi-input-wrp-content-ctn {
     border-radius: 5px !important;
+}
+.fi-ta-filters{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.fi-ta-filters {
+    gap: 0 !important;
+    row-gap: 0 !important;
+    column-gap: 0 !important;
+}
+
+.fi-ta-filters form,
+.fi-ta-filters .fi-fo-field-wrp {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.fi-ta-filters .fi-input-wrp,
+.fi-ta-filters .fi-select-input {
+    margin-bottom: 0 !important;
+}
+.fi-ta-filters {
+    gap: 0px !important;
+    row-gap: 0px !important;
+    column-gap: 0px !important;
+}
+
+.fi-ta-filters .fi-fo-field-wrp {
+    margin-bottom: 0 !important;
+}
+
+.fi-ta-filters-actions-ctn {
+    margin-top: 8px !important;
+    padding-top: 0 !important;
+}
+.assign-btn{
+    stroke: #7c3aed !important;
+    color: #7c3aed !important;
+}
+.contacted-btn{
+    stroke: #2563eb !important;
+    color: #2563eb !important;
+}
+.remove-assignment-btn{
+    stroke: #dc2626 !important;
+    color: #dc2626 !important;
+}
+.approve-all-btn{
+    padding-top: 4px !important;
+    padding-bottom: 3px !important;
+    border-radius: 5px !important;
+}
+.reject-all-btn{
+    padding-top: 4px !important;
+    padding-bottom: 3px !important;
+    border-radius: 5px !important;
+
+}
+.fi-fo-checkbox-list-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.fi-fo-checkbox-list-option label {
+    margin-top: -2px;
+    line-height: 1.4;
+}
+
+.fi-checkbox-input {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+.bulk-assign-btn{
+    padding-top: 4px !important;
+    padding-bottom: 3px !important;
+    border-radius: 5px !important;
+    background-color: var(--color-brand) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    box-shadow: 0 2px 8px var(--color-primary-shadow) !important;
+    transition: all 0.2s ease !important;
 }

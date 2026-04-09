@@ -9,6 +9,8 @@ use App\Services\MailConfigurationService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UniversityApprovedMail;
 use App\Mail\UniversityRejectedMail;
+// use Filament\Tables\Actions\BulkAction; // Not needed, use fully qualified name
+use Illuminate\Database\Eloquent\Collection;
 use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,6 +20,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
 use UnitEnum;
 use BackedEnum;
+use App\Filament\Pages\UniversityRequestView;
 
 class UniversitiesRequest extends Page implements HasTable
 {
@@ -61,11 +64,13 @@ class UniversitiesRequest extends Page implements HasTable
                     ->default('-'),
 
                 Tables\Columns\BadgeColumn::make('linking_status')
-                    ->label('Status')
+                    ->label('Linking Status')
                     ->colors([
                         'warning' => 'pending',
+                        'success' => 'approved',
+                        'danger' => 'rejected',
                     ])
-                    ->formatStateUsing(fn (?string $state) => ucfirst($state ?? 'pending')),
+                    ->formatStateUsing(fn (?string $state) => ucfirst($state ?? '-')),
 
                 Tables\Columns\IconColumn::make('is_email_verified')
                     ->label('Email Verified')
@@ -80,6 +85,7 @@ class UniversitiesRequest extends Page implements HasTable
                 Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
+                    ->tooltip('View University')
                     ->extraAttributes([
                         'class' => 'view-btn',
                     ])
@@ -92,6 +98,7 @@ class UniversitiesRequest extends Page implements HasTable
                     ->label('')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
+                    ->tooltip('Approve University')
                     ->extraAttributes([
                         'class' => 'approve-btn',
                     ])
@@ -120,6 +127,7 @@ class UniversitiesRequest extends Page implements HasTable
                     ->label('')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
+                    ->tooltip('Reject University')
                     ->extraAttributes([
                         'class' => 'delete-btn',
                     ])
@@ -154,6 +162,64 @@ class UniversitiesRequest extends Page implements HasTable
 
                         Notification::make()
                             ->title('University request rejected')
+                            ->danger()
+                            ->send();
+                    }),
+            ])
+            ->bulkActions([
+                \Filament\Actions\BulkAction::make('approve_selected')
+                    ->label('Approve All')
+                    ->icon('')
+                    ->color('success')
+                    ->extraAttributes([
+                        'class' => 'approve-all-btn',
+                    ])
+                    ->requiresConfirmation()
+                    ->modalHeading('Approve Selected Universities')
+                    ->modalDescription('Are you sure you want to approve all selected university requests?')
+                    ->modalSubmitActionLabel('Yes, Approve')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records): void {
+                        foreach ($records as $record) {
+                            $record->update([
+                                'linking_status' => 'approved',
+                            ]);
+
+                            MailConfigurationService::setMailConfig();
+
+                            try {
+                                Mail::to($record->email)->send(new UniversityApprovedMail($record));
+                            } catch (\Throwable $e) {
+                            }
+                        }
+
+                        Notification::make()
+                            ->title('Selected universities approved successfully')
+                            ->success()
+                            ->send();
+                    }),
+
+                \Filament\Actions\BulkAction::make('reject_selected')
+                    ->label('Reject All')
+                    ->icon('')
+                    ->color('danger')
+                    ->extraAttributes([
+                        'class' => 'reject-all-btn',
+                    ])
+                    ->requiresConfirmation()
+                    ->modalHeading('Reject Selected Universities')
+                    ->modalDescription('Are you sure you want to reject all selected university requests?')
+                    ->modalSubmitActionLabel('Yes, Reject')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records): void {
+                        foreach ($records as $record) {
+                            $record->update([
+                                'linking_status' => 'rejected',
+                            ]);
+                        }
+
+                        Notification::make()
+                            ->title('Selected universities rejected successfully')
                             ->danger()
                             ->send();
                     }),

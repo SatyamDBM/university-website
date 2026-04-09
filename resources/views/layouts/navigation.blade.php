@@ -5,7 +5,7 @@
     $isLocked = in_array($status, ['not_linked', 'pending', 'rejected']);
 @endphp
 
-<nav class="bg-white border-b border-gray-200 sticky top-0 z-30 h-16 flex items-center">
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-30 h-20 flex items-center">
     <div class="w-full px-4 sm:px-6">
         <div class="flex items-center justify-between h-full">
 

@@ -26,18 +26,18 @@
             <div class="kpi-body">
                 <div class="kpi-label">Total Universities</div>
                 <div class="kpi-value">{{ $totalUniversities }}</div>
-                <div class="kpi-sub up">↑ +12% this month</div>
+                <div class="kpi-sub up">↑ +{{$currentMonthUniversities}}% this month</div>
             </div>
         </a>
 
-        <a href="" class="kpi-card c-green">
+        {{-- <a href="" class="kpi-card c-green">
             <div class="kpi-icon">📈</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0% this week</div>
             </div>
-        </a>
+        </a> --}}
 
         <a href="" class="kpi-card c-amber">
             <div class="kpi-icon">💳</div>
@@ -57,30 +57,29 @@
             </div>
         </a>
 
-        <a href="" class="kpi-card c-orange">
+        {{-- <a href="" class="kpi-card c-orange">
             <div class="kpi-icon">📩</div>
             <div class="kpi-body">
                 <div class="kpi-label">Pending Leads</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub down">⚡ Needs attention</div>
             </div>
-        </a>
+        </a> --}}
 
-            <a href="" class="kpi-card c-cyan">
+            <a href="{{ url('admin/universities-list') }}" class="kpi-card c-cyan">
                     <div class="kpi-icon">👥</div>
                     <div class="kpi-body">
-                        <div class="kpi-label">Active Users</div>
-                        <div class="kpi-value">{{$activeUsers}}</div>
-                        <div class="kpi-sub up">↑ +{{$todayUsers}} new today</div>
+                        <div class="kpi-label">Active Universities</div>
+                        <div class="kpi-value">{{$activeUniversities}}</div>
+                        <div class="kpi-sub up">↑ +{{$todayUniversities}} new today</div>
                     </div>
             </a>
             <a href="{{ url('/admin/all-banners') }}" class="kpi-card c-purple">
                 <div class="kpi-icon">🖼️</div>
 
                 <div class="kpi-body">
-                    <div class="kpi-label">Banners Live</div>
-                    <div class="kpi-value">0</div>
-                    <div class="kpi-sub info">ℹ 0 approval pending</div>
+                    <div class="kpi-label">Banners</div>
+                    <div class="kpi-value">{{$totalBanners}}</div>
                 </div>
             </a>
 
@@ -93,7 +92,7 @@
                 </div>
             </a>
 
-        <a href="" class="kpi-card c-indigo">
+        <a href="{{ url('/admin/all-courses') }}" class="kpi-card c-indigo">
             <div class="kpi-icon">🏫</div>
             <div class="kpi-body">
                 <div class="kpi-label">Total Courses</div>
@@ -101,7 +100,7 @@
                 {{-- <div class="kpi-sub up">↑ +{{ $newCoursesThisWeek }} added this week</div> --}}
             </div>
         </a>
-
+{{-- 
         <a href="" class="kpi-card c-teal">
             <div class="kpi-icon">✅</div>
             <div class="kpi-body">
@@ -109,25 +108,25 @@
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ 0% conv. rate</div>
             </div>
-        </a>
+        </a> --}}
 
-        <a href="" class="kpi-card c-green">
+        <a href="{{url('admin/all-packages')}}" class="kpi-card c-green">
             <div class="kpi-icon">📋</div>
             <div class="kpi-body">
                 <div class="kpi-label">Active Plans</div>
-                <div class="kpi-value">0</div>
-                <div class="kpi-sub info">ℹ 0 expire this week</div>
+                <div class="kpi-value">{{$totalpackages}}</div>
+                <div class="kpi-sub info">📦 Available</div>
             </div>
         </a>
 
-        <a href="" class="kpi-card c-blue">
+        {{-- <a href="" class="kpi-card c-blue">
             <div class="kpi-icon">🌐</div>
             <div class="kpi-body">
                 <div class="kpi-label">Page Views</div>
                 <div class="kpi-value">0</div>
                 <div class="kpi-sub up">↑ +0 % vs last week</div>
             </div>
-        </a>
+        </a> --}}
 
     </div>
 
@@ -176,7 +175,7 @@
                     </div>
                     <div class="activity-time">1h ago</div>
                 </div>
-                <div class="activity-item">
+                {{-- <div class="activity-item">
                     <div class="activity-dot" style="background:#ecfeff;">🖼️</div>
                     <div class="activity-body">
                         <strong>Banner Submitted for Review</strong>
@@ -191,7 +190,7 @@
                         <span>5 leads moved to "Follow-up" stage.</span>
                     </div>
                     <div class="activity-time">3h ago</div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -260,7 +259,7 @@
                             <span class="rev-badge down">4 pending</span>
                         </div>
                     </div>
-                    <div class="rev-row">
+                    {{-- <div class="rev-row">
                         <div class="rev-row-left">
                             <span class="rev-icon">✅</span>
                             <div>
@@ -272,12 +271,12 @@
                             <span class="rev-val">44</span>
                             <span class="rev-badge up">+3 new</span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
             <!-- Lead Funnel -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
                         <span class="card-title-icon" style="background:#fff7ed;">🎯</span>
@@ -316,7 +315,7 @@
                         <span class="funnel-count">32</span>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Right Column: Quick Actions + Top Universities -->
@@ -330,36 +329,28 @@
                         Quick Actions
                     </h3>
                 </div>
-                <div class="qa-grid">
-                    {{-- <button class="qa-btn qa-indigo" onclick="window.location.href='#'">
-                        <span class="qa-icon">🎓</span>
-                        Add University
-                    </button> --}}
-                    <button class="qa-btn qa-green" onclick="window.location.href='#'">
+               <div class="qa-grid">
+                    <a href="{{ url('/admin/direct-leads') }}" class="qa-btn qa-green">
                         <span class="qa-icon">📈</span>
                         Leads Management
-                    </button>
-                    <button class="qa-btn qa-amber" onclick="window.location.href='#'">
+                    </a>
+                    <a href="{{ url('/admin/all-packages') }}" class="qa-btn qa-amber">
                         <span class="qa-icon">💳</span>
                         Subscriptions
-                    </button>
-                    <button class="qa-btn qa-rose" onclick="window.location.href='{{ url('/admin/all-banners') }}'">
+                    </a>
+                    <a href="{{ url('/admin/all-banners') }}" class="qa-btn qa-rose">
                         <span class="qa-icon">🖼️</span>
                         Manage Banners
-                    </button>
-                    {{-- <button class="qa-btn qa-teal" onclick="window.location.href='#'">
-                        <span class="qa-icon">📊</span>
-                        View Reports
-                    </button> --}}
-                    <button class="qa-btn qa-slate" onclick="window.location.href='{{ url('/admin/general-settings') }}'">
+                    </a>
+                    <a href="{{ url('/admin/general-settings') }}" class="qa-btn qa-slate">
                         <span class="qa-icon">⚙️</span>
                         Settings
-                    </button>
+                    </a>
                 </div>
             </div>
 
             <!-- Top Universities Table -->
-            <div class="card" style="flex:1;">
+            {{-- <div class="card" style="flex:1;">
                 <div class="card-header">
                     <h3 class="card-title">
                         <span class="card-title-icon" style="background:#f0fdf4;">🏆</span>
@@ -408,7 +399,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
 
         </div>
     </div>
