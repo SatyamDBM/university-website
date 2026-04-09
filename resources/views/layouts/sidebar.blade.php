@@ -1,4 +1,3 @@
-    
 @php
     $status = auth()->user()->linking_status ?? 'not_linked';
     $isLocked = in_array($status, ['not_linked', 'pending', 'rejected']);
@@ -70,17 +69,20 @@
         </a>
               {{-- <span>Campus Facility</span> --}}
         </a>
-            <a href="{{ route('university.gallery.index') }}"
+            <a href="{{ route('placements.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('university.gallery*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
-            <span>Placement</span>
+                  {{ request()->routeIs('placements*') ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+            <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7" fill="none"/>
+            </svg>
+            <span>Placements</span>
         </a>
 
          </a>
-            <a href="{{ route('university.gallery.index') }}"
+            <a href="{{ route('universities.overview.show') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('university.gallery*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
+                  {{ request()->routeIs('universities.overview.*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
             <span>Overview</span>
         </a>
@@ -171,12 +173,13 @@
 
         <a href="#"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('transactions*')
+                  {{ request()->routeIs('payment-history*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m0 0l6 6m-6-6v18"/>
             </svg>
+
             <span>Payment History</span>
         </a>
 

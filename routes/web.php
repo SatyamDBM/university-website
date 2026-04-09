@@ -1,10 +1,10 @@
-
 <?php
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\University\DashboardController;
 use App\Http\Controllers\University\UniversityLinkingController;
 use App\Http\Controllers\CmsPageController;
+use App\Http\Controllers\UniversityOverviewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +42,8 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
+    // Placement Management
+    Route::resource('placements', App\Http\Controllers\PlacementController::class);
     Route::get('/university/dashboard', [DashboardController::class, 'index'])->name('university.dashboard');
     Route::get('/university/linking', [UniversityLinkingController::class, 'index'])->name('university.linking');
     Route::post('/university/linking', [UniversityLinkingController::class, 'store'])->name('university.linking.store');
@@ -66,9 +68,20 @@ Route::middleware(['auth'])->group(function () {
     ]);
     // Direct gallery show route for robust access (like other working views)
     Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])->name('university.gallery.showById');
-
     // Facilities Management
     Route::resource('facilities', App\Http\Controllers\FacilityController::class);
+    Route::post('/placements/add-recruiter', [\App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
+    Route::resource('recruiters', App\Http\Controllers\RecruiterController::class);
+
+    // Route::get('overview', [UniversityOverviewController::class, 'show'])->name('universities.overview.show');
+    // Route::get('overview/create', [UniversityOverviewController::class, 'create'])->name('universities.overview.create');
+    // Route::post('overview', [UniversityOverviewController::class, 'store'])->name('universities.overview.store');
+    // Route::get('overview/edit', [UniversityOverviewController::class, 'edit'])->name('universities.overview.edit');
+    // Route::put('overview', [UniversityOverviewController::class, 'update'])->name('universities.overview.update');
+    // Route::delete('overview', [UniversityOverviewController::class, 'destroy'])->name('universities.overview.destroy');
+
+    Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('universities.overview.show');
+    Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('universities.overview.store');
 });
 
 /*
