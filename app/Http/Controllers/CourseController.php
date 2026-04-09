@@ -36,6 +36,7 @@ class CourseController extends Controller
             return redirect()->back()->withErrors(['You must be linked to a university to create a course.']);
         }
         $data['university_id'] = $user->university_id;
+        $data['user_id'] = $user->id;
         $data['status'] = $request->input('save_as_draft') ? 'Draft' : 'Pending';
         if ($request->hasFile('curriculum_file')) {
             $data['curriculum_file'] = $request->file('curriculum_file')->store('curriculums', 'public');

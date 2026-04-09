@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\User;
 use App\Models\UniversityProfile;
+use App\Models\UniversityLinkingRequest;
 use Filament\Notifications\Notification;
 use App\Services\MailConfigurationService;
 use Illuminate\Support\Facades\Mail;
@@ -107,8 +108,14 @@ class UniversitiesRequest extends Page implements HasTable
                     ->modalDescription('Are you sure you want to approve this university request?')
                     ->modalSubmitActionLabel('Yes, Approve')
                     ->action(function (User $record): void {
+
+                        $linkingRequest = UniversityLinkingRequest::where('user_id', $record->id)
+                            ->latest()
+                            ->first();
+
                         $record->update([
                             'linking_status' => 'approved',
+                            'university_id' => $linkingRequest?->university_id,
                         ]);
 
                         MailConfigurationService::setMailConfig();
@@ -181,8 +188,14 @@ class UniversitiesRequest extends Page implements HasTable
                     ->deselectRecordsAfterCompletion()
                     ->action(function (Collection $records): void {
                         foreach ($records as $record) {
+
+                            $linkingRequest = UniversityLinkingRequest::where('user_id', $record->id)
+                                ->latest()
+                                ->first();
+
                             $record->update([
                                 'linking_status' => 'approved',
+                                'university_id' => $linkingRequest?->university_id,
                             ]);
 
                             MailConfigurationService::setMailConfig();

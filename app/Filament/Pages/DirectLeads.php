@@ -3,14 +3,20 @@
 namespace App\Filament\Pages;
 
 use App\Models\Enquiry;
-use App\Models\University;
+use App\Models\User;
+use App\Models\UserNotification;
+use App\Mail\LeadAssignedMail;
+use App\Mail\BulkLeadAssignedMail;
+use App\Services\MailConfigurationService;
 use UnitEnum;
 use BackedEnum;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\CheckboxList;
@@ -39,7 +45,10 @@ class DirectLeads extends Page implements HasTable
         return $table
             ->query(
                 Enquiry::query()
-                    ->whereNull('university_id')
+                    ->where(function ($query) {
+                        $query->whereNull('user_id')
+                            ->orWhere('user_id', 0);
+                    })
                     ->latest()
             )
             ->columns([
@@ -91,7 +100,10 @@ class DirectLeads extends Page implements HasTable
                                 $search = $get('course_search');
 
                                 return Enquiry::query()
-                                    ->whereNull('university_id')
+                                    ->where(function ($query) {
+                                        $query->whereNull('user_id')
+                                            ->orWhere('user_id', 0);
+                                    })
                                     ->whereNotNull('course')
                                     ->when(
                                         filled($search),
@@ -128,12 +140,13 @@ class DirectLeads extends Page implements HasTable
                             ->live()
                             ->afterStateUpdated(fn () => null),
 
-                        Radio::make('university_id')
+                        Radio::make('user_id')
                             ->label('Select University')
                             ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
                                 $search = $get('search');
 
-                                return University::query()
+                                return User::query()
+                                    ->where('role', 'university')
                                     ->when(
                                         filled($search),
                                         fn ($q) => $q->where('name', 'like', "%{$search}%"),
@@ -146,9 +159,31 @@ class DirectLeads extends Page implements HasTable
                             ->required(),
                     ])
                     ->action(function (array $data, Enquiry $record): void {
+
+                        $assignedUser = User::find((int) $data['user_id']);
+
                         $record->update([
-                            'university_id' => (int) $data['university_id'],
+                            'user_id' => (int) $data['user_id'],
                         ]);
+
+                        UserNotification::create([
+                            'user_id'    => $assignedUser->id,
+                            'title'      => 'New Lead Assigned',
+                            'message'    => 'A new lead has been assigned to you. Lead Name: ' . $record->name,
+                            'type'       => 'lead_assign',
+                            'action_url' => (string) $assignedUser->id,
+                            'is_read'    => 0,
+                        ]);
+
+                        try {
+                            MailConfigurationService::setMailConfig();
+
+                            if (!empty($assignedUser->email)) {
+                                Mail::to($assignedUser->email)
+                                    ->send(new LeadAssignedMail($record, $assignedUser));
+                            }
+                        } catch (\Exception $e) {
+                        }
 
                         Notification::make()
                             ->title('University assigned successfully')
@@ -175,21 +210,71 @@ class DirectLeads extends Page implements HasTable
                     }),
             ])
             ->bulkActions([
-                \Filament\Actions\BulkAction::make('delete_selected')
+                BulkAction::make('assign_university')
                     ->label('Assign University')
+                    ->icon('')
                     ->extraAttributes(['class' => 'bulk-assign-btn'])
-                    ->requiresConfirmation()
-                    ->modalHeading('Delete Selected Leads')
-                    ->modalDescription('Are you sure you want to delete selected leads?')
-                    ->modalSubmitActionLabel('Yes, Delete')
+                    ->modalWidth('lg')
+                    ->modalHeading('Assign University')
+                    ->modalDescription('Select university for selected leads.')
+                    ->modalSubmitActionLabel('Assign University')
                     ->deselectRecordsAfterCompletion()
-                    ->action(function (Collection $records): void {
+                    ->form([
+                        TextInput::make('search')
+                            ->label('Search University')
+                            ->placeholder('Type to filter...')
+                            ->live()
+                            ->afterStateUpdated(fn () => null),
+
+                        Radio::make('user_id')
+                            ->label('Select University')
+                            ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
+                                $search = $get('search');
+
+                                return User::query()
+                                    ->where('role', 'university')
+                                    ->when(
+                                        filled($search),
+                                        fn ($q) => $q->where('name', 'like', "%{$search}%"),
+                                    )
+                                    ->orderBy('name')
+                                    ->limit(10)
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->required(),
+                    ])
+                    ->action(function (array $data, Collection $records): void {
+
+                        $assignedUser = User::find((int) $data['user_id']);
+
                         foreach ($records as $record) {
-                            $record->delete();
+                            $record->update([
+                                'user_id' => (int) $data['user_id'],
+                            ]);
+                        }
+
+                        UserNotification::create([
+                            'user_id'    => $assignedUser->id,
+                            'title'      => 'Multiple Leads Assigned',
+                            'message'    => $records->count() . ' new leads have been assigned to you.',
+                            'type'       => 'bulk_lead_assign',
+                            'action_url' => (string) $assignedUser->id,
+                            'is_read'    => 0,
+                        ]);
+
+                        try {
+                            MailConfigurationService::setMailConfig();
+
+                            if (!empty($assignedUser->email)) {
+                                Mail::to($assignedUser->email)
+                                    ->send(new BulkLeadAssignedMail($records, $assignedUser));
+                            }
+                        } catch (\Exception $e) {
                         }
 
                         Notification::make()
-                            ->title('Selected leads deleted successfully')
+                            ->title('University assigned successfully')
                             ->success()
                             ->send();
                     }),

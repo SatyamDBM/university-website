@@ -17,58 +17,125 @@ class EditBanner extends Page
 
     public Banner $banner;
 
-    public $name = '';
-
     public $slot_name = '';
 
-    public $placement_location = '';
+    public $placement_page = '';
 
-    public $device_type = 'both';
+    public $device_type = 'all';
 
-    public $image_width = '';
+    public $width = '';
 
-    public $image_height = '';
+    public $height = '';
 
-    public $monthly_price = '';
+    public $max_banner_limit = 1;
 
-    public $yearly_price = '';
+    public $rotation_type = '';
 
-    public $display_priority = 0;
+    public $priority = '';
+
+    public $price = '';
+
+    public $duration = '';
+
+    public $duration_type = '';
 
     public $status = 'active';
+
+    public $description = '';
 
     public function mount($record): void
     {
         $this->banner = Banner::findOrFail($record);
 
-        $this->name = $this->banner->name;
         $this->slot_name = $this->banner->slot_name;
-        $this->placement_location = $this->banner->placement_location;
+        $this->placement_page = $this->banner->placement_location;
         $this->device_type = $this->banner->device_type;
-        $this->image_width = $this->banner->image_width;
-        $this->image_height = $this->banner->image_height;
-        $this->monthly_price = $this->banner->monthly_price;
-        $this->yearly_price = $this->banner->yearly_price;
-        $this->display_priority = $this->banner->display_priority;
+        $this->width = $this->banner->width;
+        $this->height = $this->banner->height;
+        $this->max_banner_limit = $this->banner->max_banner_limit;
+        $this->rotation_type = $this->banner->rotation_type;
+        $this->priority = $this->banner->priority;
+        $this->price = $this->banner->price;
+        $this->duration = $this->banner->duration;
+        $this->duration_type = $this->banner->duration_type;
         $this->status = $this->banner->status;
+        $this->description = $this->banner->description;
     }
 
     public function updateBanner(): void
     {
         $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'slot_name' => ['required', 'in:homepage_top_banner,homepage_slider_banner,listing_page_banner,search_page_banner,blog_page_banner'],
-            'placement_location' => ['required', 'in:homepage,listing_page,search_page,blog_page'],
-            'device_type' => ['required', 'in:desktop,mobile,both'],
-            'image_width' => ['nullable', 'integer'],
-            'image_height' => ['nullable', 'integer'],
-            'monthly_price' => ['required', 'numeric'],
-            'yearly_price' => ['required', 'numeric'],
-            'display_priority' => ['nullable', 'integer'],
-            'status' => ['required', 'in:active,inactive'],
+            'slot_name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'placement_page' => [
+                'required',
+                'in:homepage,search_page,listing_page,course_detail_page,university_detail_page,blog_page',
+            ],
+
+            'device_type' => [
+                'required',
+                'in:desktop,mobile,tablet,all',
+            ],
+
+            'width' => [
+                'nullable',
+                'integer',
+            ],
+
+            'height' => [
+                'nullable',
+                'integer',
+            ],
+
+            'max_banner_limit' => [
+                'required',
+                'integer',
+                'min:1',
+            ],
+
+            'rotation_type' => [
+                'required',
+                'in:single_banner,random_rotation,slider_rotation',
+            ],
+
+            'priority' => [
+                'required',
+                'in:high,medium,low',
+            ],
+
+            'price' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
+
+            'duration' => [
+                'nullable',
+                'integer',
+                'min:1',
+            ],
+
+            'duration_type' => [
+                'nullable',
+                'in:days,months,years',
+            ],
+
+            'status' => [
+                'required',
+                'in:active,inactive',
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+            ],
         ]);
 
-        $baseSlug = Str::slug($this->name);
+        $baseSlug = Str::slug($this->slot_name);
         $slug = $baseSlug;
         $count = 1;
 
@@ -82,17 +149,21 @@ class EditBanner extends Page
         }
 
         $this->banner->update([
-            'name' => $this->name,
+            'name' => $this->slot_name,
             'slug' => $slug,
             'slot_name' => $this->slot_name,
-            'placement_location' => $this->placement_location,
+            'placement_location' => $this->placement_page,
             'device_type' => $this->device_type,
-            'image_width' => $this->image_width,
-            'image_height' => $this->image_height,
-            'monthly_price' => $this->monthly_price,
-            'yearly_price' => $this->yearly_price,
-            'display_priority' => $this->display_priority,
+            'width' => $this->width ?: null,
+            'height' => $this->height ?: null,
+            'max_banner_limit' => $this->max_banner_limit,
+            'rotation_type' => $this->rotation_type,
+            'priority' => $this->priority,
+            'price' => $this->price,
+            'duration' => $this->duration ?: null,
+            'duration_type' => $this->duration_type ?: null,
             'status' => $this->status,
+            'description' => $this->description,
         ]);
 
         Notification::make()

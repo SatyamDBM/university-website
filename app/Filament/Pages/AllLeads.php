@@ -32,8 +32,8 @@ class AllLeads extends Page implements HasTable
         return $table
             ->query(
                 Enquiry::query()
-                    ->whereNotNull('university_id')
-                    ->with('university')
+                    ->whereNotNull('user_id')
+                    ->with('user')
                     ->latest()
             )
             ->columns([
@@ -53,11 +53,12 @@ class AllLeads extends Page implements HasTable
                 Tables\Columns\TextColumn::make('mobile')
                     ->label('Mobile')
                     ->default('-'),
-                Tables\Columns\TextColumn::make('course')
-                ->label('course')
-                ->default('-'),
 
-                Tables\Columns\TextColumn::make('university.name')
+                Tables\Columns\TextColumn::make('course')
+                    ->label('course')
+                    ->default('-'),
+
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('Assigned University')
                     ->searchable()
                     ->sortable()
@@ -75,26 +76,26 @@ class AllLeads extends Page implements HasTable
                     ->sortable(),
             ])
             ->actions([
-                Action::make('remove_assignment')
-                    ->label('')
-                    ->icon('heroicon-o-arrow-uturn-left')
-                    ->tooltip('Remove Assignment')
-                    ->extraAttributes([
-                        'class' => 'remove-assignment-btn',
-                    ])
-                    ->requiresConfirmation()
-                    ->modalHeading('Remove University Assignment')
-                    ->modalDescription('Are you sure you want to remove the assigned university from this lead?')
-                    ->modalSubmitActionLabel('Yes, Remove')
-                    ->action(function (Enquiry $record): void {
-                        $record->university_id = null;
-                        $record->save();
+                // Action::make('remove_assignment')
+                //     ->label('')
+                //     ->icon('heroicon-o-arrow-uturn-left')
+                //     ->tooltip('Remove Assignment')
+                //     ->extraAttributes([
+                //         'class' => 'remove-assignment-btn',
+                //     ])
+                //     ->requiresConfirmation()
+                //     ->modalHeading('Remove University Assignment')
+                //     ->modalDescription('Are you sure you want to remove the assigned university from this lead?')
+                //     ->modalSubmitActionLabel('Yes, Remove')
+                //     ->action(function (Enquiry $record): void {
+                //         $record->university_id = null;
+                //         $record->save();
 
-                        Notification::make()
-                            ->title('University assignment removed successfully')
-                            ->success()
-                            ->send();
-                    }),
+                //         Notification::make()
+                //             ->title('University assignment removed successfully')
+                //             ->success()
+                //             ->send();
+                //     }),
 
                 Action::make('delete')
                     ->label('')
