@@ -27,6 +27,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('universities')
                 ->nullOnDelete();
+            $table->string('assigned_by')->nullable()->default(null);
 
             $table->timestamps();
         });

@@ -16,6 +16,7 @@ class Enquiry extends Model
         'message',
         'university_id',
         'user_id',
+        'assigned_by',
     ];
 
     public function university()
