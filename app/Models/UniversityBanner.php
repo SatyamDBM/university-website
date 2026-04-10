@@ -25,14 +25,14 @@ class UniversityBanner extends Model
         'status',
     ];
 
-    public function university()
+   public function university()
     {
-        return $this->belongsTo(University::class);
+        return $this->belongsTo(\App\Models\University::class, 'university_id', 'id');
     }
 
     public function banner()
     {
-        return $this->belongsTo(Banner::class);
+        return $this->belongsTo(\App\Models\Banner::class);
     }
 
     public function payments()

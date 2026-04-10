@@ -3,6 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Models\UniversityBanner;
+use App\Models\User;
+use App\Models\UserNotification;
+use App\Services\MailConfigurationService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Notifications\Notification;
@@ -12,6 +15,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Mail;
 use UnitEnum;
 
 class BannerPlacementSettings extends Page implements HasTable
@@ -19,13 +23,9 @@ class BannerPlacementSettings extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string|UnitEnum|null $navigationGroup = 'Banner Management';
-
     protected static ?string $navigationLabel = 'University Banners';
-
     protected static ?int $navigationSort = 2;
-
     protected static ?string $title = 'University Banners';
-
     protected string $view = 'filament.pages.banner-placement-settings';
 
     public function table(Table $table): Table
@@ -53,14 +53,14 @@ class BannerPlacementSettings extends Page implements HasTable
                     ->sortable()
                     ->placeholder('-'),
 
-                Tables\Columns\ImageColumn::make('banner_image')
-                    ->label('Banner')
-                    ->disk('public')
-                    ->height(60)
-                    ->width(100)
-                    ->extraImgAttributes([
-                        'style' => 'object-fit: cover; border-radius: 8px;',
-                    ]),
+                // Tables\Columns\ImageColumn::make('banner_image')
+                //     ->label('Banner')
+                //     ->disk('public')
+                //     ->height(60)
+                //     ->width(100)
+                //     ->extraImgAttributes([
+                //         'style' => 'object-fit: cover; border-radius: 8px;',
+                //     ]),
 
                 Tables\Columns\TextColumn::make('campaign_name')
                     ->label('Campaign Name')
@@ -77,7 +77,7 @@ class BannerPlacementSettings extends Page implements HasTable
                     ->colors([
                         'warning' => 'pending',
                         'success' => 'paid',
-                        'danger' => 'failed',
+                        'danger'  => 'failed',
                     ])
                     ->formatStateUsing(fn (?string $state) => ucfirst($state ?? '-')),
 
@@ -86,17 +86,17 @@ class BannerPlacementSettings extends Page implements HasTable
                     ->colors([
                         'warning' => 'pending',
                         'success' => 'approved',
-                        'danger' => 'rejected',
+                        'danger'  => 'rejected',
                     ])
                     ->formatStateUsing(fn (?string $state) => ucfirst($state ?? '-')),
 
                 Tables\Columns\BadgeColumn::make('live_status')
                     ->label('Live Status')
                     ->colors([
-                        'gray' => 'draft',
+                        'gray'    => 'draft',
                         'warning' => 'scheduled',
                         'success' => 'live',
-                        'danger' => 'expired',
+                        'danger'  => 'expired',
                     ])
                     ->formatStateUsing(fn (?string $state) => ucfirst($state ?? '-')),
 
@@ -111,15 +111,12 @@ class BannerPlacementSettings extends Page implements HasTable
                     ->sortable(),
             ])
             ->actions([
-                // ✅ Eye button bahar rahega
                 Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
                     ->tooltip('View Banner')
                     ->color('info')
-                    ->extraAttributes([
-                        'class' => 'view-btn',
-                    ])
+                    ->extraAttributes(['class' => 'view-btn'])
                     ->modalHeading('Banner Details')
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Close')
@@ -128,8 +125,8 @@ class BannerPlacementSettings extends Page implements HasTable
                         ['record' => $record]
                     )),
 
-                // ✅ Baki sab three-dot menu mein
                 ActionGroup::make([
+
                     Action::make('approve')
                         ->label('Approve')
                         ->icon('heroicon-o-check-circle')
@@ -142,8 +139,36 @@ class BannerPlacementSettings extends Page implements HasTable
                         ->action(function ($record) {
                             $record->update([
                                 'approval_status' => 'approved',
-                                'live_status'     => 'scheduled',
+                                'live_status'      => 'scheduled',
                             ]);
+
+                            $user = User::where('university_id', $record->university_id)->first();
+
+                            if ($user) {
+                                UserNotification::create([
+                                    'user_id'    => $user->id,
+                                    'title'      => 'Banner Approved',
+                                    'message'    => 'Your banner "' . $record->campaign_name . '" has been approved successfully.',
+                                    'type'       => 'banner_approved',
+                                    'action_url' => (string) $user->id,
+                                    'is_read'    => false,
+                                ]);
+
+                                if (!empty($user->email)) {
+                                    try {
+                                        MailConfigurationService::setMailConfig();
+                                        Mail::raw(
+                                            'Your banner "' . $record->campaign_name . '" has been approved successfully.',
+                                            function ($message) use ($user) {
+                                                $message->to($user->email)
+                                                    ->subject('Banner Approved Successfully');
+                                            }
+                                        );
+                                    } catch (\Exception $e) {
+                                        \Log::error('[APPROVE] Mail failed: ' . $e->getMessage());
+                                    }
+                                }
+                            }
 
                             Notification::make()
                                 ->title('Banner approved successfully')
@@ -163,8 +188,36 @@ class BannerPlacementSettings extends Page implements HasTable
                         ->action(function ($record) {
                             $record->update([
                                 'approval_status' => 'rejected',
-                                'live_status'     => 'draft',
+                                'live_status'      => 'draft',
                             ]);
+
+                            $user = User::where('university_id', $record->university_id)->first();
+
+                            if ($user) {
+                                UserNotification::create([
+                                    'user_id'    => $user->id,
+                                    'title'      => 'Banner Rejected',
+                                    'message'    => 'Your banner "' . $record->campaign_name . '" has been rejected by admin.',
+                                    'type'       => 'banner_rejected',
+                                    'action_url' => (string) $user->id,
+                                    'is_read'    => false,
+                                ]);
+
+                                if (!empty($user->email)) {
+                                    try {
+                                        MailConfigurationService::setMailConfig();
+                                        Mail::raw(
+                                            'Your banner "' . $record->campaign_name . '" has been rejected by admin.',
+                                            function ($message) use ($user) {
+                                                $message->to($user->email)
+                                                    ->subject('Banner Rejected');
+                                            }
+                                        );
+                                    } catch (\Exception $e) {
+                                        \Log::error('[REJECT] Mail failed: ' . $e->getMessage());
+                                    }
+                                }
+                            }
 
                             Notification::make()
                                 ->title('Banner rejected successfully')
@@ -186,6 +239,19 @@ class BannerPlacementSettings extends Page implements HasTable
                                 'live_status' => 'live',
                             ]);
 
+                            $user = User::where('university_id', $record->university_id)->first();
+
+                            if ($user) {
+                                UserNotification::create([
+                                    'user_id'    => $user->id,
+                                    'title'      => 'Banner Live',
+                                    'message'    => 'Your banner "' . $record->campaign_name . '" is now live.',
+                                    'type'       => 'banner_live',
+                                    'action_url' => (string) $user->id,
+                                    'is_read'    => false,
+                                ]);
+                            }
+
                             Notification::make()
                                 ->title('Banner marked as live successfully')
                                 ->success()
@@ -205,6 +271,19 @@ class BannerPlacementSettings extends Page implements HasTable
                             $record->update([
                                 'live_status' => 'expired',
                             ]);
+
+                            $user = User::where('university_id', $record->university_id)->first();
+
+                            if ($user) {
+                                UserNotification::create([
+                                    'user_id'    => $user->id,
+                                    'title'      => 'Banner Expired',
+                                    'message'    => 'Your banner "' . $record->campaign_name . '" has been marked as expired.',
+                                    'type'       => 'banner_expired',
+                                    'action_url' => (string) $user->id,
+                                    'is_read'    => false,
+                                ]);
+                            }
 
                             Notification::make()
                                 ->title('Banner marked as expired successfully')
@@ -228,12 +307,11 @@ class BannerPlacementSettings extends Page implements HasTable
                                 ->success()
                                 ->send();
                         }),
+
                 ])
                     ->label('')
                     ->icon('heroicon-m-ellipsis-vertical')
-                    ->extraAttributes([
-                        'class' => 'more-actions-btn',
-                    ])
+                    ->extraAttributes(['class' => 'more-actions-btn'])
                     ->button(),
             ])
             ->bulkActions([
