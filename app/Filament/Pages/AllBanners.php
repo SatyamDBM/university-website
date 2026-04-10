@@ -19,7 +19,7 @@ class AllBanners extends Page implements HasTable
 
     protected static string|UnitEnum|null $navigationGroup = 'Banner Management';
 
-    protected static ?string $navigationLabel = 'All Banners';
+    protected static ?string $navigationLabel = 'Banner Packages';
 
     protected static ?int $navigationSort = 1;
 
