@@ -164,6 +164,7 @@ class DirectLeads extends Page implements HasTable
 
                         $record->update([
                             'user_id' => (int) $data['user_id'],
+                            'assigned_by' => 'admin',
                         ]);
 
                         UserNotification::create([
@@ -251,6 +252,7 @@ class DirectLeads extends Page implements HasTable
                         foreach ($records as $record) {
                             $record->update([
                                 'user_id' => (int) $data['user_id'],
+                                'assigned_by' => 'admin',
                             ]);
                         }
 
