@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('course')->nullable();
 
             $table->text('message')->nullable();
-
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             // Relation with university
             $table->foreignId('university_id')
                 ->nullable()

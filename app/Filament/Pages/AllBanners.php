@@ -38,31 +38,62 @@ class AllBanners extends Page implements HasTable
                     ->label('ID')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Banner Name')
-                    ->searchable()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('name')
+                //     ->label('Banner Name')
+                //     ->searchable()
+                //     ->sortable(),
 
                 Tables\Columns\TextColumn::make('slot_name')
                     ->label('Slot Name')
-                    ->formatStateUsing(fn ($state) => str($state)->replace('_', ' ')->title()),
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('placement_location')
-                    ->label('Placement')
-                    ->formatStateUsing(fn ($state) => str($state)->replace('_', ' ')->title()),
+                    ->label('Placement Location')
+                    ->formatStateUsing(fn ($state) => str($state)->replace('_', ' ')->title())
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('device_type')
                     ->label('Device Type')
-                    ->formatStateUsing(fn ($state) => ucfirst($state)),
+                    ->formatStateUsing(fn ($state) => ucfirst($state))
+                    ->sortable(),
 
-                Tables\Columns\TextColumn::make('monthly_price')
-                    ->label('Monthly Price')
+                Tables\Columns\TextColumn::make('width')
+                    ->label('Width')
+                    ->default('-'),
+
+                Tables\Columns\TextColumn::make('height')
+                    ->label('Height')
+                    ->default('-'),
+
+                Tables\Columns\TextColumn::make('max_banner_limit')
+                    ->label('Max Banner Limit')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('rotation_type')
+                    ->label('Rotation Type')
+                    ->formatStateUsing(fn ($state) => $state ? str($state)->replace('_', ' ')->title() : '-')
+                    ->sortable(),
+
+                // Tables\Columns\TextColumn::make('priority')
+                //     ->label('Priority')
+                //     ->formatStateUsing(fn ($state) => $state ? ucfirst($state) : '-')
+                //     ->sortable(),
+
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Price')
                     ->money('INR')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('yearly_price')
-                    ->label('Yearly Price')
-                    ->money('INR')
+                Tables\Columns\TextColumn::make('duration')
+                    ->label('Duration')
+                    ->formatStateUsing(function ($record) {
+                        if (!$record->duration) {
+                            return '-';
+                        }
+
+                        return $record->duration . ' ' . ucfirst($record->duration_type);
+                    })
                     ->sortable(),
 
                 Tables\Columns\BadgeColumn::make('status')
@@ -72,6 +103,13 @@ class AllBanners extends Page implements HasTable
                         'danger' => 'inactive',
                     ])
                     ->formatStateUsing(fn ($state) => ucfirst($state)),
+
+                // Tables\Columns\TextColumn::make('description')
+                //     ->label('Description')
+                //     ->html()
+                //     ->limit(30)
+                //     ->tooltip(fn ($record) => strip_tags($record->description))
+                //     ->default('-'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
@@ -83,6 +121,7 @@ class AllBanners extends Page implements HasTable
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
                     ->color('primary')
+                    ->tooltip('Edit Banner')
                     ->extraAttributes([
                         'class' => 'edit-btn',
                     ])
@@ -90,8 +129,9 @@ class AllBanners extends Page implements HasTable
 
                 Action::make('delete')
                     ->label('')
-                    ->icon('heroicon-o-trash')  
+                    ->icon('heroicon-o-trash')
                     ->color('danger')
+                    ->tooltip('Delete Banner')
                     ->extraAttributes([
                         'class' => 'delete-btn',
                     ])
