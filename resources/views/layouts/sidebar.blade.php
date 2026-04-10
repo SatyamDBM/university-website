@@ -117,11 +117,17 @@
             <span>Overview</span>
         </a>
 
-        {{-- Admissions --}}
-        <div class="pt-4 pb-1 px-3">
-            <span class="text-gray-400 text-xs uppercase tracking-widest font-semibold">Admissions</span>
-        </div>
+            <a href="{{ route('university.finance.index') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
+                      {{ request()->routeIs('university.finance.*') ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h2a4 4 0 014 4v2M9 17v2a4 4 0 004 4h2a4 4 0 004-4v-2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Admission</span>
+            </a>
 
+        
         <a href="#"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
                   {{ request()->routeIs('leads*')

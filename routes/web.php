@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdmissionProcessController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\University\DashboardController;
 use App\Http\Controllers\University\UniversityLinkingController;
@@ -44,6 +45,17 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
+    // University Finance & Admission Data
+    Route::prefix('university/finance')->name('university.finance.')->group(function () {
+        Route::get('/', [AdmissionProcessController::class, 'index'])->name('index');
+        Route::get('/create', [AdmissionProcessController::class, 'create'])->name('create');
+        Route::post('/', [AdmissionProcessController::class, 'storeAll'])->name('store');
+        Route::get('/{id}/edit', [AdmissionProcessController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AdmissionProcessController::class, 'update'])->name('update');
+        Route::get('/{id}', [AdmissionProcessController::class, 'show'])
+            ->name('show');
+        Route::delete('/{id}', [AdmissionProcessController::class, 'destroy'])->name('destroy');
+    });
     // Placement Management
     Route::resource('placements', App\Http\Controllers\PlacementController::class);
     Route::get('/university/dashboard', [DashboardController::class, 'index'])->name('university.dashboard');
@@ -85,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('university.faq.edit');
     Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('university.faq.destroy');
     Route::resource('streams', CourseStreamController::class);
+    // Route::post('/university-admission', [AdmissionProcessController::class, 'storeAll'])->name('university.admission.store');
 });
 
 /*

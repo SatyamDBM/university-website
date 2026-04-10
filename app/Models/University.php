@@ -55,4 +55,19 @@ class University extends Model
     {
         return $this->belongsToMany(Course::class);
     }
+
+    public function admissionProcess()
+    {
+        return $this->hasOne(AdmissionProcess::class);
+    }
+
+    public function scholarships()
+    {
+        return $this->hasMany(Scholarship::class);
+    }
+
+    public function loanPartners()
+    {
+        return $this->hasMany(LoanPartner::class);
+    }
 }

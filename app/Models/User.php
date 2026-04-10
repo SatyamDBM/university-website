@@ -87,4 +87,19 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->status === 'suspended';
     }
+
+    public function admissionProcess()
+    {
+        return $this->hasOne(AdmissionProcess::class);
+    }
+
+    public function scholarships()
+    {
+        return $this->hasMany(Scholarship::class);
+    }
+
+    public function loanPartners()
+    {
+        return $this->hasMany(LoanPartner::class);
+    }
 }
