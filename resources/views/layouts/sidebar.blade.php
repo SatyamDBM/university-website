@@ -69,6 +69,16 @@
             </svg>
             <span>Courses</span>
         </a>
+         <a href="{{ route('streams.index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
+                  {{ request()->routeIs('streams*')
+                     ? 'bg-violet-50 text-violet-700 font-medium'
+                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+            <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+            </svg>
+            <span>Stream</span>
+        </a>
 
         <a href="{{ route('facilities.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
@@ -228,6 +238,18 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             <span>Settings</span>
+        </a>
+
+        <a href="{{ route('university.faq.index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
+                  {{ request()->routeIs('university.faq.*')
+                     ? 'bg-violet-50 text-violet-700 font-medium'
+                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+            <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.75 6.75A2.25 2.25 0 017 4.5h10a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0117 19.5H7A2.25 2.25 0 014.75 17.25V6.75z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6M9 12h6m-6 3h6" />
+            </svg>
+            <span>FAQ</span>
         </a>
 
     </nav>

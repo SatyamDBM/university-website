@@ -102,87 +102,141 @@
             Edit Overview
         </h2>
 
-      <form action="{{ route('universities.overview.store') }}" method="POST" class="space-y-6">
+     <form action="{{ route('universities.overview.store') }}" method="POST" class="space-y-6">
     @csrf
 
-            {{-- About --}}
-            <div>
-                <label class="block text-sm font-semibold mb-1">About the University</label>
-                <textarea name="about" rows="4"
-                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-[#6b4a36]">
-                    {{ old('about', $overview->about ?? '') }}
-                </textarea>
+    {{-- About --}}
+    <div>
+        <label class="block text-sm font-semibold mb-1">About the University</label>
+        <textarea name="about" rows="4"
+            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-[#6b4a36]">{{ old('about', $overview->about ?? '') }}</textarea>
+    </div>
+
+    {{-- Why Choose --}}
+    <div>
+        <label class="block text-sm font-semibold mb-1">Why Choose</label>
+        <textarea name="why_choose" rows="3"
+            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-[#6b4a36]">{{ old('why_choose', $overview->why_choose ?? '') }}</textarea>
+    </div>
+
+    {{-- Grid Fields --}}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+        <input type="text" name="established_date" placeholder="Established"
+               value="{{ old('established_date', $overview->established_date ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="university_type" placeholder="Type"
+               value="{{ old('university_type', $overview->university_type ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="location" placeholder="Location"
+               value="{{ old('location', $overview->location ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="chancellor" placeholder="Chancellor"
+               value="{{ old('chancellor', $overview->chancellor ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="campus_area" placeholder="Campus Area"
+               value="{{ old('campus_area', $overview->campus_area ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="number" name="total_students" placeholder="Students"
+               value="{{ old('total_students', $overview->total_students ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="faculty" placeholder="Faculty"
+               value="{{ old('faculty', $overview->faculty ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="exams" placeholder="Exams"
+               value="{{ old('exams', $overview->exams ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="application_fee" placeholder="Application Fee"
+               value="{{ old('application_fee', $overview->application_fee ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="text" name="naac_score" placeholder="NAAC Score"
+               value="{{ old('naac_score', $overview->naac_score ?? '') }}"
+               class="border rounded-lg px-3 py-2">
+
+        <input type="url" name="website" placeholder="Website"
+               value="{{ old('website', $overview->website ?? '') }}"
+               class="border rounded-lg px-3 py-2 col-span-2 md:col-span-3">
+
+    </div>
+    {{-- Accreditations --}}
+<div>
+    <label class="block text-sm font-semibold mb-2">🎓 Accreditations</label>
+
+    <div id="accreditation-wrapper" class="space-y-2">
+
+        @php
+            $accreditations = old('accreditations', $overview->accreditations ?? []);
+        @endphp
+
+        @forelse($accreditations as $value)
+            <div class="flex gap-2">
+                <input type="text" name="accreditations[]" value="{{ $value }}"
+                       class="w-full border rounded-lg px-3 py-2"
+                       placeholder="Enter accreditation (e.g. UGC Approved)">
+                <button type="button" onclick="removeField(this)"
+                        class="text-red-500 font-bold">✕</button>
             </div>
-
-            {{-- Why Choose --}}
-            <div>
-                <label class="block text-sm font-semibold mb-1">Why Choose</label>
-                <textarea name="why_choose" rows="3"
-                    class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-[#6b4a36]">
-                    {{ old('why_choose', $overview->why_choose ?? '') }}
-                </textarea>
+        @empty
+            <div class="flex gap-2">
+                <input type="text" name="accreditations[]"
+                       class="w-full border rounded-lg px-3 py-2"
+                       placeholder="Enter accreditation (e.g. UGC Approved)">
+                <button type="button" onclick="removeField(this)"
+                        class="text-red-500 font-bold">✕</button>
             </div>
+        @endforelse
 
-            {{-- Grid Fields --}}
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    </div>
 
-                <input type="text" name="established_date" placeholder="Established"
-                       value="{{ old('established_date', $overview->established_date ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
+    <button type="button" onclick="addField()"
+            class="mt-2 text-sm text-blue-600 font-semibold">
+        + Add Accreditation
+    </button>
+</div>
 
-                <input type="text" name="university_type" placeholder="Type"
-                       value="{{ old('university_type', $overview->university_type ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
+    {{-- Submit --}}
+    <div class="flex justify-end">
+        <button class="bg-[#6b4a36] text-white px-6 py-2 rounded-lg hover:opacity-90">
+            Save Overview
+        </button>
+    </div>
 
-                <input type="text" name="location" placeholder="Location"
-                       value="{{ old('location', $overview->location ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="chancellor" placeholder="Chancellor"
-                       value="{{ old('chancellor', $overview->chancellor ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="campus_area" placeholder="Campus Area"
-                       value="{{ old('campus_area', $overview->campus_area ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="total_students" placeholder="Students"
-                       value="{{ old('total_students', $overview->total_students ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="faculty" placeholder="Faculty"
-                       value="{{ old('faculty', $overview->faculty ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="exams" placeholder="Exams"
-                       value="{{ old('exams', $overview->exams ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="application_fee" placeholder="Application Fee"
-                       value="{{ old('application_fee', $overview->application_fee ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="naac_score" placeholder="NAAC Score"
-                       value="{{ old('naac_score', $overview->naac_score ?? '') }}"
-                       class="border rounded-lg px-3 py-2">
-
-                <input type="text" name="website" placeholder="Website"
-                       value="{{ old('website', $overview->website ?? '') }}"
-                       class="border rounded-lg px-3 py-2 col-span-2 md:col-span-3">
-
-            </div>
-
-            {{-- Submit --}}
-            <div class="flex justify-end">
-                <button class="bg-[#6b4a36] text-white px-6 py-2 rounded-lg hover:opacity-90">
-                    Save Overview
-                </button>
-            </div>
-
-        </form>
+</form>
 
     </div>
 
 </div>
 
 @endsection
+<script>
+function addField() {
+    let wrapper = document.getElementById('accreditation-wrapper');
+
+    let div = document.createElement('div');
+    div.classList.add('flex', 'gap-2');
+
+    div.innerHTML = `
+        <input type="text" name="accreditations[]" 
+               class="w-full border rounded-lg px-3 py-2"
+               placeholder="Enter accreditation">
+        <button type="button" onclick="removeField(this)" 
+                class="text-red-500 font-bold">✕</button>
+    `;
+
+    wrapper.appendChild(div);
+}
+
+function removeField(button) {
+    button.parentElement.remove();
+}
+
+</script>
