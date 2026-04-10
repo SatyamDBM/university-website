@@ -79,7 +79,7 @@
 
                 <div class="mt-8 text-center text-sm">
                     <span class="text-gray-600">New to topuniversityindia.com?</span>
-                    <a href=" class="text-[#785144] font-bold hover:underline ml-1">
+                    <a href="{{ url('register/university') }}" class="text-[#785144] hover:underline font-medium ms-1">
                         Sign Up
                     </a>
                 </div>

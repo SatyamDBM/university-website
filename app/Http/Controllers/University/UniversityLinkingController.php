@@ -17,10 +17,8 @@ class UniversityLinkingController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'university_id' => 'required|exists:universities,id',
-            // 'document' => 'required|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
         $user = auth()->user();
@@ -34,22 +32,50 @@ class UniversityLinkingController extends Controller
             return back()->with('error', 'You already have a pending request.');
         }
 
-        // ✅ Upload file
-        // $path = $request->file('document')->store('documents');
-
         // ✅ Save linking request
-        UniversityLinkingRequest::create([
+        $linking = UniversityLinkingRequest::create([
             'user_id' => $user->id,
             'university_id' => $request->university_id,
             'requested_university_name' => null,
-            // 'document_path' => $path,
             'status' => 'pending',
             'is_active' => true,
         ]);
 
-        // ✅ Only update status (NOT university_id yet)
+        // ✅ Update user status
         $user->update([
             'linking_status' => 'pending',
+        ]);
+
+        // ==========================
+        // 🔔 SEND NOTIFICATION TO ADMIN
+        // ==========================
+
+        $adminId = \App\Models\User::where('role', 'admin')->value('id');
+
+        if ($adminId) {
+            sendNotification([
+                'user_id' => $adminId,
+                'title' => 'New University Linking Request',
+                'message' => $user->name . ' has submitted a linking request',
+                'type' => 'info',
+                'related_type' => 'linking_request',
+                'related_id' => $linking->id,
+                'action_url' => route('admin.linking.show', $linking->id),
+            ]);
+        }
+
+        // ==========================
+        // 🔔 OPTIONAL: notify user too
+        // ==========================
+
+        sendNotification([
+            'user_id' => $user->id,
+            'title' => 'Request Submitted',
+            'message' => 'Your linking request has been submitted successfully',
+            'type' => 'success',
+            'related_type' => 'linking_request',
+            'related_id' => $linking->id,
+            'action_url' => route('dashboard'),
         ]);
 
         return redirect()->route('dashboard')
