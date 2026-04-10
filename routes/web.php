@@ -7,6 +7,8 @@ use App\Http\Controllers\CmsPageController;
 use App\Http\Controllers\UniversityOverviewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UniversityFaqController;
+use App\Http\Controllers\University\CourseStreamController;
 
 Route::get('/', function () {
     return view('home.index');
@@ -73,15 +75,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/placements/add-recruiter', [\App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
     Route::resource('recruiters', App\Http\Controllers\RecruiterController::class);
 
-    // Route::get('overview', [UniversityOverviewController::class, 'show'])->name('universities.overview.show');
-    // Route::get('overview/create', [UniversityOverviewController::class, 'create'])->name('universities.overview.create');
-    // Route::post('overview', [UniversityOverviewController::class, 'store'])->name('universities.overview.store');
-    // Route::get('overview/edit', [UniversityOverviewController::class, 'edit'])->name('universities.overview.edit');
-    // Route::put('overview', [UniversityOverviewController::class, 'update'])->name('universities.overview.update');
-    // Route::delete('overview', [UniversityOverviewController::class, 'destroy'])->name('universities.overview.destroy');
+
 
     Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('universities.overview.show');
     Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('universities.overview.store');
+
+    Route::get('faq', [UniversityFaqController::class, 'index'])->name('university.faq.index');
+    Route::post('faq', [UniversityFaqController::class, 'store'])->name('university.faq.store');
+    Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('university.faq.edit');
+    Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('university.faq.destroy');
+    Route::resource('streams', CourseStreamController::class);
 });
 
 /*
@@ -100,3 +103,5 @@ require __DIR__ . '/auth.php';
 Route::get('/{slug}', [CmsPageController::class, 'show'])
     ->where('slug', '^(?!admin|dashboard|university|profile|login|register).*$')
     ->name('cms.page');
+
+// FAQ routes

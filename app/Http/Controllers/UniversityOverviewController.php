@@ -45,7 +45,7 @@ class UniversityOverviewController extends Controller
             'accreditations' => 'nullable|array',
             'accreditations.*' => 'string|max:50',
         ]);
-        dd($validated);
+        // dd($validated);
 
         $validated['accreditations'] = $request->accreditations
             ? array_filter($request->accreditations)

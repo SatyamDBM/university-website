@@ -11,7 +11,7 @@
                 </p>
             </div>
 
-            @if ($errors->any())
+            {{-- @if ($errors->any())
                 <div class="mb-6 rounded-[6px] border border-red-200 bg-red-50 px-4 py-3">
                     <div class="mb-2 text-sm font-semibold text-red-700">
                         Please fix the following errors:
@@ -23,7 +23,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif --}}
 
             <form
                 id="courseForm"
