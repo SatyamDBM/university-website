@@ -16,25 +16,25 @@ class WebsiteController extends Controller
     // University Listing
     public function universities()
     {
-        return view('website.university-listing');
+        return view('website.university_listing');
     }
 
     // University Detail
     public function universityDetail($slug)
     {
-        return view('website.university-detail');
+        return view('website.university_details');
     }
 
     // Course Listing
     public function courses()
     {
-        return view('website.course-listing');
+        return view('website.course_listing');
     }
 
     // Course Detail
     public function courseDetail($slug)
     {
-        return view('website.course-detail');
+        return view('website.course_details');
     }
 
     // Blog Listing
