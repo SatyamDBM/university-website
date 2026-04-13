@@ -1,122 +1,169 @@
 <?php
 
-use App\Http\Controllers\AdmissionProcessController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\University\DashboardController;
-use App\Http\Controllers\University\UniversityLinkingController;
-use App\Http\Controllers\CmsPageController;
-use App\Http\Controllers\UniversityOverviewController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UniversityFaqController;
-use App\Http\Controllers\University\CourseStreamController;
-use App\Http\Controllers\Website\WebsiteController;
-use App\Http\Controllers\University\NotificationController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/',                        [WebsiteController::class, 'home'])->name('home');
-Route::get('/web-universities',            [WebsiteController::class, 'universities'])->name('universities');
-Route::get('/web-universities-details',     [WebsiteController::class, 'universityDetail'])->name('university.detail');
-Route::get('/web-courses',                 [WebsiteController::class, 'courses'])->name('courses');
-Route::get('/web-courses-details',          [WebsiteController::class, 'courseDetail'])->name('course.detail');
-Route::get('/blog',                    [WebsiteController::class, 'blog'])->name('blog');
-Route::get('/blog-detail',             [WebsiteController::class, 'blogDetail'])->name('blog.detail');
-Route::get('/about-us',                   [WebsiteController::class, 'about'])->name('about');
-Route::get('/contact-us',                 [WebsiteController::class, 'contact'])->name('contact');
-Route::get('/web-faq',                     [WebsiteController::class, 'faq'])->name('web-faq');
-Route::get('/terms-conditions',        [WebsiteController::class, 'terms'])->name('terms');
-Route::get('/privacy-policy',          [WebsiteController::class, 'privacy'])->name('privacy');
-Route::get('/search',                  [WebsiteController::class, 'search'])->name('search');
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD REDIRECT HUB
+| CONTROLLERS
 |--------------------------------------------------------------------------
-| Login ke baad yahin aata hai
-| Role ke basis par redirect hoga
+*/
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CmsPageController;
+
+/* Website */
+use App\Http\Controllers\Website\WebsiteController;
+
+/* University Panel */
+use App\Http\Controllers\AdmissionProcessController;
+use App\Http\Controllers\University\DashboardController;
+use App\Http\Controllers\University\UniversityLinkingController;
+use App\Http\Controllers\UniversityOverviewController;
+use App\Http\Controllers\UniversityFaqController;
+use App\Http\Controllers\University\CourseStreamController;
+use App\Http\Controllers\University\NotificationController;
+
+/*
+|--------------------------------------------------------------------------
+| WEBSITE ROUTES (Public)
+|--------------------------------------------------------------------------
+*/
+
+Route::controller(WebsiteController::class)->group(function () {
+    Route::get('/', 'home')->name('home');
+    // Route::prefix('web')->group(function () {
+    Route::get('/universities', 'universities')->name('universities');
+    Route::get('/universities-details', 'universityDetail')->name('university.detail');
+    Route::get('/courses', 'courses')->name('courses');
+    Route::get('/courses-details', 'courseDetail')->name('course.detail');
+    Route::get('/faq', 'faq')->name('web-faq');
+    // });
+    Route::get('/blog', 'blog')->name('blog');
+    Route::get('/blog-detail', 'blogDetail')->name('blog.detail');
+    Route::get('/about-us', 'about')->name('about');
+    Route::get('/contact-us', 'contact')->name('contact');
+    Route::get('/terms-conditions', 'terms')->name('terms');
+    Route::get('/privacy-policy', 'privacy')->name('privacy');
+    Route::get('/search', 'search')->name('search');
+});
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD REDIRECT
+|--------------------------------------------------------------------------
 */
 Route::get('/dashboard', function () {
     $user = Auth::user();
-
     if ($user->role === 'admin') {
-        return redirect('/admin'); // Filament admin panel
+        return redirect('/admin');
     }
-
     if ($user->role === 'university') {
         return redirect()->route('university.dashboard');
     }
-
     abort(403);
-})->middleware(['auth'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
+
 
 /*
 |--------------------------------------------------------------------------
-| UNIVERSITY DASHBOARD
+| UNIVERSITY PANEL (AUTH REQUIRED)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
-    // University Finance & Admission Data
-    Route::prefix('university/finance')->name('university.finance.')->group(function () {
+Route::middleware(['auth', 'role:university'])->prefix('university')->name('university.')->group(function () {
+    /*
+    |---------------- Dashboard ----------------|
+    */
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    /*
+    |---------------- Linking ----------------|
+    */
+    Route::get('/linking', [UniversityLinkingController::class, 'index'])->name('linking');
+    Route::post('/linking', [UniversityLinkingController::class, 'store'])->name('linking.store');
+
+    /*
+    |---------------- Finance ----------------|
+    */
+    Route::prefix('finance')->name('finance.')->group(function () {
         Route::get('/', [AdmissionProcessController::class, 'index'])->name('index');
         Route::get('/create', [AdmissionProcessController::class, 'create'])->name('create');
         Route::post('/', [AdmissionProcessController::class, 'storeAll'])->name('store');
+        Route::get('/{id}', [AdmissionProcessController::class, 'show'])->name('show');
         Route::get('/{id}/edit', [AdmissionProcessController::class, 'edit'])->name('edit');
         Route::put('/{id}', [AdmissionProcessController::class, 'update'])->name('update');
-        Route::get('/{id}', [AdmissionProcessController::class, 'show'])
-            ->name('show');
         Route::delete('/{id}', [AdmissionProcessController::class, 'destroy'])->name('destroy');
     });
-    // Placement Management
-    Route::resource('placements', App\Http\Controllers\PlacementController::class);
-    Route::get('/university/dashboard', [DashboardController::class, 'index'])->name('university.dashboard');
-    Route::get('/university/linking', [UniversityLinkingController::class, 'index'])->name('university.linking');
-    Route::post('/university/linking', [UniversityLinkingController::class, 'store'])->name('university.linking.store');
 
-    // Course Management
+    /*
+    |---------------- Courses ----------------|
+    */
     Route::resource('courses', App\Http\Controllers\CourseController::class);
     Route::post('courses/{course}/toggle-active', [App\Http\Controllers\CourseController::class, 'toggleActive'])->name('courses.toggleActive');
     Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
     Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
 
-    // Department Management
+    /*
+    |---------------- Departments ----------------|
+    */
     Route::resource('departments', App\Http\Controllers\DepartmentController::class);
 
-    // University Campus Gallery
-    Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
-        'index' => 'university.gallery.index',
-        'create' => 'university.gallery.create',
-        'store' => 'university.gallery.store',
-        'edit' => 'university.gallery.edit',
-        'update' => 'university.gallery.update',
-        'destroy' => 'university.gallery.destroy',
-    ]);
-    // Direct gallery show route for robust access (like other working views)
-    Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])->name('university.gallery.showById');
-    // Facilities Management
-    Route::resource('facilities', App\Http\Controllers\FacilityController::class);
-    Route::post('/placements/add-recruiter', [\App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
+    /*
+    |---------------- Placements ----------------|
+    */
+    Route::resource('placements', App\Http\Controllers\PlacementController::class);
+    Route::post('/placements/add-recruiter', [App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
     Route::resource('recruiters', App\Http\Controllers\RecruiterController::class);
 
+    /*
+    |---------------- Gallery ----------------|
+    */
+    Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
+        'index' => 'gallery.index',
+        'create' => 'gallery.create',
+        'store' => 'gallery.store',
+        'edit' => 'gallery.edit',
+        'update' => 'gallery.update',
+        'destroy' => 'gallery.destroy',
+    ]);
 
+    Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])
+        ->name('gallery.showById');
 
-    Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('universities.overview.show');
-    Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('universities.overview.store');
+    /*
+    |---------------- Facilities ----------------|
+    */
+    Route::resource('facilities', App\Http\Controllers\FacilityController::class);
 
-    Route::get('faq', [UniversityFaqController::class, 'index'])->name('university.faq.index');
-    Route::post('faq', [UniversityFaqController::class, 'store'])->name('university.faq.store');
-    Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('university.faq.edit');
-    Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('university.faq.destroy');
+    /*
+    |---------------- Overview ----------------|
+    */
+    Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('overview.show');
+    Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('overview.store');
+
+    /*
+    |---------------- FAQ ----------------|
+    */
+    Route::get('faq', [UniversityFaqController::class, 'index'])->name('faq.index');
+    Route::post('faq', [UniversityFaqController::class, 'store'])->name('faq.store');
+    Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('faq.edit');
+    Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('faq.destroy');
+
+    /*
+    |---------------- Streams ----------------|
+    */
     Route::resource('streams', CourseStreamController::class);
-    // Route::post('/university-admission', [AdmissionProcessController::class, 'storeAll'])->name('university.admission.store');
 
-    Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])
-        ->name('notifications.read');
-
-    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])
-        ->name('notifications.readAll');
+    /*
+    |---------------- Notifications ----------------|
+    */
+    Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
 });
+
 
 /*
 |--------------------------------------------------------------------------
-| PROFILE (Breeze default)
+| PROFILE (Auth)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -125,10 +172,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
-// Route::get('/{slug}', [CmsPageController::class, 'show'])->name('cms.page');
+
+/*
+|--------------------------------------------------------------------------
+| CMS PAGES (Dynamic Slug)
+|--------------------------------------------------------------------------
+*/
 Route::get('/{slug}', [CmsPageController::class, 'show'])
     ->where('slug', '^(?!admin|dashboard|university|profile|login|register).*$')
     ->name('cms.page');
 
-// FAQ routes
+
+require __DIR__ . '/auth.php';
