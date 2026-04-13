@@ -149,7 +149,7 @@
 
                                 @forelse($globalNotifications as $notif)
 
-                                    <a href="{{ route('notifications.read', $notif->id) }}"
+                                    <a href="{{ route('university.notifications.read', $notif->id) }}"
                                     class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition {{ $notif->is_read ? '' : 'bg-purple-50' }}">
 
                                        @php
