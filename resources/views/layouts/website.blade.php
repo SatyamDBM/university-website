@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Top Universities in India')</title>
-    <link type="image/x-icon" rel="shortcut icon" href="{{ asset('images/fevicon.png') }}"/>
+    <title>@yield('title', $brandingSettings['brand_name'] ?? 'Top Universities in India')</title>
+    <link type="image/x-icon" rel="shortcut icon" href="{{ asset($brandingSettings['favicon'] ?? 'images/fevicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{-- Website CSS --}}
     <link rel="stylesheet" href="{{ asset('css/website/main.css') }}">

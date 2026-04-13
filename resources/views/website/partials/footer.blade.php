@@ -18,7 +18,7 @@
                 <div class="footer-col first">
                     <div class="footer-logo">
                        
-                   <a href="{{route('home')}}"><img src="images/logo.png" alt="TUI Logo"></a>
+                   <a href="{{route('home')}}"><img src="{{ asset($brandingSettings['website_logo'] ?? 'images/logo.png') }}" alt="{{ $brandingSettings['brand_name'] ?? 'Logo' }}"></a>
                
                     </div>
                     <p>Begonia & Clover, Embassy Tech Village, Outer Ring Road, Devarabeesanahalli Village, Bengaluru – 560103, Karnataka, India.</p>
@@ -50,7 +50,9 @@
             </div>
 
         </div>
-                    <div class="footer-bottom">
-                <p>Copyright © 2026 <a href="index.html" target="_blank">topuniversitiesindia.com</a> | All Rights Reserved</p>
-            </div>
+        <div class="footer-bottom">
+            <p>
+                {!! $brandingSettings['footer_text'] ?? 'Copyright © 2026 <a href="index.html" target="_blank">topuniversitiesindia.com</a> | All Rights Reserved' !!}
+            </p>
+        </div>
     </footer>

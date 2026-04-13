@@ -5,8 +5,10 @@
         <div class="container">
             <div class="nav-wrapper">
                 <div class="logo">
-                   <a href="{{route('home')}}"><img src="{{ asset('images/logo.png') }}" alt="TUI Logo"></a>
-            </div>
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset($brandingSettings['website_logo'] ?? 'images/logo.png') }}" alt="{{ $brandingSettings['brand_name'] ?? 'Logo' }}">
+                    </a>
+                </div>
 
         <div class="menu">
 				<div class="menu-trigger">
