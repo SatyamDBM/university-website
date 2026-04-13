@@ -32,7 +32,7 @@ class WebsiteController extends Controller
     }
 
     // Course Detail
-    public function courseDetail($slug)
+    public function courseDetail()
     {
         return view('website.course_details');
     }
