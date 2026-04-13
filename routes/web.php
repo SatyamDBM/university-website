@@ -15,7 +15,7 @@ use App\Http\Controllers\University\NotificationController;
 
 Route::get('/',                        [WebsiteController::class, 'home'])->name('home');
 Route::get('/web-universities',            [WebsiteController::class, 'universities'])->name('universities');
-Route::get('/web-universities/{slug}',     [WebsiteController::class, 'universityDetail'])->name('university.detail');
+Route::get('/web-universities-details',     [WebsiteController::class, 'universityDetail'])->name('university.detail');
 Route::get('/web-courses',                 [WebsiteController::class, 'courses'])->name('courses');
 Route::get('/web-courses-details',          [WebsiteController::class, 'courseDetail'])->name('course.detail');
 Route::get('/blog',                    [WebsiteController::class, 'blog'])->name('blog');

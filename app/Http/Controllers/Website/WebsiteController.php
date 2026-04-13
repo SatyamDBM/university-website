@@ -20,7 +20,7 @@ class WebsiteController extends Controller
     }
 
     // University Detail
-    public function universityDetail($slug)
+    public function universityDetail()
     {
         return view('website.university_details');
     }

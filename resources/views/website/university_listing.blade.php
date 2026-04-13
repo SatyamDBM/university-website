@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>University list</title>
-    <link type="image/x-icon" rel="shortcut icon" href="images/fevicon.png"/>
-    <link type="text/css" rel="stylesheet" href="css/main.css" />
-     <link type="text/css" rel="stylesheet" href="css/style.css" />
-    <link type="text/css" rel="stylesheet" href="css/responsive.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+@extends('layouts.website')
 
+@section('title', 'University-listing - Top Universities in India')
+
+@section('body-class', 'university-page')
+
+@push('styles')
+<script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
   theme: {
@@ -268,95 +259,10 @@ h3.sec-h {
   .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 </style>
-</head>
-<body>
+@endpush
 
-<!-- SCROLL PROGRESS -->
-<div id="progress"></div>
+@section('content')
 
-    <!-- Header -->
-    <header class="header">
-        <marquee class="top-bar">
-            <span class="welcome-text">  <img src="images/unversity.png" alt="unversity"> Welcome to Topuniversitiesinindia.Com</span>
-        </marquee>    
-        <div class="container">
-            <div class="nav-wrapper">
-                <div class="logo">
-                   <a href="index.html"><img src="images/logo.png" alt="TUI Logo"></a>
-            </div>
-
-        <div class="menu">
-				<div class="menu-trigger">
-					<div class="line"></div>
-				    <div class="line"></div>
-					<div class="line"></div>
-				</div>
-		</div>
-
-        <nav class="nav-menu">
-            <div class="close-button">
-			<i class="fa fa-times"></i>
-			</div>
-            <a href="index.html" class="nav-link">Home</a>
-            <!-- Universities List -->
-            <div class="nav-item has-dropdown">
-                <a href="university-listing.html" class="nav-link active">Universities <i class="fas fa-chevron-down"></i></a>
-                <div class="submenu">
-                <a href="#">St. Stephen’s College</a>
-                <a href="#">Loyola College</a>
-                <a href="#">Presidency College</a>
-                <a href="#">SRCC Delhi</a>
-                <a href="#">Hansraj College</a>
-                <a href="#">Christ University</a>
-                <a href="#">Lady Shri Ram College</a>
-                <a href="#">Miranda House</a>
-                <a href="#">Hindu College</a>
-                <a href="#">NLU Delhi</a>
-                <a href="#">NALSAR Hyderabad</a>
-                <a href="#">NLU Bangalore</a>
-                <a href="#">Jamia Hamdard</a>
-                <a href="#">NIPER Mohali</a>
-                <a href="#">BITS Pilani</a>
-                <a href="#">AIIMS Delhi</a>
-                <a href="#">CMC Vellore</a>
-                </div>
-            </div>
-
-                <!-- Courses Dropdown -->
-            <div class="nav-item has-dropdown">
-                <a href="Course-listing.html" class="nav-link">
-                    Courses <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="submenu">
-                <a href="#">Engineering</a>
-                <a href="#">Management</a>
-                <a href="#">Medical</a>
-                <a href="#">Science</a>
-                <a href="#">Commerce</a>
-                <a href="#">Arts</a>
-                <a href="#">Law</a>
-                <a href="#">Pharmacy</a>
-                <a href="#">Paramedical</a>
-                <a href="#">Education</a>
-                <a href="#">Design</a>
-                <a href="#">Hotel Management</a>
-                <a href="#">Mass Communication</a>
-                <a href="#">Computer Applications</a>
-                <a href="#">Vocational Courses</a>
-                <a href="#">Agriculture</a>
-                <a href="#">Architecture</a>
-                <a href="#">Dental</a>
-                </div>
-            </div>
-            <a href="blog.html" class="nav-link">Blog </a>
-        </nav>
-                <div class="auth-buttons">
-                    <button class="btn-login" onclick="openLoginModal()">Universiy Login</button>
-                    <button class="btn-signup" onclick="openEnquiryModal()">Enquire Now</button>
-                </div>
-            </div>
-    </header>
-     <!-- End of Header -->
 
     <!-- Banner section -->
     <section class="hero">
@@ -891,66 +797,6 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
   </div>
 </div>
 
-<!-- Newsletter -->
-    <section class="newsletter">
-        <div class="container">
-            <div class="newsletter-form">
-            <h2>Join Our Newsletter</h2>
-            <p>Subscribe to get updates on your inbox. Latest updates & news</p>
-            </div>
-            <div class="newsletter-form">
-                <input type="email" placeholder="Enter your email" id="newsletterEmail">
-                <button onclick="subscribeNewsletter()">Subscribe Now</button>
-            </div>
-        </div>
-    </section>
-
-      <!-- End Newsletter -->
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col first">
-                    <div class="footer-logo">
-                       
-                   <a href="#"><img src="images/logo.png" alt="TUI Logo"></a>
-               
-                    </div>
-                    <p>Begonia & Clover, Embassy Tech Village, Outer Ring Road, Devarabeesanahalli Village, Bengaluru – 560103, Karnataka, India.</p>
-                  
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Top Universities</h3>
-                    <ul>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="course-detail.html">Engineering</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="course-detail.html">Management</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="course-detail.html">Medical</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="course-detail.html">Law</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="course-detail.html">Science</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Quick links</h3>
-                    <ul>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="about.html">About</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="blog.html">Blog and article</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="Faq.html">Faq</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="contact.html">Contact us</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="terms-conditions.html">Terms & conditions</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="privacy policy.html">Privacy & policy</a></li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-                    <div class="footer-bottom">
-                <p>Copyright © 2026 <a href="index.html" target="_blank">topuniversitiesindia.com</a> | All Rights Reserved</p>
-            </div>
-    </footer>
-    <!-- End Footer -->
 
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
@@ -1043,7 +889,9 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
     <p style="text-align:center;color:#999;padding:20px 0;">Use desktop view for full filters, or use the sort options above on mobile.</p>
   </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 // ── DATA: All university cards ──
 const allCards = Array.from(document.querySelectorAll('#universityContainer .uni-list-card, #universityContainer .uni-grid-card'));
@@ -1256,5 +1104,4 @@ document.getElementById('enquiryModal').addEventListener('click', function(e) {
   if (e.target === this) closeEnquiry();
 });
 </script>
-</body>
-</html>
+@endpush

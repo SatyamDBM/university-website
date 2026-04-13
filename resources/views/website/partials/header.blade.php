@@ -23,7 +23,7 @@
             <a href="{{route('home')}}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
             <!-- Universities List -->
             <div class="nav-item has-dropdown">
-                <a href="university-listing.html" class="nav-link">Universities <i class="fas fa-chevron-down"></i></a>
+                <a href="{{route('universities')}}" class="nav-link {{ request()->routeIs('universities') ? 'active' : '' }}">Universities <i class="fas fa-chevron-down"></i></a>
                 <div class="submenu">
                 <a href="#">St. Stephen’s College</a>
                 <a href="#">Loyola College</a>
@@ -47,7 +47,7 @@
 
                 <!-- Courses Dropdown -->
             <div class="nav-item has-dropdown">
-                <a href="Course-listing.html" class="nav-link">
+                <a href="{{route('courses')}}" class="nav-link {{ request()->routeIs('courses') ? 'active' : '' }}">
                     Courses <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="submenu">

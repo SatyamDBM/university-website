@@ -122,23 +122,4 @@
           </div>
         </div>
       </section>
-
-<!-- End courses list -->
-  
-<!-- Newsletter -->
-    <section class="newsletter">
-        <div class="container">
-            <div class="newsletter-form">
-            <h2>Join Our Newsletter</h2>
-            <p>Subscribe to get updates on your inbox. Latest updates & news</p>
-            </div>
-            <div class="newsletter-form">
-                <input type="email" placeholder="Enter your email" id="newsletterEmail">
-                <button onclick="subscribeNewsletter()">Subscribe Now</button>
-            </div>
-        </div>
-    </section>
-
-      <!-- End Newsletter -->
-
    @endsection
