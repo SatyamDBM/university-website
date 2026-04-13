@@ -59,9 +59,9 @@
             <span class="text-gray-400 text-xs uppercase tracking-widest font-semibold">Academics</span>
         </div>
 
-        <a href="{{ route('courses.index') }}"
+        <a href="{{ route('university.courses.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('courses*')
+                  {{ request()->routeIs('university.courses*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -69,9 +69,9 @@
             </svg>
             <span>Courses</span>
         </a>
-         <a href="{{ route('streams.index') }}"
+         <a href="{{ route('university.streams.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('streams*')
+                  {{ request()->routeIs('university.streams*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -80,9 +80,9 @@
             <span>Stream</span>
         </a>
 
-        <a href="{{ route('facilities.index') }}"
+        <a href="{{ route('university.facilities.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('facilities*')
+                  {{ request()->routeIs('university.facilities*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -99,9 +99,9 @@
         </a>
               {{-- <span>Campus Facility</span> --}}
         </a>
-            <a href="{{ route('placements.index') }}"
+            <a href="{{ route('university.placements.index') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('placements*') ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                  {{ request()->routeIs('university.placements*') ? 'bg-violet-50 text-violet-700 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7" fill="none"/>
@@ -110,9 +110,9 @@
         </a>
 
          </a>
-            <a href="{{ route('universities.overview.show') }}"
+            <a href="{{ route('university.overview.show') }}"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('universities.overview.*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
+                  {{ request()->routeIs('university.overview.*') ? 'bg-black/15 text-black font-medium' : 'text-black/70 hover:bg-black/10 hover:text-black' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5 5 5M12 15V3"/></svg>
             <span>Overview</span>
         </a>
@@ -130,7 +130,7 @@
         
         <a href="#"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('leads*')
+                  {{ request()->routeIs('university.leads*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -153,7 +153,7 @@
 
         <a href="#"
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all
-                  {{ request()->routeIs('enquiries*')
+                  {{ request()->routeIs('university.enquiries*')
                      ? 'bg-violet-50 text-violet-700 font-medium'
                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
             <svg class="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">

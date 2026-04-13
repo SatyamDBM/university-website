@@ -69,7 +69,7 @@ Route::get('/dashboard', function () {
 | UNIVERSITY PANEL (AUTH REQUIRED)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:university'])->prefix('university')->name('university.')->group(function () {
+Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')->name('university.')->group(function () {
     /*
     |---------------- Dashboard ----------------|
     */

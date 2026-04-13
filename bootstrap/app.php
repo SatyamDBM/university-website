@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\PreventBackHistory;
+
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.only' => \App\Http\Middleware\EnsureAdmin::class,
             'role' => CheckRole::class,
+            'no-cache' => PreventBackHistory::class,
+
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
