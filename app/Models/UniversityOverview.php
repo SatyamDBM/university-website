@@ -22,6 +22,7 @@ class UniversityOverview extends Model
         'website',
         'naac_score',
         'accreditations', // JSON
+        'brochure',
     ];
 
     protected $casts = [

@@ -53,7 +53,7 @@
                 {{-- ── Notification Dropdown ── --}}
                 <div x-data="{ notifOpen: false }" class="relative {{ $isLocked ? 'pointer-events-none opacity-40' : '' }}" >
 
-                    <button
+                    {{-- <button
                         @click="notifOpen = !notifOpen"
                         class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
                     >
@@ -61,6 +61,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
                         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                    </button> --}}
+                    <button @click="notifOpen = !notifOpen" class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+
                     </button>
 
                     <div
@@ -77,22 +85,19 @@
                     >
                         <div class="bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden">
 
-                            {{-- Notif Header --}}
                             <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-700 text-gray-800">Notifications</span>
-                                    <span class="bg-red-500 text-white text-xs font-700 px-2 py-0.5 rounded-full leading-tight">3</span>
+                                    <span class="bg-red-500 text-white text-xs font-700 px-2 py-0.5 rounded-full leading-tight">{{ $unreadCount }}</span>
                                 </div>
                                 <button class="text-xs text-purple-600 font-600 hover:text-purple-800 transition">
                                     Mark all read
                                 </button>
                             </div>
 
-                            {{-- Notif List --}}
                             <div class="divide-y divide-gray-50" style="max-height:250px; overflow-y:auto;">
 
-                                {{-- Unread items --}}
-                                <div class="flex items-start gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 transition cursor-pointer">
+                                {{-- <div class="flex items-start gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 transition cursor-pointer">
                                     <div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-base flex-shrink-0 mt-0.5">📈</div>
                                     <div class="flex-1 min-w-0">
                                         <div class="text-sm font-600 text-gray-800">New Lead Received</div>
@@ -122,7 +127,6 @@
                                     <div class="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0 mt-2"></div>
                                 </div>
 
-                                {{-- Read items --}}
                                 <div class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition cursor-pointer">
                                     <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-base flex-shrink-0 mt-0.5">✅</div>
                                     <div class="flex-1 min-w-0">
@@ -139,11 +143,64 @@
                                         <div class="text-xs text-gray-400 mt-0.5 leading-relaxed">₹15,000 payment received successfully.</div>
                                         <div class="text-xs text-gray-400 font-500 mt-1">Yesterday, 11:00 AM</div>
                                     </div>
-                                </div>
+                                </div> --}}
+
+                                 <div class="divide-y divide-gray-50 max-h-[250px] overflow-y-auto">
+
+                                @forelse($globalNotifications as $notif)
+
+                                    <a href="{{ route('notifications.read', $notif->id) }}"
+                                    class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition {{ $notif->is_read ? '' : 'bg-purple-50' }}">
+
+                                       @php
+                                        $icons = [
+                                            'lead' => '📈',
+                                            'banner' => '🖼️',
+                                            'payment' => '💰',
+                                            'success' => '✅',
+                                            'default' => '🔔',
+                                        ];
+
+                                        $colors = [
+                                            'lead' => 'bg-purple-100',
+                                            'banner' => 'bg-amber-100',
+                                            'payment' => 'bg-red-100',
+                                            'success' => 'bg-green-100',
+                                            'default' => 'bg-gray-100',
+                                        ];
+
+                                        $icon = $icons[$notif->type] ?? $icons['default'];
+                                        $color = $colors[$notif->type] ?? $colors['default'];
+                                    @endphp
+
+                                    <div class="w-9 h-9 rounded-xl flex items-center justify-center {{ $color }} flex-shrink-0 mt-0.5">
+                                        {{ $icon }}
+                                    </div>
+
+                                        <div class="flex-1">
+                                            <div class="text-sm font-600 text-gray-800">
+                                                {{ $notif->title }}
+                                            </div>
+                                            <div class="text-xs text-gray-500">
+                                                {{ $notif->message }}
+                                            </div>
+                                            <div class="text-xs text-gray-400 mt-1">
+                                                {{ $notif->created_at->diffForHumans() }}
+                                            </div>
+                                        </div>
+
+                                    </a>
+
+                                @empty
+                                    <div class="p-4 text-center text-sm text-gray-400">
+                                        No notifications
+                                    </div>
+                                @endforelse
 
                             </div>
 
-                            {{-- Notif Footer --}}
+                            </div>
+
                             <div class="px-4 py-2.5 border-t border-gray-100 bg-gray-50 text-center">
                                 <a href="#" class="text-xs font-600 text-purple-600 hover:text-purple-800 transition">
                                     View all notifications →
@@ -151,6 +208,8 @@
                             </div>
 
                         </div>
+
+
                     </div>
                 </div>
 

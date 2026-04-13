@@ -5,6 +5,7 @@ namespace App\Http\Controllers\University;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UniversityLinkingRequest;
+use App\Models\User;
 
 
 class UniversityLinkingController extends Controller
@@ -60,7 +61,7 @@ class UniversityLinkingController extends Controller
                 'type' => 'info',
                 'related_type' => 'linking_request',
                 'related_id' => $linking->id,
-                'action_url' => route('admin.linking.show', $linking->id),
+                'action_url' => url('/admin/universities-request/' . $linking->id),
             ]);
         }
 

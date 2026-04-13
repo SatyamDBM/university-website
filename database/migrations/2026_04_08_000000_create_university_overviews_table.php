@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->string('website', 255)->nullable();
             $table->string('naac_score', 50)->nullable();
             $table->json('accreditations')->nullable();
+            $table->string('brochure')->nullable();
+
             $table->timestamps();
 
             $table->foreign('university_id')->references('id')->on('universities')->onDelete('cascade');
