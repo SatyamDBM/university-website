@@ -18,7 +18,7 @@
                 <div class="footer-col first">
                     <div class="footer-logo">
                        
-                   <a href="#"><img src="images/logo.png" alt="TUI Logo"></a>
+                   <a href="{{route('home')}}"><img src="images/logo.png" alt="TUI Logo"></a>
                
                     </div>
                     <p>Begonia & Clover, Embassy Tech Village, Outer Ring Road, Devarabeesanahalli Village, Bengaluru – 560103, Karnataka, India.</p>
@@ -39,12 +39,12 @@
                 <div class="footer-col">
                     <h3>Quick links</h3>
                     <ul>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="about.html">About</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="blog.html">Blog and article</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="Faq.html">Faq</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="contact.html">Contact us</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="terms-conditions.html">Terms & conditions</a></li>
-                        <li><i class="fa-solid fa-angle-right"></i><a href="privacy policy.html">Privacy & policy</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('about')}}">About</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('blog')}}">Blog and article</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('web-faq')}}">Faq</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('contact')}}">Contact us</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('terms')}}">Terms & conditions</a></li>
+                        <li><i class="fa-solid fa-angle-right"></i><a href="{{route('privacy')}}">Privacy & policy</a></li>
                     </ul>
                 </div>
             </div>
