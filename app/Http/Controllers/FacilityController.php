@@ -11,7 +11,7 @@ class FacilityController extends Controller
 {
     public function index()
     {
-        $facilities = Facility::where('university_id', auth()->user()->university_id)
+        $facilities = Facility::where('university_id', auth()->user()->id)
             ->latest()->paginate(10);
         return view('facilities.index', compact('facilities'));
     }
@@ -31,7 +31,7 @@ class FacilityController extends Controller
             'availability' => 'required|boolean',
             'gender_specific' => 'nullable|in:boys,girls,both',
 
-            'is_featured' => 'boolean',
+            // 'is_featured' => 'boolean',
             'is_top' => 'nullable|boolean',
             'is_highlight' => 'nullable|boolean',
 
@@ -86,7 +86,7 @@ class FacilityController extends Controller
 
         // ✅ Create facility
         $facility = Facility::create([
-            'university_id' => auth()->user()->university_id,
+            'university_id' => auth()->user()->id,
             'facility_name' => $request->facility_name,
             'facility_type' => $request->facility_type,
             'description' => $request->description,
@@ -94,10 +94,10 @@ class FacilityController extends Controller
             'availability' => $request->availability,
             'gender_specific' => $request->facility_type === 'Hostel' ? $request->gender_specific : null,
             'hostel_details' => $hostelDetails,
-            'is_featured' => $request->is_featured ?? false,
+            // 'is_featured' => $request->is_featured ?? false,
             'is_top' => $request->has('is_top'),
             'is_highlight' => $request->has('is_highlight'),
-            'status' => 'pending',
+            'status' => 'approved',
         ]);
 
         // ✅ Upload images
@@ -204,7 +204,7 @@ class FacilityController extends Controller
             'availability' => $request->availability,
             'gender_specific' => $request->facility_type === 'Hostel' ? $request->gender_specific : null,
             'hostel_details' => $hostelDetails,
-            'is_featured' => $request->is_featured ?? false,
+            // 'is_featured' => $request->is_featured ?? false,
             'is_top' => $request->has('is_top'),
             'is_highlight' => $request->has('is_highlight'),
             'status' => 'pending',
@@ -246,8 +246,14 @@ class FacilityController extends Controller
 
     private function authorizeFacility(Facility $facility)
     {
-        if ($facility->university_id !== auth()->user()->university_id) {
-            abort(403);
+        $user = auth()->user();
+
+        if (!$user) {
+            abort(403, 'Not authenticated');
+        }
+
+        if ($facility->university_id != $user->id) {
+            abort(403, 'Unauthorized access');
         }
     }
 }
