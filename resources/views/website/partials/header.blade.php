@@ -5,7 +5,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <div class="logo">
-                   <a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="TUI Logo"></a>
+                   <a href="{{route('home')}}"><img src="{{ asset('images/logo.png') }}" alt="TUI Logo"></a>
             </div>
 
         <div class="menu">
@@ -20,7 +20,7 @@
             <div class="close-button">
 			<i class="fa fa-times"></i>
 			</div>
-            <a href="{{route('home')}}" class="nav-link active">Home</a>
+            <a href="{{route('home')}}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
             <!-- Universities List -->
             <div class="nav-item has-dropdown">
                 <a href="university-listing.html" class="nav-link">Universities <i class="fas fa-chevron-down"></i></a>
@@ -71,7 +71,7 @@
                 <a href="#">Dental</a>
                 </div>
             </div>
-            <a href="{{route('blog')}}" class="nav-link">Blog </a>
+            <a href="{{route('blog')}}" class="nav-link {{ request()->routeIs('blog*') ? 'active' : '' }}">Blog</a>
         </nav>
                 <div class="auth-buttons">
                     <button class="btn-login" onclick="openLoginModal()">Universiy Login</button>

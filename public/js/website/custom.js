@@ -4,14 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
      GLOBAL FUNCTIONS (for onclick)
   ───────────────────────────── */
 
-  window.toggleFaq = function (el) {
-    const item = el.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-
-    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  };
-
+  // FAQ Toggle
+  document.querySelectorAll(".faq-q").forEach(function(q) {
+      q.addEventListener("click", function () {
+          const item = this.closest(".faq-item");
+          const isOpen = item.classList.contains("open");
+          document.querySelectorAll(".faq-item").forEach(f => f.classList.remove("open"));
+          if (!isOpen) item.classList.add("open");
+      });
+  });
   window.switchTab = function (event, tabType) {
     const tabs = document.querySelectorAll('.tab-btn');
     tabs.forEach(tab => tab.classList.remove('active'));

@@ -20,9 +20,9 @@ Route::get('/courses',                 [WebsiteController::class, 'courses'])->n
 Route::get('/courses/{slug}',          [WebsiteController::class, 'courseDetail'])->name('course.detail');
 Route::get('/blog',                    [WebsiteController::class, 'blog'])->name('blog');
 Route::get('/blog-detail',             [WebsiteController::class, 'blogDetail'])->name('blog.detail');
-Route::get('/about',                   [WebsiteController::class, 'about'])->name('about');
-Route::get('/contact',                 [WebsiteController::class, 'contact'])->name('contact');
-Route::get('/faq',                     [WebsiteController::class, 'faq'])->name('faq');
+Route::get('/about-us',                   [WebsiteController::class, 'about'])->name('about');
+Route::get('/contact-us',                 [WebsiteController::class, 'contact'])->name('contact');
+Route::get('/web-faq',                     [WebsiteController::class, 'faq'])->name('web-faq');
 Route::get('/terms-conditions',        [WebsiteController::class, 'terms'])->name('terms');
 Route::get('/privacy-policy',          [WebsiteController::class, 'privacy'])->name('privacy');
 Route::get('/search',                  [WebsiteController::class, 'search'])->name('search');
