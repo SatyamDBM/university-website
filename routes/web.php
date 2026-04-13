@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UniversityFaqController;
 use App\Http\Controllers\University\CourseStreamController;
 use App\Http\Controllers\Website\WebsiteController;
+use App\Http\Controllers\University\NotificationController;
 
 Route::get('/',                        [WebsiteController::class, 'home'])->name('home');
 Route::get('/universities',            [WebsiteController::class, 'universities'])->name('universities');
@@ -105,6 +106,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('university.faq.destroy');
     Route::resource('streams', CourseStreamController::class);
     // Route::post('/university-admission', [AdmissionProcessController::class, 'storeAll'])->name('university.admission.store');
+
+    Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])
+        ->name('notifications.read');
+
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])
+        ->name('notifications.readAll');
 });
 
 /*

@@ -10,23 +10,24 @@ class UniversityOverviewController extends Controller
 {
     public function show()
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
         $overview = UniversityOverview::firstOrNew([
             'university_id' => $university_id
         ]);
         $university = University::findOrFail($university_id);
+
         return view('university.overview.index', compact('overview', 'university'));
     }
 
     public function create()
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
         $university = University::findOrFail($university_id);
         return view('university.overview.create', compact('university'));
     }
     public function store(Request $request)
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
 
         $validated = $request->validate([
             'about' => 'nullable|string',
@@ -44,12 +45,24 @@ class UniversityOverviewController extends Controller
             'naac_score' => 'nullable|string|max:50',
             'accreditations' => 'nullable|array',
             'accreditations.*' => 'string|max:50',
+            'brochure' => 'nullable|file|mimes:pdf|max:10240',
+
         ]);
         // dd($validated);
 
         $validated['accreditations'] = $request->accreditations
             ? array_filter($request->accreditations)
             : [];
+
+        // ✅ Upload brochure
+        if ($request->hasFile('brochure')) {
+
+            $file = $request->file('brochure');
+
+            $path = $file->store('brochures', 'public'); // storage/app/public/brochures
+
+            $validated['brochure'] = $path;
+        }
 
         // 🔥 MAIN MAGIC (Single line CMS logic)
         UniversityOverview::updateOrCreate(
@@ -62,7 +75,7 @@ class UniversityOverviewController extends Controller
 
     public function edit()
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
         $overview = UniversityOverview::where('university_id', $university_id)->firstOrFail();
         $university = University::findOrFail($university_id);
         return view('university.overview.edit', compact('overview', 'university'));
@@ -70,7 +83,7 @@ class UniversityOverviewController extends Controller
 
     public function update(Request $request)
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
         $overview = UniversityOverview::where('university_id', $university_id)->firstOrFail();
         $validated = $request->validate([
             'about' => 'nullable|string',
@@ -96,7 +109,7 @@ class UniversityOverviewController extends Controller
 
     public function destroy()
     {
-        $university_id = auth()->user()->university_id;
+        $university_id = auth()->user()->id;
         $overview = UniversityOverview::where('university_id', $university_id)->firstOrFail();
         $overview->delete();
         return redirect()->route('universities.overview.show')->with('success', 'Overview deleted!');
