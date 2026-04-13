@@ -78,23 +78,99 @@
         </div>
 
         {{-- Key Facts --}}
-        <label class="text-sm font-medium">Key Facts</label>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 mb-4">
+        {{-- <label class="text-sm font-medium">Key Facts</label> --}}
+        {{-- <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 mb-4">
             <label><input type="checkbox" name="boys_features[]" value="ac_nonac"> AC & Non-AC Rooms</label>
             <label><input type="checkbox" name="boys_features[]" value="wifi"> 1 Gbps WiFi</label>
             <label><input type="checkbox" name="boys_features[]" value="cctv"> CCTV Surveillance</label>
             <label><input type="checkbox" name="boys_features[]" value="mess"> Mess + Canteen</label>
             <label><input type="checkbox" name="boys_features[]" value="laundry"> Laundry Facility</label>
             <label><input type="checkbox" name="boys_features[]" value="games"> Indoor Games</label>
-        </div>
+        </div> --}}
+        <label class="text-sm font-medium block mb-2">Key Facts</label>
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="ac_nonac">
+        <span>AC & Non-AC Rooms</span>
+    </label>
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="wifi">
+        <span>1 Gbps WiFi</span>
+    </label>
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="cctv">
+        <span>CCTV Surveillance</span>
+    </label>
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="mess">
+        <span>Mess + Canteen</span>
+    </label>
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="laundry">
+        <span>Laundry Facility</span>
+    </label>
+
+    <label class="flex items-center gap-2">
+        <input type="checkbox" name="boys_features[]" value="games">
+        <span>Indoor Games</span>
+    </label>
+
+</div>
 
         {{-- Room Types --}}
-        <label class="text-sm font-medium">Room Type Available</label>
-        <div class="flex flex-wrap gap-4 mt-2">
-            <label><input type="checkbox" name="boys_rooms[]" value="single"> Single (AC)</label>
-            <label><input type="checkbox" name="boys_rooms[]" value="double"> Double (AC & Non-AC)</label>
-            <label><input type="checkbox" name="boys_rooms[]" value="triple"> Triple (Non-AC)</label>
+        <label class="text-sm font-medium block mt-4 mb-2">Room Type Available</label>
+
+<div class="space-y-3">
+
+    <!-- AC Rooms -->
+    <div>
+        <p class="text-xs font-semibold text-gray-500 mb-1">AC Rooms</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_ac[]" value="single">
+                Single
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_ac[]" value="double">
+                Double
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_ac[]" value="triple">
+                Triple
+            </label>
         </div>
+    </div>
+
+    <!-- Non-AC Rooms -->
+    <div>
+        <p class="text-xs font-semibold text-gray-500 mb-1">Non-AC Rooms</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_non_ac[]" value="single">
+                Single
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_non_ac[]" value="double">
+                Double
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="boys_rooms_non_ac[]" value="triple">
+                Triple
+            </label>
+        </div>
+    </div>
+
+</div>
     </div>
 
 
@@ -122,11 +198,43 @@
         </div>
 
         {{-- Room Types --}}
-        <label class="text-sm font-medium">Room Type Available</label>
-        <div class="flex flex-wrap gap-4 mt-2">
-            <label><input type="checkbox" name="girls_rooms[]" value="single"> Single (AC)</label>
-            <label><input type="checkbox" name="girls_rooms[]" value="double"> Double (AC & Non-AC)</label>
+        <label class="text-sm font-medium block mt-4 mb-2">Room Type Available</label>
+
+<div class="space-y-3">
+
+    <!-- AC Rooms -->
+    <div>
+        <p class="text-xs font-semibold text-gray-500 mb-1">AC Rooms</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="girls_rooms_ac[]" value="single">
+                Single
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="girls_rooms_ac[]" value="double">
+                Double
+            </label>
         </div>
+    </div>
+
+    <!-- Non-AC Rooms -->
+    <div>
+        <p class="text-xs font-semibold text-gray-500 mb-1">Non-AC Rooms</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="girls_rooms_non_ac[]" value="single">
+                Single
+            </label>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="girls_rooms_non_ac[]" value="double">
+                Double
+            </label>
+        </div>
+    </div>
+
+</div>
     </div>
 
 </div>

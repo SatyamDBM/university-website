@@ -22,6 +22,9 @@ class Facility extends Model
         'is_highlight',
         'status'
     ];
+    protected $casts = [
+        'hostel_details' => 'array',
+    ];
 
     public function university()
     {
