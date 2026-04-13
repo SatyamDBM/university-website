@@ -1,0 +1,815 @@
+@media only screen and (max-width: 1750px) {
+
+/* hero */
+    section.hero.detail-hero {
+    height: 550px;
+}
+section.hero.detail-hero .hero-banner img.bg-image {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+section.hero.detail-hero .hero-banner {
+    height: 100%;
+}
+}
+
+
+@media only screen and (max-width: 1550px) {
+
+/* hero */
+    section.hero {
+    height: 650px;
+}
+.hero-banner img.bg-image {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.hero-banner {
+    height: 100%;
+}
+.middleware {
+    max-width: 1500px;
+}
+section.hero.common-hero {
+    height: auto;
+}
+}
+
+@media only screen and (max-width: 1300px) {
+
+.botton-design .left-part span {
+    font-size: 11px;
+}
+.ts-grid {
+    gap: 15px;
+}
+}
+
+@media only screen and (max-width: 1150px) {
+
+.nav-menu {
+    padding-left: 0;
+}
+.stat-item {
+    padding: 15px 50px;
+}
+.stat-item img {
+    height: 22px;
+    width: 22px;
+}
+.middleware .hero-content {
+    grid-gap: 20px;
+}
+
+}
+
+
+@media only screen and (max-width: 1024px) {
+
+.btn-signup {
+    padding: 15px 15px;
+}
+.btn-login {
+    padding: 16px 15px;
+}
+.nav-menu {
+    gap: 20px;
+}
+.logo {
+    padding-top: 5px;
+}
+section.hero {
+    height: 585px;
+}
+    .universities-grid,
+    .courses-grid {
+        grid-template-columns: repeat(3, 3fr);
+    }
+    
+    .streams-grid,
+    .places-grid {
+        grid-template-columns: repeat(3, 3fr);
+    }
+    .place-charts {
+    grid-template-columns: repeat(2,2fr);
+}
+.loan-grid {
+    grid-template-columns: repeat(3,1fr);
+}
+section.Blog-list-page .fac-grid {
+    grid-template-columns: repeat(3,1fr);
+}
+.left-allign p {
+    font-size: 10px;
+}
+.midified {
+    right: 10px;
+
+}
+.detail-hero .stat-item {
+    padding: 15px 7px;
+}
+.detail-hero .stat-item h3 {
+    font-size: 17px;
+}
+.botton-design .left-part {
+    gap: 15px;
+}
+section.hero.detail-hero {
+    height: 500px;
+}
+.rank-cards {
+    grid-template-columns: repeat(2,1fr);
+}
+body .feats {
+    grid-template-columns: repeat(2,2fr);
+}
+.leader-card {
+    grid-gap: 15px;
+}
+.profile-type {
+    height: 80px;
+    max-width: 80px;
+}
+
+}
+
+
+
+@media only screen and (max-width: 1023px) {
+
+.universities-grid, .courses-grid {
+    grid-template-columns: repeat(2, 3fr);
+    gap: 20px;
+}
+.streams-grid, .places-grid {
+    grid-template-columns: repeat(2, 2fr);
+}
+.newsletter-form {
+    width: 45%;
+}
+
+.footer {
+    padding: 60px 0 0px;
+}
+.footer {
+    padding: 60px 0 0px;
+}
+.gallery-grid {
+    width: 50%;
+}
+.footer-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 55px;
+}
+section.hero {
+    height: auto;
+}
+.middleware {
+    position: static;
+}
+.middleware .hero-content {
+    flex-direction: column;
+}
+    
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .search-row {
+        grid-template-columns: 1fr;
+    }
+    .newsletter-form {
+        flex-direction: column;
+    }
+.search-box {
+    max-width: 98%;
+    margin: 0 auto 0px;
+    width: 100%;
+    margin-top: 40px;
+    box-shadow: none;
+    background: none;
+    border: 1px solid #ccc;
+}
+.search-field label.left {
+    justify-content: flex-start;
+}
+.search-content {
+    padding: 25px;
+}
+.middleware .hero-content .left {
+    width: 100%;
+}
+section.hero:before, .hero-banner {
+    height: 600px;
+}
+.middleware .hero-content .left.portion {
+    position: absolute;
+    top: 0;
+    padding: 0 15px;
+    padding-top: 100px;
+}
+.auth-buttons {
+    display: none;
+}
+body.property-detail-page .stat-item {
+    padding: 15px 30px;
+}
+/* Hamberger menu */
+
+.nav-wrapper {
+    justify-content: space-between;
+}
+.menu {
+    display: block;
+}
+.menu .menu-trigger {
+    float: left;
+    margin: 0px 20px 0 25px;
+    width: 40px;
+    height: 40px;
+    background: #775042;
+    padding: 10px 7px 10px 7px;
+}
+.menu .line {
+    background: #ffff;
+    display: block;
+    height: 3px;
+    margin-bottom: 4px;
+    width: 24px;
+}
+.menu .line:after {
+    background: #FFFFFF;
+    content: "";
+    display: block;
+    height: 3px;
+    width: 0;
+}
+.menu .line:nth-child(1):after {
+    transition: all 0.6s linear 0.1s;
+}
+nav.nav-menu {
+    background: #775042;
+    bottom: 0;
+    height: 100%;
+    right: -375px;
+    overflow: hidden;
+    padding: 70px 0;
+    position: fixed;
+    left: auto;
+    top: 0;
+    transition: all 0.3s ease 0s;
+    width: 375px;
+    z-index: 999;
+    padding-left: 15px;
+}
+html.show-menu nav.nav-menu::before {
+    content: "";
+    position: fixed;
+    background: #000;
+    left: 0;
+    top: 0;
+    right: 375px;
+    bottom: 0;
+    z-index: 999;
+    opacity: 0.8;
+}
+.show-menu nav.nav-menu {
+    right: 0;
+}
+.nav-menu {
+
+    flex-direction: column;
+}
+.nav-link {
+    color: #fff;
+}
+nav.nav-menu .close-button {
+    width: 40px;
+    right: 0;
+    left: auto;
+    position: absolute;
+    top: 20px;
+    border: 1px solid #FFF;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 14px;
+}
+nav.nav-menu .close-button i {
+    color: #fff;
+    font-size: 25px;
+}
+a.nav-link.active {
+    color: #DAC28B;
+}
+.nav-link:hover {
+    color: #DAC28B;
+}
+html.show-menu {
+    overflow: hidden;
+}
+.loan-grid {
+    grid-template-columns: repeat(2,1fr);
+}
+.place-charts {
+    grid-template-columns: repeat(2,2fr);
+}
+.rc-trend {
+    padding: 10px 14px;
+}
+section#sec-campus .fac-grid {
+    grid-template-columns: repeat(2,1fr);
+}
+.rank-cards {
+    grid-template-columns: repeat(2,1fr);
+}
+.place-top,.comp-scorecards {
+    grid-template-columns: repeat(2,2fr);
+}
+.ptab-highlights {
+    grid-template-columns: repeat(3,1fr);
+}
+.course-grid {
+    grid-template-columns: repeat(1,1fr);
+}
+.campus-stats {
+    grid-template-columns: repeat(3,1fr);
+}
+section.Blog-list-page .fac-grid {
+    grid-template-columns: repeat(2,2fr);
+}
+.footer-col.first {
+    width: 30%;
+    max-width: 30%;
+    flex: 0 0 30%;
+}
+.ov-grid {
+    display: block;
+
+}
+.midified,.botton-design .left-part {
+    display: none;
+}
+.botton-design {
+    justify-content: center;
+    margin-top: 34px;
+}
+.middleware .hero-content .left.portion {
+    padding-top: 65px;
+}
+section.hero.detail-hero, section.hero.detail-hero:before {
+    height: 500px;
+}
+body.property-detail-page section {
+    padding: 20px 0;
+}
+body.property-detail-page .detail-hero {
+    padding: 0;
+}
+.gallery-wrap {
+    grid-template-columns: repeat(2,2fr);
+}
+body .feats {
+    grid-template-columns: repeat(1,1fr);
+}
+.rooms {
+    grid-template-columns: repeat(2,1fr);
+}
+body.property-detail-page .banner-add img {
+    height: 245px;
+    margin: 0 auto;
+}
+section.hero.common-hero, section.hero.common-hero::before {
+    height: auto;
+}
+section.hero.common-hero .hero-banner {
+    height: 315px;
+}
+section.hero.common-hero .hero-description {
+    margin: 0 auto;
+}
+.leadership-grid {
+    grid-template-columns: repeat(2,2fr);
+}
+.achv-card,.ts-card {
+    width: 31%;
+}
+.submenu {
+    position: static;
+    background: transparent;
+    min-width: auto;
+    box-shadow: unset;
+    display: block;
+    width: auto;
+}
+.submenu a {
+    color: #fff;
+}
+html.show-menu nav.nav-menu.active {
+    overflow-y: scroll;
+}
+.submenu a::before {
+    margin-right: 10px;
+    content: "\f178";
+    font: normal normal normal 14px / 1 FontAwesome;
+}
+}
+
+
+
+@media only screen and (max-width: 767px) {
+.stat-item {
+    padding: 15px 20px;
+}
+.universities-grid, .courses-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+}
+.course-filters {
+    overflow: hidden;
+    overflow-x: scroll;
+}
+.streams-grid, .places-grid {
+    grid-template-columns: repeat(1, 2fr);
+}
+.gallery-grid {
+    width: 100%;
+}
+.logo a {
+    max-width: 150px;
+}
+.top-bar {
+    padding: 5px 0;
+}
+span.welcome-text {
+    font-size: 12px;
+}
+.logo:before {
+    border-left: 68px solid transparent;
+    border-right: 82px solid transparent;
+    border-top: 24px solid #775042;
+}
+section.hero:before, .hero-banner {
+    height: 450px;
+}
+p.hero-subtitle {
+    font-size: 14px;
+}
+.hero-title {
+    font-size: 32px;
+    line-height: 37px;
+    margin-top: 14px;
+    margin-bottom: 12px;
+}
+.middleware .hero-content .left.portion {
+    padding-top: 60px;
+}
+.hero-description {
+    font-size: 16px;
+    margin-bottom: 20px;
+    max-width: 100%;
+    line-height: 25px;
+}
+.stats {
+    gap: 10px;
+}
+.stat-item {
+    border-radius: 16px;
+    padding: 9px 23px;
+    text-align: center;
+}
+.stat-item h3 {
+    font-size: 15px;
+    line-height: 20px;
+}
+.search-box {
+    background: transparent;
+    box-shadow: none;
+    border: 1px solid #ccc;
+}
+.search-content {
+    padding: 0;
+}
+p.section-btn {
+    font-size: 14px;
+}
+body h2 {
+    font-size: 25px;
+}
+.section-subtitle {
+    font-size: 15px;
+    line-height: 22px;
+}
+section {
+    padding: 40px 0;
+}
+.stream-card p {
+    margin-bottom: 15px;
+}
+.streams-grid {
+    grid-row-gap: 20px;
+}
+.btn-view-all {
+    display: none;
+}
+.university-image {
+    height: 190px;
+}
+.university-info {
+    padding: 24px 15px;
+}
+.university-info h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.university-info h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.card-badge {
+    top: 15px;
+    padding: 9px 15px;
+    left: 15px;
+    font-size: 10px;
+}
+.filter-btn {
+    padding: 10px 26px;
+    border-radius: 16px;
+}
+section.university-ranking {
+    padding-top: 0;
+}
+.ranking-filters {
+    flex-direction: row;
+    overflow: hidden;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+}
+.ranking-filters button.filter-btn {
+    white-space: pre;
+}
+thead th {
+    padding: 12px;
+}
+tbody td {
+    padding: 12px;
+    font-size: 14px;
+}
+.place-card {
+    padding: 15px;
+}
+.place-card h3 {
+    font-size: 22px;
+    padding-bottom: 13px;
+    margin-bottom: 13px;
+}
+.places-grid {
+    gap: 20px;
+}
+.newsletter-form {
+    width: 100%;
+}
+.newsletter .container {
+    flex-direction: column;
+    gap: 25px;
+}
+.newsletter-form button {
+    padding: 15px 14px;
+    font-size: 14px;
+}
+.newsletter {
+    padding: 40px 0;
+}
+.footer-col ul li a {
+    font-size: 15px;
+}
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+.footer-bottom,.footer-bottom a {
+    font-size: 14px;
+}
+.ov-grid {
+    grid-template-columns: repeat(1,1fr);
+    gap: 24px;
+}
+.W {
+    padding: 0 15px;
+}
+.rank-cards {
+    grid-template-columns: repeat(1,1fr);
+}
+.place-top, .comp-scorecards {
+    grid-template-columns: repeat(1,2fr);
+}
+.ptab-highlights {
+    grid-template-columns: repeat(2,1fr);
+}
+.logo-grid {
+    grid-template-columns: repeat(2,1fr);
+}
+.cc-dur {
+    white-space: pre;
+}
+.gallery-wrap {
+    grid-template-columns: repeat(1,1fr);
+}
+section#sec-campus .fac-grid,.place-charts {
+    grid-template-columns: repeat(1,1fr);
+}
+.campus-stats {
+    grid-template-columns: repeat(2,1fr);
+}
+.hostel-grid,.rooms,.schol-grid,.loan-grid {
+    grid-template-columns: repeat(1,1fr);
+
+}
+.left-allign p {
+    font-size: 10px;
+}
+.left-allign {
+    flex-wrap: wrap;
+        gap: 5px;
+}
+.property-detail-page section.hero:before,.property-detail-page .hero-banner {
+    height: 100vh;
+}
+.property-detail-page .stats {
+    flex-wrap: wrap;
+}
+.property-detail-page h1.hero-title {
+    margin-top: 0;
+}
+body.property-detail-page .stats {
+    justify-content: center;
+    margin-top: 25px;
+}
+.pk-val {
+    font-size: 35px;
+}
+.about-card {
+    padding: 28px 15px;
+    
+}
+.sh-h {
+    font-size: 28px;
+}
+.facts-wrap {
+    padding: 24px 15px;
+}
+.sh-sub {
+    font-size: 16px;
+    line-height: 1.6;
+}
+.ptab-panel {
+    padding: 24px 15px;
+}
+.fee-spec {
+    font-size: 14px;
+}
+.fee-amt {
+    font-size: 14px;
+    
+}
+.cc-name {
+    font-size: 16px;
+}
+.pnb {
+    height: 50px;
+    padding: 0 15px;
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+}
+section#sec-rankings {
+    margin-top: 25px;
+}
+.loan-note {
+    flex-wrap: wrap;
+}
+section.Blog-list-page .fac-grid {
+    grid-template-columns: repeat(1,1fr);
+}
+h1.section-heading {
+    font-size: 70px;
+}
+.error-404.not-found {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+.footer-grid {
+    display: block;
+}
+.footer-col.first {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+section.hero.detail-hero p.hero-subtitle {
+    font-size: 12px;
+}
+body.property-detail-page .stats {
+    margin-top: 0;
+}
+section.hero.detail-hero, section.hero.detail-hero:before, .property-detail-page section.hero:before, .property-detail-page .hero-banner {
+    height: 88vh;
+}
+body.property-detail-page .stat-item {
+    padding: 9px 30px;
+}
+.sh-h {
+    font-size: 25px;
+    line-height: 30px;
+    margin: 10px 0;
+}
+.about-p,.fact-v,.fact-k {
+    font-size: 14px;
+}
+body.property-detail-page .banner-add img {
+    height: 250px;
+    margin: 0 auto;
+}
+.ptab-bar button.ptb {
+    padding: 15px 30px;
+    font-size: 14px;
+}
+div#pt-cse {
+    padding-left: 0;
+    padding-right: 0;
+}
+.pkg-card {
+    padding: 26px 15px;
+}
+.pkm-l {
+    font-size: 11px;
+    letter-spacing: 0;
+}
+.sb-val {
+    font-size: 26px;
+    margin-top: 0;
+}
+.hostel-grid .hostel-photos {
+
+    grid-template-columns: repeat(1,1fr);
+}
+section.hero.common-hero .hero-banner {
+    height: 265px;
+}
+.leadership-grid {
+    grid-template-columns: repeat(1,2fr);
+    grid-gap: 15px;
+}
+.profile-content p {
+    margin: 5px 0!important;
+}
+.leader-card {
+    padding: 15px;
+}
+.glx-grid {
+    grid-template-columns: repeat(1, 1fr);
+}
+.achv-card, .ts-card {
+    width: 100%;
+}
+.desktop {
+    display: none;
+}
+.mobile{
+    display: block
+}
+.about-flex .about-img {
+    width: 50%;
+    max-width: 50%;
+    margin: 15px 0;
+}
+.tu-card-box.new {
+    flex-direction: column;
+}
+.cm-map iframe {
+    height: 250px;
+}
+.tu-grid-layout {
+    grid-template-columns: repeat(1, 3fr);
+    gap: 15px;
+}
+.faq-q {
+    font-size: 15px;
+}
+img.udb-hero-img {
+    height: 220px;
+}
+.udb-title {
+    font-size: 25px;
+    line-height: 30px;
+}
+.udb-sidebar {
+    display: none;
+}
+.udb-grid {
+    display: block;
+}
+}
