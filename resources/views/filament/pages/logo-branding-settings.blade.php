@@ -174,13 +174,17 @@
                     <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Footer Text
                     </label>
-                    <textarea
-                        wire:model="footer_text"
-                        rows="4"
-                        placeholder="Enter footer text"
-                        class="w-full rounded border border-gray-300 px-4 py-1 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
-                    ></textarea>
-                    @error('footer_text') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+
+                    <div wire:ignore>
+                        <textarea
+                            id="footer-text-editor"
+                            class="w-full rounded border border-gray-300 px-4 py-1 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+                        >{{ $footer_text }}</textarea>
+                    </div>
+
+                    @error('footer_text')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -201,3 +205,36 @@
         </div>
     </form>
 </x-filament::page>
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+    document.addEventListener('livewire:navigated', initFooterEditor);
+    document.addEventListener('livewire:load', initFooterEditor);
+
+    function initFooterEditor() {
+        const editorElement = document.querySelector('#footer-text-editor');
+
+        if (!editorElement) {
+            return;
+        }
+
+        if (editorElement.dataset.editorInitialized === 'true') {
+            return;
+        }
+
+        editorElement.dataset.editorInitialized = 'true';
+
+        ClassicEditor
+            .create(editorElement)
+            .then(editor => {
+                editor.model.document.on('change:data', () => {
+                    @this.set('footer_text', editor.getData());
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+</script>
+@endpush

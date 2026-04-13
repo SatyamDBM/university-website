@@ -163,7 +163,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+
+      if (!href || href === '#') {
+        return;
+      }
+
+      const target = document.querySelector(href);
+
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth' });
@@ -222,9 +229,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const hero = document.getElementById('heroBg');
     if (hero) setTimeout(() => hero.classList.add('loaded'), 100);
   });
-
-  console.log('✅ Custom JS Loaded Successfully');
-
 });
 
 

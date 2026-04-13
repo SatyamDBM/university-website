@@ -11,6 +11,7 @@ use App\Models\Notification;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendRegistrationSuccessEmail;
 use Illuminate\Support\Facades\Event;
+use App\Models\GeneralSetting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         if (!App::runningInConsole()) {
             MailConfigurationService::setMailConfig();
         }
+        $brandingSettings = GeneralSetting::where('group', 'branding')
+        ->pluck('value', 'key')
+        ->toArray();
+         View::share('brandingSettings', $brandingSettings);
 
         View::composer('*', function ($view) {
 

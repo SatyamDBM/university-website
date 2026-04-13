@@ -826,17 +826,45 @@ tbody td i {
 }
 
 .place-card {
+    position: relative;
     padding: 42px 30px;
     border-radius: 16px;
     text-align: center;
     transition: all 0.3s;
     cursor: pointer;
-    background: linear-gradient(180deg, #BBA8A1 50%, #FFFFFF 100%);
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.place-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(187, 168, 161, 0.322) 20%,
+        rgba(255, 255, 255, 0.13) 100%
+    );
+    z-index: 1;
 }
 
 .place-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(91, 79, 201, 0.2);
+}
+
+.place-card i,
+.place-card h3,
+.place-card p {
+    position: relative;
+    z-index: 2;
 }
 
 .place-card i {
@@ -847,17 +875,32 @@ tbody td i {
 
 .place-card h3 {
     font-size: 32px;
-    color: #775042;
+    color: #ffffff;
     font-family: "Lato", sans-serif;
-    border-bottom: 2px solid #775042;
+    border-bottom: 2px solid #ffffff;
     padding-bottom: 13px;
     margin-bottom: 20px;
     display: inline-block;
 }
 
 .place-card p {
-    color: #775042;
+    color: #ffffff;
     font-size: 16px;
+}
+.place-card:nth-child(1) {
+    background-image: url('../../images/lucknow.jpg');
+}
+
+.place-card:nth-child(2) {
+    background-image: url('../../images/delhi.jpg');
+}
+
+.place-card:nth-child(3) {
+    background-image: url('../../images/mumbai.jpg');
+}
+
+.place-card:nth-child(4) {
+    background-image: url('../../images/pune.jpg');
 }
 
 /* Newsletter */
@@ -995,7 +1038,7 @@ section.Addsection {
 }
 
 footer.footer {
-    background-image: url(../images/footer-lay.png);
+    background-image: url('../../images/footer-lay.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
