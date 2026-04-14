@@ -82,6 +82,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Categories')
                     ->icon('heroicon-o-tag'),
 
+                NavigationGroup::make('Blogs')
+                    ->icon('heroicon-o-document-text'),
+
                 NavigationGroup::make('Universities Account')
                     ->icon('heroicon-o-building-library'),
 
