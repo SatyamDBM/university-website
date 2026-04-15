@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Edit Course</h1>
             <p class="text-sm text-gray-500 mt-1">Update course details below</p>
         </div>
-        <a href="{{ route('courses.index') }}"
+        <a href="{{ route('university.courses.index') }}"
            class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
             ← Back to Courses
         </a>
@@ -18,7 +18,7 @@
 
     {{-- Form Card --}}
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <form id="courseForm" method="POST" action="{{ route('courses.update', $course) }}" enctype="multipart/form-data">
+        <form id="courseForm" method="POST" action="{{ route('university.courses.update', $course) }}" enctype="multipart/form-data">
                 @csrf
             @method('PUT')
 
@@ -30,7 +30,7 @@
                         class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition">
                     Update Course
                 </button>
-                <a href="{{ route('courses.index') }}"
+                <a href="{{ route('university.courses.index') }}"
                    class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-6 py-2.5 rounded-lg transition">
                     Cancel
                 </a>

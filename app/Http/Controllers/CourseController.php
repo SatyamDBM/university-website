@@ -14,9 +14,29 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        $courses = Course::where('university_id', Auth::user()->university_id ?? null)
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $universityId = Auth::user()->university_id;
+
+        $query = Course::where('university_id', $universityId);
+
+        // 🔥 ALWAYS handle AJAX (even empty search)
+        if ($request->ajax()) {
+
+            if ($request->search) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('course_name', 'like', "%{$request->search}%")
+                        ->orWhere('course_type', 'like', "%{$request->search}%")
+                        ->orWhere('mode', 'like', "%{$request->search}%");
+                });
+            }
+
+            $courses = $query->latest()->paginate(15);
+
+            return view('university.courses.partials.table_body', compact('courses'))->render();
+        }
+
+        // NORMAL LOAD
+        $courses = $query->latest()->paginate(15);
+
         return view('university.courses.index', compact('courses'));
     }
 

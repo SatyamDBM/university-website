@@ -161,7 +161,7 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     |---------------- Lead ----------------|
     */
     Route::get('lead', [LeadController::class, 'lead'])->name('lead');
-    Route::post('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin-lead');
+    Route::get('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin.lead');
 
     /*
     |---------------- Notifications ----------------|

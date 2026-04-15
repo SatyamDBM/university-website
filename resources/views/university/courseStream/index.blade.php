@@ -5,17 +5,35 @@
 <div class="p-6">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Course Streams</h1>
-            <p class="text-sm text-gray-500 mt-1">Manage all course specializations</p>
+<div class="flex items-center justify-between mb-6">
+
+    {{-- LEFT --}}
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800">Course Streams</h1>
+        <p class="text-sm text-gray-500 mt-1">Manage all course specializations</p>
+    </div>
+
+    {{-- RIGHT --}}
+    <div class="flex items-center gap-3">
+
+        {{-- SEARCH --}}
+        <div class="relative">
+            <input type="text"
+                   id="searchBox"
+                   placeholder="Search stream..."
+                   class="w-72 border rounded-lg pl-10 pr-3 py-2 text-sm focus:ring focus:border-amber-500">
+            <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
         </div>
+
+        {{-- ADD BUTTON --}}
         <a href="{{ route('university.streams.create') }}"
-           class="inline-flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+           class="text-white text-sm font-medium px-4 py-2 rounded-lg"
            style="background-color:#6b4a36;">
             + Add Stream
         </a>
+
     </div>
+</div>
 
     {{-- Table --}}
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -30,61 +48,10 @@
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
-                    @forelse($streams as $index => $sp)
-                    <tr class="hover:bg-gray-50 transition" id="stream-row-{{ $sp->id }}">
+               <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
 
-                        {{-- # --}}
-                        <td class="px-4 py-4 text-sm text-gray-400">
-                            {{ $streams->firstItem() + $index }}
-                        </td>
+                    @include('university.courseStream.partials.table_body')
 
-                        {{-- Stream Name --}}
-                        <td class="px-4 py-4">
-                            <div class="text-sm font-semibold text-gray-800">{{ $sp->name }}</div>
-                        </td>
-
-                        {{-- Course --}}
-                        <td class="px-4 py-4">
-                            <div class="text-sm text-gray-700">{{ $sp->course->course_name ?? '—' }}</div>
-                        </td>
-
-                        {{-- Fees Range --}}
-                        <td class="px-4 py-4">
-                            <div class="text-sm font-medium text-gray-800">
-                                ₹{{ number_format($sp->min_fee ?? 0) }}
-                                <span class="text-gray-400 mx-1">—</span>
-                                ₹{{ number_format($sp->max_fee ?? 0) }}
-                            </div>
-                        </td>
-
-                        {{-- Actions --}}
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-1.5">
-                                <a href="{{ route('streams.edit', $sp->id) }}"
-                                   class="text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg transition">
-                                    Edit
-                                </a>
-                                <button onclick="deleteStream({{ $sp->id }})"
-                                        class="text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition">
-                                    Delete
-                                </button>
-                            </div>
-                        </td>
-
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-5 py-16 text-center">
-                            <div class="text-gray-400 text-sm">No streams found.</div>
-                            <a href="{{ route('university.streams.create') }}"
-                               class="inline-flex items-center gap-1 mt-3 text-sm font-medium"
-                               style="color:#6b4a36;">
-                                + Add your first stream
-                            </a>
-                        </td>
-                    </tr>
-                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -139,3 +106,16 @@ function deleteStream(id) {
 }
 </script>
 @endsection
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.initGlobalSearch) {
+        window.initGlobalSearch(
+            'searchBox',
+            '{{ url()->current() }}',
+            'tableBody'
+        );
+    }
+});
+</script>
+@endpush

@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Edit Course Stream</h1>
             <p class="text-sm text-gray-500 mt-1">Update stream details</p>
         </div>
-        <a href="{{ route('streams.index') }}"
+        <a href="{{ route('university.streams.index') }}"
            class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
             ← Back to Streams
         </a>
@@ -24,7 +24,7 @@
     </div>
     @endif
 
-    <form id="streamForm" method="POST" action="{{ route('streams.update', $stream) }}">
+    <form id="streamForm" method="POST" action="{{ route('university.streams.update', $stream) }}">
         @csrf
         @method('PUT')
         <div class="space-y-6">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-between">
-                <a href="{{ route('streams.index') }}"
+                <a href="{{ route('university.streams.index') }}"
                    class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-5 py-2.5 rounded-lg transition">
                     Cancel
                 </a>

@@ -114,7 +114,7 @@ class FacilityController extends Controller
             }
         }
 
-        return redirect()->route('facilities.index')
+        return redirect()->route('university.facilities.index')
             ->with('success', 'Facility submitted for approval!');
     }
 
@@ -224,7 +224,7 @@ class FacilityController extends Controller
             }
         }
 
-        return redirect()->route('facilities.index')
+        return redirect()->route('university.facilities.index')
             ->with('success', 'Facility updated and sent for approval!');
     }
 
@@ -241,7 +241,7 @@ class FacilityController extends Controller
         if (request()->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Facility deleted!']);
         }
-        return redirect()->route('facilities.index')->with('success', 'Facility deleted!');
+        return redirect()->route('university.facilities.index')->with('success', 'Facility deleted!');
     }
 
     private function authorizeFacility(Facility $facility)
