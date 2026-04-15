@@ -9,6 +9,7 @@ use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -44,7 +45,10 @@ class Blog extends Page implements HasTable
 
                 Tables\Columns\ImageColumn::make('featured_image')
                     ->label('Image')
+                    ->disk('public')
                     ->square()
+                    ->height(60)
+                    ->width(60)
                     ->defaultImageUrl(asset('images/no-image.png')),
 
                 Tables\Columns\TextColumn::make('title')
@@ -60,8 +64,8 @@ class Blog extends Page implements HasTable
 
                 Tables\Columns\TextColumn::make('category_name')
                     ->label('Category')
-                    ->default('-')
-                    ->searchable(),
+                    ->searchable()
+                    ->default('-'),
 
                 Tables\Columns\TextColumn::make('short_description')
                     ->label('Short Description')
@@ -72,12 +76,12 @@ class Blog extends Page implements HasTable
                 Tables\Columns\TextColumn::make('detail.meta_title')
                     ->label('Meta Title')
                     ->limit(30)
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('detail.tags')
                     ->label('Tags')
                     ->limit(30)
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
@@ -87,10 +91,13 @@ class Blog extends Page implements HasTable
                     ])
                     ->formatStateUsing(fn (?string $state): string => ucfirst($state ?? '-')),
 
-                Tables\Columns\TextColumn::make('publish_type')
+                Tables\Columns\BadgeColumn::make('publish_type')
                     ->label('Publish Type')
-                    ->formatStateUsing(fn (?string $state): string => ucfirst($state ?? '-'))
-                    ->default('-'),
+                    ->colors([
+                        'success' => 'instant',
+                        'warning' => 'scheduled',
+                    ])
+                    ->formatStateUsing(fn (?string $state): string => ucfirst($state ?? '-')),
 
                 Tables\Columns\TextColumn::make('publish_date')
                     ->label('Publish Date')
@@ -109,85 +116,91 @@ class Blog extends Page implements HasTable
                         'draft' => 'Draft',
                         'published' => 'Published',
                     ]),
-
-                Tables\Filters\SelectFilter::make('publish_type')
-                    ->options([
-                        'instant' => 'Instant',
-                        'scheduled' => 'Scheduled',
-                    ]),
             ])
             ->actions([
                 Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
                     ->tooltip('View Blog')
-                    ->url(fn (BlogModel $record): string => url('/admin/view-blog?id=' . $record->id)),
+                    ->extraAttributes([
+                        'class' => 'view-btn',
+                    ])
+                    ->url(fn (BlogModel $record): string => route('filament.admin.pages.view-blog', [
+                        'id' => $record->id,
+                    ])),
 
-                Action::make('edit')
+                ActionGroup::make([
+                    Action::make('edit')
+                        ->label('Edit Blog')
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('info')
+                        ->url(fn (BlogModel $record): string => route('filament.admin.pages.edit-blog', [
+                            'id' => $record->id,
+                        ])),
+
+                    Action::make('publish')
+                        ->label('Publish Blog')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->visible(fn (BlogModel $record): bool => $record->status !== 'published')
+                        ->requiresConfirmation()
+                        ->modalHeading('Publish Blog')
+                        ->modalDescription('Are you sure you want to publish this blog?')
+                        ->modalSubmitActionLabel('Yes, Publish')
+                        ->action(function (BlogModel $record): void {
+                            $record->update([
+                                'status' => 'published',
+                            ]);
+
+                            Notification::make()
+                                ->title('Blog published successfully')
+                                ->success()
+                                ->send();
+                        }),
+
+                    Action::make('draft')
+                        ->label('Move to Draft')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('warning')
+                        ->visible(fn (BlogModel $record): bool => $record->status === 'published')
+                        ->requiresConfirmation()
+                        ->modalHeading('Move Blog to Draft')
+                        ->modalDescription('Are you sure you want to move this blog to draft?')
+                        ->modalSubmitActionLabel('Yes, Move')
+                        ->action(function (BlogModel $record): void {
+                            $record->update([
+                                'status' => 'draft',
+                            ]);
+
+                            Notification::make()
+                                ->title('Blog moved to draft successfully')
+                                ->success()
+                                ->send();
+                        }),
+
+                    Action::make('delete')
+                        ->label('Delete Blog')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Delete Blog')
+                        ->modalDescription('Are you sure you want to delete this blog?')
+                        ->modalSubmitActionLabel('Yes, Delete')
+                        ->action(function (BlogModel $record): void {
+                            $record->delete();
+
+                            Notification::make()
+                                ->title('Blog deleted successfully')
+                                ->success()
+                                ->send();
+                        }),
+                ])
                     ->label('')
-                    ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Edit Blog')
-                    ->url(fn (BlogModel $record): string => url('/admin/edit-blog?id=' . $record->id)),
-
-                Action::make('publish')
-                    ->label('')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->tooltip('Publish Blog')
-                    ->visible(fn (BlogModel $record): bool => $record->status !== 'published')
-                    ->requiresConfirmation()
-                    ->modalHeading('Publish Blog')
-                    ->modalDescription('Are you sure you want to publish this blog?')
-                    ->modalSubmitActionLabel('Yes, Publish')
-                    ->action(function (BlogModel $record): void {
-                        $record->update([
-                            'status' => 'published',
-                        ]);
-
-                        Notification::make()
-                            ->title('Blog published successfully')
-                            ->success()
-                            ->send();
-                    }),
-
-                Action::make('draft')
-                    ->label('')
-                    ->icon('heroicon-o-x-circle')
-                    ->color('warning')
-                    ->tooltip('Move to Draft')
-                    ->visible(fn (BlogModel $record): bool => $record->status === 'published')
-                    ->requiresConfirmation()
-                    ->modalHeading('Move Blog to Draft')
-                    ->modalDescription('Are you sure you want to move this blog to draft?')
-                    ->modalSubmitActionLabel('Yes, Move')
-                    ->action(function (BlogModel $record): void {
-                        $record->update([
-                            'status' => 'draft',
-                        ]);
-
-                        Notification::make()
-                            ->title('Blog moved to draft successfully')
-                            ->success()
-                            ->send();
-                    }),
-
-                Action::make('delete')
-                    ->label('')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->tooltip('Delete Blog')
-                    ->requiresConfirmation()
-                    ->modalHeading('Delete Blog')
-                    ->modalDescription('Are you sure you want to delete this blog?')
-                    ->modalSubmitActionLabel('Yes, Delete')
-                    ->action(function (BlogModel $record): void {
-                        $record->delete();
-
-                        Notification::make()
-                            ->title('Blog deleted successfully')
-                            ->success()
-                            ->send();
-                    }),
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->extraAttributes([
+                        'class' => 'more-actions-btn',
+                    ])
+                    ->button(),
             ])
             ->actionsColumnLabel('Actions')
             ->defaultSort('id', 'desc')
