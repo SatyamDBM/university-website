@@ -4,24 +4,24 @@
             <div class="flex items-center justify-between px-6 py-1">
                 <div>
                     <h2 class="font-semibold text-[var(--color-text-dark)]">
-                        Create Blog
+                        Edit Blog
                     </h2>
 
                     <p class="text-xs text-[var(--color-text-subtle)]">
-                        Add a new blog with content, SEO details, and publish settings.
+                        Update blog details, SEO information, and publish settings.
                     </p>
                 </div>
 
                 <a
                     href="{{ url('/admin/blog') }}"
-                    class="inline-flex items-center rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300"
+                    class="inline-flex items-center rounded border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
                 >
                     ⬅ Back to Blog
                 </a>
             </div>
 
             <div class="mt-4 rounded border border-[var(--color-border-light)] bg-white p-6">
-                <form wire:submit.prevent="createBlog" class="space-y-6">
+                <form wire:submit.prevent="updateBlog" class="space-y-6">
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div>
@@ -50,8 +50,8 @@
                                 type="text"
                                 wire:model="blog_slug"
                                 placeholder="auto-generated"
-                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
                                 readonly
+                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm bg-gray-100 focus:border-[#775042] focus:outline-none"
                             >
 
                             @error('blog_slug')
@@ -89,6 +89,15 @@
                                 class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm file:mr-4 file:rounded file:border-0 file:bg-[#775042] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white"
                             >
 
+                            @if($old_featured_image)
+                                <div class="mt-2">
+                                    <img
+                                        src="{{ asset('storage/' . $old_featured_image) }}"
+                                        class="h-20 w-20 rounded border object-cover"
+                                    >
+                                </div>
+                            @endif
+
                             @error('featured_image')
                                 <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                             @enderror
@@ -121,14 +130,9 @@
                                 wire:model="status"
                                 class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
                             >
-                                <option value="">Select Status</option>
                                 <option value="draft">Draft</option>
                                 <option value="published">Published</option>
                             </select>
-
-                            @error('status')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
                         </div>
 
                         <div>
@@ -140,14 +144,9 @@
                                 wire:model="publish_type"
                                 class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
                             >
-                                <option value="">Select Publish Type</option>
                                 <option value="instant">Instant</option>
                                 <option value="scheduled">Scheduled</option>
                             </select>
-
-                            @error('publish_type')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
 
@@ -159,13 +158,8 @@
                         <textarea
                             wire:model="short_description"
                             rows="4"
-                            placeholder="Enter short description"
                             class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
                         ></textarea>
-
-                        @error('short_description')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div>
@@ -176,13 +170,9 @@
                         <div wire:ignore>
                             <textarea
                                 id="content-editor"
-                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
-                            ></textarea>
+                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm"
+                            >{!! $content !!}</textarea>
                         </div>
-
-                        @error('content')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="rounded border border-gray-200 p-4">
@@ -191,73 +181,20 @@
                         </h3>
 
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div>
-                                <label class="mb-1 block text-sm font-medium text-gray-700">
-                                    Meta Title
-                                </label>
-
-                                <input
-                                    type="text"
-                                    wire:model="meta_title"
-                                    placeholder="Enter meta title"
-                                    class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
-                                >
-
-                                @error('meta_title')
-                                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label class="mb-1 block text-sm font-medium text-gray-700">
-                                    Tags
-                                </label>
-
-                                <input
-                                    type="text"
-                                    wire:model="tags"
-                                    placeholder="Enter tags"
-                                    class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
-                                >
-
-                                @error('tags')
-                                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
+                            <input type="text" wire:model="meta_title" placeholder="Meta Title" class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm">
+                            <input type="text" wire:model="tags" placeholder="Tags" class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm">
                         </div>
 
                         <div class="mt-4">
-                            <label class="mb-1 block text-sm font-medium text-gray-700">
-                                Meta Description
-                            </label>
-
-                            <textarea
-                                wire:model="meta_description"
-                                rows="3"
-                                placeholder="Enter meta description"
-                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
-                            ></textarea>
-
-                            @error('meta_description')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                            <textarea wire:model="meta_description" rows="3" placeholder="Meta Description" class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm"></textarea>
                         </div>
 
                         <div class="mt-4">
-                            <label class="mb-1 block text-sm font-medium text-gray-700">
-                                Meta Keywords
-                            </label>
+                            <textarea wire:model="meta_keywords" rows="3" placeholder="Meta Keywords" class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm"></textarea>
+                        </div>
 
-                            <textarea
-                                wire:model="meta_keywords"
-                                rows="3"
-                                placeholder="Enter meta keywords"
-                                class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm focus:border-[#775042] focus:outline-none"
-                            ></textarea>
-
-                            @error('meta_keywords')
-                                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                            @enderror
+                        <div class="mt-4">
+                            <input type="text" wire:model="canonical_url" placeholder="Canonical URL" class="w-full rounded-[5px] border border-gray-300 px-3 py-2 text-sm">
                         </div>
                     </div>
 
@@ -273,7 +210,7 @@
                             type="submit"
                             class="rounded-[5px] bg-[#775042] px-5 py-2 text-sm font-medium text-white"
                         >
-                            Create Blog
+                            Update Blog
                         </button>
                     </div>
                 </form>
