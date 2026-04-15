@@ -13,6 +13,7 @@ use App\Http\Controllers\CmsPageController;
 
 /* Website */
 use App\Http\Controllers\Website\WebsiteController;
+use App\Http\Controllers\Website\HomeController;
 
 /* University Panel */
 use App\Http\Controllers\AdmissionProcessController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\UniversityOverviewController;
 use App\Http\Controllers\UniversityFaqController;
 use App\Http\Controllers\University\CourseStreamController;
 use App\Http\Controllers\University\NotificationController;
+use App\Http\Controllers\University\LeadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,8 @@ use App\Http\Controllers\University\NotificationController;
 
 Route::controller(WebsiteController::class)->group(function () {
     Route::get('/', 'home')->name('home');
+    Route::get('/filter-courses', 'filterCourses');
+    Route::post('/newsletter/subscribe', 'subscribeNewsletter');
     // Route::prefix('web')->group(function () {
     Route::get('/universities', 'universities')->name('universities');
     Route::get('/universities-details', 'universityDetail')->name('university.detail');
@@ -45,6 +49,7 @@ Route::controller(WebsiteController::class)->group(function () {
     Route::get('/terms-conditions', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacy')->name('privacy');
     Route::get('/search', 'search')->name('search');
+    Route::post('/enquiry/store',  'enquiryStore')->name('enquiry.store');
 });
 
 /*
@@ -152,6 +157,11 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     |---------------- Streams ----------------|
     */
     Route::resource('streams', CourseStreamController::class);
+    /*
+    |---------------- Lead ----------------|
+    */
+    Route::get('lead', [LeadController::class, 'lead'])->name('lead');
+    Route::post('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin-lead');
 
     /*
     |---------------- Notifications ----------------|

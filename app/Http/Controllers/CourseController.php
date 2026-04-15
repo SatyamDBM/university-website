@@ -42,7 +42,7 @@ class CourseController extends Controller
             $data['curriculum_file'] = $request->file('curriculum_file')->store('curriculums', 'public');
         }
         $course = Course::create($data);
-        return redirect()->route('courses.index')->with('success', 'Course saved successfully!');
+        return redirect()->route('university.courses.index')->with('success', 'Course saved successfully!');
     }
 
     public function show(Course $course)
@@ -68,7 +68,7 @@ class CourseController extends Controller
             $data['status'] = 'Pending';
         }
         $course->update($data);
-        return response()->json(['success' => true, 'message' => 'Course updated successfully', 'redirect' => route('courses.index')]);
+        return response()->json(['success' => true, 'message' => 'Course updated successfully', 'redirect' => route('university.courses.index')]);
     }
 
     public function destroy(Course $course)

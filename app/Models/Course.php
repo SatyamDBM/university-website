@@ -13,6 +13,7 @@ class Course extends Model
 
     protected $fillable = [
         'university_id',
+        'user_id',
         'category_id',
         'subcategory_id',
         'course_name',
@@ -55,4 +56,12 @@ class Course extends Model
     {
         return $this->hasMany(CourseStream::class);
     }
+
+
+    public const DEGREE_LEVELS = [
+        'Bachelors',
+        'Masters',
+        'Doctorate',
+        'Certification',
+    ];
 }

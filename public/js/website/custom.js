@@ -73,17 +73,17 @@ document.addEventListener("DOMContentLoaded", function () {
     return false;
   };
 
-  window.subscribeNewsletter = function () {
-    const input = document.getElementById('newsletterEmail');
-    const email = input?.value;
+  // window.subscribeNewsletter = function () {
+  //   const input = document.getElementById('newsletterEmail');
+  //   const email = input?.value;
 
-    if (email && email.includes('@')) {
-      alert(`Subscribed: ${email}`);
-      input.value = '';
-    } else {
-      alert('Enter valid email');
-    }
-  };
+  //   if (email && email.includes('@')) {
+  //     alert(`Subscribed: ${email}`);
+  //     input.value = '';
+  //   } else {
+  //     alert('Enter valid email');
+  //   }
+  // };
 
   window.openGallery = function () {
     const el = document.getElementById('galleryLB');
@@ -237,3 +237,191 @@ document.querySelectorAll(".has-dropdown").forEach(item => {
         this.classList.toggle("open");
     });
 });
+
+
+function filterCourses(level) {
+
+    fetch('/filter-courses?level=' + level)
+        .then(response => response.json())
+        .then(data => {
+
+            let html = '';
+
+            data.forEach(course => {
+
+                html += `
+                <div class="course-card">
+                    <p class="Timer">${course.type ?? 'Full Time'}</p>
+
+                    <h4>${course.course_name}</h4>
+
+                    <div class="course-stats">
+                        <p>Duration</p>
+                        <p class="right">${course.duration}</p>
+                    </div>
+
+                    <div class="course-stats">
+                        <p>Total Avg. Fees</p>
+                        <p class="right">${course.fees}</p>
+                    </div>
+
+                    <div class="course-stats">
+                        <p>Universities</p>
+                        <p class="right">
+                            ${course.university_count > 100 ? course.university_count + '+' : course.university_count}
+                        </p>
+                    </div>
+
+                    <a href="/courses-details/${course.course_name}" class="course-link">
+                        Course Overview →
+                    </a>
+                </div>`;
+            });
+
+            document.getElementById('coursesGrid').innerHTML = html;
+        });
+}
+
+function subscribeNewsletter() {
+
+    let emailInput = document.getElementById('newsletterEmail');
+    let msgBox = document.getElementById('newsletterMsg');
+
+    let email = emailInput.value;
+
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // reset message
+    msgBox.innerText = '';
+    msgBox.className = '';
+
+    // frontend validation
+    if (!email || !email.includes('@')) {
+        msgBox.innerText = 'Please enter a valid email';
+        msgBox.classList.add('error');
+        return;
+    }
+
+    fetch('/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token
+        },
+        body: JSON.stringify({
+            email: email
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        // ❌ REMOVE alert
+        // alert(data.message);
+
+        msgBox.innerText = data.message;
+
+        if (data.status) {
+            msgBox.classList.add('success');
+            emailInput.value = '';
+        } else {
+            msgBox.classList.add('error');
+        }
+    })
+    .catch(() => {
+        msgBox.innerText = 'Something went wrong';
+        msgBox.classList.add('error');
+    });
+}
+
+function handleEnquiry(event) {
+    event.preventDefault();
+
+    // clear previous errors
+    document.querySelectorAll('.error').forEach(e => e.innerText = '');
+
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let data = {
+        name: document.getElementById('enq_name').value,
+        email: document.getElementById('enq_email').value,
+        mobile: document.getElementById('enq_mobile').value,
+        course: document.getElementById('enq_course').value,
+        message: document.getElementById('enq_message').value,
+    };
+
+    fetch('/enquiry/store', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': token
+        },
+        body: JSON.stringify(data)
+    }).then(async (response) => {
+
+          let res = await response.json().catch(() => null);
+
+          if (!res) return;
+
+          // ❌ VALIDATION ERROR
+            if (!response.ok) {
+
+          if (res.errors) {
+
+              if (res.errors.name) {
+                  document.getElementById('err_name').innerText = res.errors.name[0];
+              }
+
+              if (res.errors.email) {
+                  document.getElementById('err_email').innerText = res.errors.email[0];
+              }
+
+              if (res.errors.mobile) {
+                  document.getElementById('err_mobile').innerText = res.errors.mobile[0];
+              }
+
+              if (res.errors.course) {
+                  document.getElementById('err_course').innerText = res.errors.course[0];
+              }
+
+              if (res.errors.message) {
+                  document.getElementById('err_message').innerText = res.errors.message[0];
+              }
+          }
+
+          return;
+      }
+
+      // ✅ SUCCESS CASE
+     if (res.status === true) {
+
+    showSuccessPopup(res.message);
+
+    document.getElementById('enquiryForm').reset();
+
+    setTimeout(() => {
+        closeEnquiryModal();
+    }, 500); // small delay so user sees success message
+
+    return;
+}
+
+  })
+    .catch(() => {
+        alert("Something went wrong!");
+    });
+}
+
+
+function showToast(message, type = "success") {
+
+    let toast = document.getElementById("toast");
+
+    toast.className = "toast " + type;
+    toast.innerText = message;
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 3000);
+}

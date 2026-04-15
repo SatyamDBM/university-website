@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('university_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('subcategory_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->string('course_name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('degree_level')->default('Bachelors');
 
             // Academic Details
             $table->string('duration')->nullable(); // e.g., 3 years / 6 semesters

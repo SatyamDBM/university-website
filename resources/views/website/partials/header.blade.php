@@ -76,8 +76,13 @@
             <a href="{{route('blog')}}" class="nav-link {{ request()->routeIs('blog*') ? 'active' : '' }}">Blog</a>
         </nav>
                 <div class="auth-buttons">
-                    <button class="btn-login" onclick="openLoginModal()">Universiy Login</button>
+                    <a href="{{ route('login') }}"
+                    class="btn-login"
+                    style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">
+                        University Login
+                    </a>
                     <button class="btn-signup" onclick="openEnquiryModal()">Enquire Now</button>
                 </div>
             </div>
     </header>
+    <div id="toast" class="toast"></div>

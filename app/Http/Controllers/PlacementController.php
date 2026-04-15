@@ -198,7 +198,7 @@ class PlacementController extends Controller
             ? 'Placement data saved as draft!'
             : 'Placement data updated and sent for approval!';
 
-        return redirect()->route('placements.index')->with('success', $msg);
+        return redirect()->route('university.placements.index')->with('success', $msg);
     }
 
     public function destroy(Placement $placement)
@@ -206,7 +206,7 @@ class PlacementController extends Controller
         $this->authorizePlacement($placement);
         $placement->recruiters()->detach();
         $placement->delete();
-        return redirect()->route('placements.index')->with('success', 'Placement data deleted!');
+        return redirect()->route('university.placements.index')->with('success', 'Placement data deleted!');
     }
 
     private function authorizePlacement(Placement $placement)

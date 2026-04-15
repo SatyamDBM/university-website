@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Campus Facilities</h1>
             <p class="text-sm text-gray-500 mt-1">Manage all your campus facilities</p>
         </div>
-        <a href="{{ route('facilities.create') }}"
+        <a href="{{ route('university.facilities.create') }}"
            class="inline-flex items-center gap-2 bg-[#6b4a36] hover:bg-[#5a3d2e] text-white text-sm font-medium px-4 py-2 rounded-lg transition">
             + Add Facility
         </a>
@@ -96,12 +96,12 @@
                         {{-- Actions --}}
                         <td class="px-4 py-4">
                             <div class="flex items-center gap-1.5">
-                                <a href="{{ route('facilities.show', $facility) }}"
+                                <a href="{{ route('university.facilities.show', $facility) }}"
                                    class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1.5 rounded-lg hover:bg-blue-100">
                                     View
                                 </a>
 
-                                <a href="{{ route('facilities.edit', $facility) }}"
+                                <a href="{{ route('university.facilities.edit', $facility) }}"
                                    class="text-xs text-amber-600 bg-amber-50 px-2.5 py-1.5 rounded-lg hover:bg-amber-100">
                                     Edit
                                 </a>
@@ -139,7 +139,7 @@
 function toggleFacility(id, btn) {
     const isActive = btn.dataset.active === '1' ? 0 : 1;
 
-    fetch(`/facilities/${id}/toggle-active`, {
+    fetch(`university/facilities/${id}/toggle-active`, {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -177,7 +177,7 @@ function deleteFacility(id) {
         confirmButtonColor: '#7c3aed',
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/facilities/${id}`, {
+            fetch(`university/facilities/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -187,7 +187,7 @@ function deleteFacility(id) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    showSwal('success', data.message, '{{ route('facilities.index') }}');
+                    showSwal('success', data.message, '{{ route('university.facilities.index') }}');
                 }
             });
         }

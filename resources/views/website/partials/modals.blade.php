@@ -53,28 +53,46 @@
     <div class="modal-content">
         <span class="close" onclick="closeEnquiryModal()">&times;</span>
         <h2>Enquire Now</h2>
-        <form onsubmit="handleEnquiry(event)">
+            <form id="enquiryForm" onsubmit="handleEnquiry(event)">
+
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" placeholder="Full Name" required>
+                <input type="text" id="enq_name" placeholder="Full Name">
+                <small class="error" id="err_name"></small>
             </div>
+
             <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" placeholder="Email Address" required>
+                <input type="email" id="enq_email" placeholder="Email Address">
+                <small class="error" id="err_email"></small>
             </div>
+
             <div class="form-group">
                 <label>Mobile Number</label>
-                <input type="tel" placeholder="Mobile Number" required>
+                <input type="text" id="enq_mobile" placeholder="Mobile Number">
+                <small class="error" id="err_mobile"></small>
             </div>
+
             <div class="form-group">
                 <label>Course Interested In</label>
-                <input type="text" placeholder="Course Interested In" required>
+                <input type="text" id="enq_course" placeholder="Course Interested In">
+                <small class="error" id="err_course"></small>
             </div>
+
             <div class="form-group">
-                <label>Write message here...</label>
-                <textarea placeholder="Write your message here..." required></textarea>
+                <label>Message</label>
+                <textarea id="enq_message" placeholder="Write your message"></textarea>
+                <small class="error" id="err_message"></small>
             </div>
+
             <button type="submit" class="btn-submit">Enquire Now</button>
         </form>
+    </div>
+</div>
+<div id="successPopup" class="popup">
+    <div class="popup-box">
+        <h3>🎉 Success</h3>
+        <p id="successText"></p>
+        <button onclick="closeSuccessPopup()">OK</button>
     </div>
 </div>

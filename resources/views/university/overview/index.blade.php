@@ -133,7 +133,7 @@
         ═══════════════════════════════ --}}
         <div class="col-span-2">
 
-            <form action="{{ route('universities.overview.store') }}" method="POST"
+            <form action="{{ route('university.overview.store') }}" method="POST"
                   enctype="multipart/form-data" id="overviewForm">
                 @csrf
 

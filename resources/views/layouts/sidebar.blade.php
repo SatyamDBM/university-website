@@ -80,7 +80,7 @@
 
             <div x-show="academicsOpen"
                 x-transition
-                class="ml-4 pl-4 border-l border-gray-200 space-y-1">
+                class="ml-4 pl-4 border-gray-200 space-y-1">
 
                 <a href="{{ route('university.courses.index') }}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
@@ -216,7 +216,7 @@
 
             <div x-show="marketingOpen"
                 x-transition
-                class="ml-4 pl-4 border-l border-gray-200 space-y-1">
+                class="ml-4 pl-4 border-gray-200 space-y-1">
 
                 <a href=""
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
@@ -265,7 +265,7 @@
             </button>
             <div x-show="billingOpen"
                 x-transition
-                class="ml-4 pl-4 border-l border-gray-200 space-y-1">
+                class="ml-4 pl-4 border-gray-200 space-y-1">
 
                 <a href=""
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
@@ -325,7 +325,7 @@
 
             <div x-show="accountOpen"
                 x-transition
-                class="ml-4 pl-4 border-l border-gray-200 space-y-1">
+                class="ml-4 pl-4 border-gray-200 space-y-1">
 
                 <a href="{{ route('profile.edit') }}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all

@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto px-4 py-8">
-    <form method="POST" action="{{ route('universities.overview.store', $university->id) }}">
+    <form method="POST" action="{{ route('university.overview.store', $university->id) }}">
         @csrf
         <h2 class="text-xl font-semibold text-gray-800 mb-6">Create University Overview</h2>
         <div class="space-y-5">

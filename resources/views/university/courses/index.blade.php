@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Course List</h1>
             <p class="text-sm text-gray-500 mt-1">Manage all your university courses</p>
         </div>
-        <a href="{{ route('courses.create') }}"
+        <a href="{{ route('university.courses.create') }}"
            class="inline-flex items-center gap-2 bg-[#6b4a36] hover:bg-[#5a3d2e] text-white text-sm font-medium px-4 py-2 rounded-lg transition">
             + Add New Course
         </a>
@@ -127,11 +127,11 @@
                         {{-- Actions --}}
                         <td class="px-4 py-4">
                             <div class="flex items-center gap-1.5">
-                                <a href="{{ route('courses.show', $course) }}"
+                                <a href="{{ route('university.courses.show', $course) }}"
                                    class="text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition">
                                     View
                                 </a>
-                                <a href="{{ route('courses.edit', $course) }}"
+                                <a href="{{ route('university.courses.edit', $course) }}"
                                    class="text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg transition">
                                     Edit
                                 </a>
@@ -147,7 +147,7 @@
                     <tr>
                         <td colspan="11" class="px-5 py-16 text-center">
                             <div class="text-gray-400 text-sm">No courses found.</div>
-                            <a href="{{ route('courses.create') }}"
+                            <a href="{{ route('university.courses.create') }}"
                                class="inline-flex items-center gap-1 mt-3 text-purple-600 hover:text-purple-800 text-sm font-medium">
                                 + Add your first course
                             </a>
@@ -212,7 +212,7 @@ function deleteCourse(id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/courses/${id}`, {
+            fetch(`university/courses/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -222,7 +222,7 @@ function deleteCourse(id) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    showSwal('success', data.message, '{{ route('courses.index') }}');
+                    showSwal('success', data.message, '{{ route('university.courses.index') }}');
                 }
             });
         }

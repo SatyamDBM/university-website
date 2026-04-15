@@ -28,16 +28,14 @@
             <form
                 id="courseForm"
                 method="POST"
-                action="{{ route('courses.store') }}"
+                action="{{ route('university.courses.store') }}"
                 enctype="multipart/form-data"
                     class="border border-gray-200 rounded-xl p-6 bg-white space-y-6"
             >
                 @csrf
-
                 @include('university.courses.partials.form')
-
                 <div class="flex flex-wrap items-center justify-end gap-3 border-t border-gray-200 pt-6">
-                    <a href="{{ route('courses.index') }}"
+                    <a href="{{ route('university.courses.index') }}"
                         class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
                                 ← Back
                             </a>
@@ -49,7 +47,6 @@
                     >
                         Save as Draft
                     </button>
-
                     <button
                         type="submit"
                         class="rounded-[5px] bg-[#775042] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#5e3d31]"

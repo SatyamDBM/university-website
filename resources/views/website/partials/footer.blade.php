@@ -1,16 +1,21 @@
     {{-- ========== NEWSLETTER ========== --}}
-    <section class="newsletter">
-        <div class="container">
-            <div class="newsletter-form">
-                <h2>Join Our Newsletter</h2>
-                <p>Subscribe to get updates on your inbox. Latest updates & news</p>
-            </div>
-            <div class="newsletter-form">
-                <input type="email" placeholder="Enter your email" id="newsletterEmail">
-                <button onclick="subscribeNewsletter()">Subscribe Now</button>
-            </div>
+   <section class="newsletter">
+    <div class="container">
+
+        <div class="newsletter-form">
+            <h2>Join Our Newsletter</h2>
+            <p>Subscribe to get updates on your inbox. Latest updates & news</p>
         </div>
-    </section>
+
+        <div class="newsletter-form">
+           <input type="email" id="newsletterEmail" placeholder="Enter your email">
+            <button onclick="subscribeNewsletter()">Subscribe Now</button>
+
+            <small id="newsletterMsg"></small>
+        </div>
+
+    </div>
+</section>
     {{-- ========== END NEWSLETTER ========== --}}
  <footer class="footer">
         <div class="container">

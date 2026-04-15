@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Course Streams</h1>
             <p class="text-sm text-gray-500 mt-1">Manage all course specializations</p>
         </div>
-        <a href="{{ route('streams.create') }}"
+        <a href="{{ route('university.streams.create') }}"
            class="inline-flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
            style="background-color:#6b4a36;">
             + Add Stream
@@ -77,7 +77,7 @@
                     <tr>
                         <td colspan="5" class="px-5 py-16 text-center">
                             <div class="text-gray-400 text-sm">No streams found.</div>
-                            <a href="{{ route('streams.create') }}"
+                            <a href="{{ route('university.streams.create') }}"
                                class="inline-flex items-center gap-1 mt-3 text-sm font-medium"
                                style="color:#6b4a36;">
                                 + Add your first stream
@@ -110,7 +110,7 @@ function deleteStream(id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/streams/${id}`, {
+            fetch(`university/streams/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

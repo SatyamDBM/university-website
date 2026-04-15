@@ -28,29 +28,37 @@
                     </p>
 
                     {{-- Stats --}}
-                    <div class="stats">
-                        <div class="stat-item">
-                            <img src="{{ asset('images/Universities.png') }}" alt="Universities">
-                            <div>
-                                <h3>5000+</h3>
-                                <p>Universities</p>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <img src="{{ asset('images/Courses.png') }}" alt="Courses">
-                            <div>
-                                <h3>50,000+</h3>
-                                <p>Courses</p>
-                            </div>
-                        </div>
-                        <div class="stat-item">
-                            <img src="{{ asset('images/Students Helped.png') }}" alt="Students Helped">
-                            <div>
-                                <h3>6000+</h3>
-                                <p>Students Helped</p>
-                            </div>
+                   <div class="stats">
+                    <div class="stat-item">
+                        <img src="{{ asset('images/Universities.png') }}" alt="Universities">
+                        <div>
+                            <h3>
+                                {{ $universityCount > 100 ? number_format($universityCount).'+' : $universityCount }}
+                            </h3>
+                            <p>Universities</p>
                         </div>
                     </div>
+
+                    <div class="stat-item">
+                        <img src="{{ asset('images/Courses.png') }}" alt="Courses">
+                        <div>
+                            <h3>
+                                {{ $courseCount > 100 ? number_format($courseCount).'+' : $courseCount }}
+                            </h3>
+                            <p>Courses</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <img src="{{ asset('images/Students Helped.png') }}" alt="Students Helped">
+                        <div>
+                            <h3>
+                                {{ $student_helped > 100 ? number_format($student_helped).'+' : $student_helped }}
+                            </h3>
+                            <p>Students Helped</p>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 {{-- Search Box --}}
@@ -119,7 +127,7 @@
 
 
     {{-- ========== POPULAR STREAMS ========== --}}
-    <section class="popular-streams">
+    {{-- <section class="popular-streams">
         <div class="container">
             <p class="section-btn">Browse By Category</p>
             <h2 class="section-title">Explore Popular Streams</h2>
@@ -166,6 +174,36 @@
                     <p>150+ Universities</p>
                     <a href="{{ url('course-detail') }}" class="stream-link">Explore <i class="fas fa-arrow-right"></i></a>
                 </div>
+            </div>
+        </div>
+    </section> --}}
+        <section class="popular-streams">
+        <div class="container">
+            <p class="section-btn">Browse By Category</p>
+            <h2 class="section-title">Explore Popular Streams</h2>
+            <p class="section-subtitle">
+                Discover the right stream for your future - from engineering to arts and beyond
+            </p>
+
+            <div class="streams-grid">
+
+                @foreach($categories as $category)
+                    <div class="stream-card">
+                        <h3>{{ $category->name }}</h3>
+
+                        <p>
+                            {{ $category->university_count > 100 
+                                ? number_format($category->university_count).'+' 
+                                : $category->university_count }}
+                            Universities
+                        </p>
+
+                        <a href="{{ url('course-detail/'.$category->id) }}" class="stream-link">
+                            Explore <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                @endforeach
+
             </div>
         </div>
     </section>
@@ -335,15 +373,15 @@
             <p class="section-subtitle">Hand-picked top courses trusted by millions of students</p>
 
             <div class="course-filters">
-                <button class="filter-btn active">All</button>
-                <button class="filter-btn">Bachelors</button>
-                <button class="filter-btn">Masters</button>
-                <button class="filter-btn">Doctorate</button>
-                <button class="filter-btn">Certification</button>
+            <button class="filter-btn active" onclick="filterCourses('')">All</button>
+            <button class="filter-btn" onclick="filterCourses('Bachelors')">Bachelors</button>
+            <button class="filter-btn" onclick="filterCourses('Masters')">Masters</button>
+            <button class="filter-btn" onclick="filterCourses('Doctorate')">Doctorate</button>
+            <button class="filter-btn" onclick="filterCourses('Certification')">Certification</button>
             </div>
 
-            <div class="courses-grid">
-                <div class="course-card">
+            <div class="courses-grid" id="coursesGrid">
+                {{-- <div class="course-card">
                     <p class="Timer">Full Time</p>
                     <h4>B.Com General</h4>
                     <div class="course-stats">
@@ -356,82 +394,38 @@
                         <p>Universities</p><p class="right">500+</p>
                     </div>
                     <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
-                </div>
+                </div> --}}
+                @foreach($courseData as $course)
 
                 <div class="course-card">
-                    <p class="Timer">Full Time</p>
-                    <h4>B.Tech Biotechnology</h4>
-                    <div class="course-stats">
-                        <p>Duration</p><p class="right">4 YEARS</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Total Avg. Fees</p><p class="right">80.00 k</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Universities</p><p class="right">500+</p>
-                    </div>
-                    <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
-                </div>
+                    <p class="Timer">{{ $course->type ?? 'Full Time' }}</p>
 
-                <div class="course-card">
-                    <p class="Timer">Full Time</p>
-                    <h4>BCA</h4>
-                    <div class="course-stats">
-                        <p>Duration</p><p class="right">3 YEARS</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Total Avg. Fees</p><p class="right">80.00 k</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Universities</p><p class="right">500+</p>
-                    </div>
-                    <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
-                </div>
+                    <h4>{{ $course->course_name }}</h4>
 
-                <div class="course-card">
-                    <p class="Timer">Full Time</p>
-                    <h4>B.Tech Food Technology</h4>
                     <div class="course-stats">
-                        <p>Duration</p><p class="right">4 YEARS</p>
+                        <p>Duration</p>
+                        <p class="right">{{ $course->duration }}</p>
                     </div>
-                    <div class="course-stats">
-                        <p>Total Avg. Fees</p><p class="right">80.00 k</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Universities</p><p class="right">500+</p>
-                    </div>
-                    <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
-                </div>
 
-                <div class="course-card">
-                    <p class="Timer">Full Time</p>
-                    <h4>MBA</h4>
                     <div class="course-stats">
-                        <p>Duration</p><p class="right">2 YEARS</p>
+                        <p>Total Avg. Fees</p>
+                        <p class="right">{{ $course->fees }}</p>
                     </div>
-                    <div class="course-stats">
-                        <p>Total Avg. Fees</p><p class="right">80.00 k</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Universities</p><p class="right">500+</p>
-                    </div>
-                    <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
-                </div>
 
-                <div class="course-card">
-                    <p class="Timer">Full Time</p>
-                    <h4>MCA</h4>
                     <div class="course-stats">
-                        <p>Duration</p><p class="right">2 YEARS</p>
+                        <p>Universities</p>
+                        <p class="right">
+                            {{ $course->university_count > 100 
+                                ? $course->university_count.'+' 
+                                : $course->university_count }}
+                        </p>
                     </div>
-                    <div class="course-stats">
-                        <p>Total Avg. Fees</p><p class="right">80.00 k</p>
-                    </div>
-                    <div class="course-stats">
-                        <p>Universities</p><p class="right">500+</p>
-                    </div>
-                    <a href="{{ url('course-detail') }}" class="course-link">Course Overview <i class="fas fa-arrow-right"></i></a>
+
+                    <a href="{{ url('courses-details/'.$course->course_name) }}" class="course-link">
+                        Course Overview →
+                    </a>
                 </div>
+             @endforeach
             </div>
         </div>
     </section>

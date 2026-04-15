@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Add Placement Data</h1>
             <p class="text-sm text-gray-500 mt-1">Structured placement data with validation & approval workflow</p>
         </div>
-        <a href="{{ route('placements.index') }}"
+        <a href="{{ route('university.placements.index') }}"
            class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
             ← Back to Placements
         </a>
@@ -27,7 +27,7 @@
     </div>
     @endif
 
-    <form id="placementForm" method="POST" action="{{ route('placements.store') }}" enctype="multipart/form-data">
+    <form id="placementForm" method="POST" action="{{ route('university.placements.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="space-y-6">

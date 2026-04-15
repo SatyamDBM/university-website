@@ -10,7 +10,7 @@
         <h1 class="text-2xl font-bold text-gray-800">Placement Records</h1>
         <p class="text-sm text-gray-500 mt-1">Manage all placement data</p>
     </div>
-    <a href="{{ route('placements.create') }}"
+    <a href="{{ route('university.placements.create') }}"
        class="inline-flex items-center gap-2 bg-[#6b4a36] hover:bg-[#5a3d2e] text-white text-sm font-medium px-4 py-2 rounded-lg transition">
         + Add Placement
     </a>
@@ -106,7 +106,7 @@
                                 Edit
                             </a>
 
-                            <form action="{{ route('placements.destroy', $placement) }}" method="POST">
+                            <form action="{{ route('university.placements.destroy', $placement) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button"
