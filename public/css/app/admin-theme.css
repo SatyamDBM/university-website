@@ -1637,3 +1637,11 @@ body {
     stroke: #16a34a !important;
     color:#16a34a !important;
 }
+.active-btn{
+    stroke: #3b82f6;
+    color: #3b82f6;
+}
+.inactive-btn{
+    stroke: red;
+    color: red;
+}
