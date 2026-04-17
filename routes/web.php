@@ -44,7 +44,7 @@ Route::controller(WebsiteController::class)->group(function () {
     Route::get('/faq', 'faq')->name('web-faq');
     // });
     Route::get('/blog', 'blog')->name('blog');
-    Route::get('/blog-detail', 'blogDetail')->name('blog.detail');
+    Route::get('/blog-detail/{slug}', 'blogDetail')->name('blog.detail');
     Route::get('/about-us', 'about')->name('about');
     Route::get('/contact-us', 'contact')->name('contact');
     Route::get('/terms-conditions', 'terms')->name('terms');
@@ -126,7 +126,7 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
         'index' => 'gallery.index',
         'create' => 'gallery.create',
-        'store' => 'gallery.store',
+        'store' => 'gallery.store', 
         'edit' => 'gallery.edit',
         'update' => 'gallery.update',
         'destroy' => 'gallery.destroy',
