@@ -11,6 +11,12 @@ use App\Models\Enquiry;
 use App\Models\Category;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\CmsPage;
+use App\Models\AdminFaq;
+use App\Models\ContactUs;
+use App\Models\AboutUs;
+use App\Models\Blog;
+use Carbon\Carbon;
 
 class WebsiteController extends Controller
 {
@@ -139,46 +145,95 @@ class WebsiteController extends Controller
         return view('website.course_details');
     }
 
-    // Blog Listing
     public function blog()
     {
-        return view('website.blog');
+        $blogs = Blog::where('status', 'published')
+            ->whereNull('deleted_at')
+            ->where(function ($query) {
+                $query->where('publish_type', 'instant')
+                    ->orWhere(function ($q) {
+                        $q->where('publish_type', 'scheduled')
+                            ->where('publish_date', '<=', Carbon::now());
+                    });
+            })
+            ->latest()
+            ->get();
+
+        return view('website.blog', compact('blogs'));
     }
 
-    // Blog Detail
-    public function blogDetail()
+    public function blogDetail($slug)
     {
-        return view('website.blog-detail');
+        $blog = Blog::with('detail')
+            ->where('slug', $slug)
+            ->where('status', 'published')
+            ->where(function ($query) {
+                $query->where('publish_type', 'instant')
+                    ->orWhere(function ($q) {
+                        $q->where('publish_type', 'scheduled')
+                            ->where('publish_date', '<=', Carbon::now());
+                    });
+            })
+            ->firstOrFail();
+
+        $recentBlogs = Blog::where('id', '!=', $blog->id)
+            ->where('status', 'published')
+            ->where(function ($query) {
+                $query->where('publish_type', 'instant')
+                    ->orWhere(function ($q) {
+                        $q->where('publish_type', 'scheduled')
+                            ->where('publish_date', '<=', Carbon::now());
+                    });
+            })
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('website.blog-detail', compact('blog', 'recentBlogs'));
     }
 
-    // About Page
     public function about()
     {
-        return view('website.about');
-    }
+        $aboutUs = AboutUs::with('leadershipTeamMembers')->first();
 
-    // Contact Page
+        return view('website.about', compact('aboutUs'));
+    }
+    
     public function contact()
     {
-        return view('website.contact');
-    }
+        $contactUs = ContactUs::with('regionalOffices')->first();
 
-    // FAQ Page
+        return view('website.contact', compact('contactUs'));
+    }
     public function faq()
     {
-        return view('website.faq');
+        $faqs = AdminFaq::where('is_active', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->get();
+
+        return view('website.faq', compact('faqs'));
     }
 
-    // Terms & Conditions
     public function terms()
     {
-        return view('website.terms-conditions');
+        $termsPage = CmsPage::where('slug', 'terms-and-conditions')
+            ->where('is_active', 1)
+            ->first();
+
+        return view('website.terms-conditions', compact('termsPage'));
     }
 
-    // Privacy Policy
     public function privacy()
     {
-        return view('website.privacy-policy');
+        $privacyPage = CmsPage::where('slug', 'privacy-policy')
+            ->where('is_active', 1)
+            ->first();
+
+        if ($privacyPage) {
+            $privacyPage->content = html_entity_decode(html_entity_decode($privacyPage->content));
+        }
+
+        return view('website.privacy-policy', compact('privacyPage'));
     }
 
     // Search
