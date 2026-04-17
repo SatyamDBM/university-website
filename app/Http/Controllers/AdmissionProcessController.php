@@ -11,22 +11,56 @@ use App\Models\LoanPartner;
 class AdmissionProcessController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $universityId = auth()->id();
+        $search = $request->search;
 
+        // 📌 PROCESS (only ONE record, no need to re-filter by search unless required)
         $process = AdmissionProcess::with(['steps', 'dates', 'cutoffs'])
             ->where('university_id', $universityId)
             ->latest()
             ->first();
 
-        $steps = $process ? $process->steps : collect();
-        $dates = $process ? $process->dates : collect();
-        $cutoffs = $process ? $process->cutoffs : collect();
+        $steps = $process?->steps ?? collect();
+        $dates = $process?->dates ?? collect();
+        $cutoffs = $process?->cutoffs ?? collect();
 
-        $scholarships = Scholarship::where('university_id', $universityId)->get();
+        // 📌 SCHOLARSHIPS (OPTIMIZED)
+        $scholarships = Scholarship::query()
+            ->where('university_id', $universityId)
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
 
-        $loanPartners = LoanPartner::where('university_id', $universityId)->get();
+        // 📌 LOAN PARTNERS (OPTIMIZED)
+        $loanPartners = LoanPartner::query()
+            ->where('university_id', $universityId)
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('bank_name', 'like', "%{$search}%")
+                        ->orWhere('amount', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        // ⚡ AJAX RESPONSE (LIGHTWEIGHT)
+        if ($request->ajax()) {
+            return view('university.university_data.partials.table_body', compact(
+                'process',
+                'steps',
+                'dates',
+                'cutoffs',
+                'scholarships',
+                'loanPartners'
+            ))->render();
+        }
 
         return view('university.university_data.index', compact(
             'process',
@@ -37,8 +71,6 @@ class AdmissionProcessController extends Controller
             'loanPartners'
         ));
     }
-
-
     public function create()
     {
         return view('university.university_data.create');

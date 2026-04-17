@@ -22,7 +22,6 @@
         </ul>
     </div>
     @endif
-
     <form method="POST" action="{{ route('university.finance.store') }}" enctype="multipart/form-data">
         @csrf
         @php $record = new \stdClass(); $record->admissionSteps = []; $record->importantDates = []; $record->cutoffs = []; $record->scholarships = []; $record->loanPartners = []; @endphp

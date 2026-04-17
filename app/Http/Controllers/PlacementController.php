@@ -9,20 +9,40 @@ use Illuminate\Support\Facades\Auth;
 
 class PlacementController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $placements = Placement::where('university_id', Auth::user()->id)->latest()->get();
+    //     return view('placements.index', compact('placements'));
+    // }
+
+    public function index(Request $request)
     {
-        $placements = Placement::where('university_id', Auth::user()->university_id)->latest()->get();
+        $universityId = Auth::user()->id;
+        $query = Placement::where('university_id', $universityId);
+        // 🔍 AJAX SEARCH
+        if ($request->ajax()) {
+            if ($request->search) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('highest_package', 'like', "%{$request->search}%")
+                        ->orWhere('average_package', 'like', "%{$request->search}%")
+                        ->orWhere('median_package', 'like', "%{$request->search}%");
+                });
+            }
+            $placements = $query->latest()->get();
+            return view('placements.partials.table_body', compact('placements'))->render();
+        }
+        // 📄 NORMAL LOAD
+        $placements = $query->latest()->get();
         return view('placements.index', compact('placements'));
     }
     public function create()
     {
-        $recruiters = Recruiter::where('university_id', Auth::user()->university_id)->get();
+        $recruiters = Recruiter::where('university_id', Auth::user()->id)->get();
         return view('placements.create', compact('recruiters'));
     }
     public function store(Request $request)
     {
         $isDraft = $request->has('save_as_draft');
-
         // Base validation
         $rules = [
             'academic_year'   => 'required|string|max:9',
@@ -60,10 +80,9 @@ class PlacementController extends Controller
                     ->withInput();
             }
         }
-
         // Save placement
         $placement = Placement::create([
-            'university_id'           => auth()->user()->university_id,
+            'university_id'           => auth()->user()->id,
             'academic_year'           => $request->academic_year,
             'highest_package'         => $request->highest_package,
             'average_package'         => $request->average_package,
@@ -87,7 +106,7 @@ class PlacementController extends Controller
                 }
 
                 $placement->recruiters()->create([
-                    'university_id' => auth()->user()->university_id,
+                    'university_id' => auth()->user()->id,
                     'company_name'  => $rec['company_name'],
                     'industry_type' => $rec['industry_type'] ?? null,
                     'logo'          => $logoPath,
@@ -99,14 +118,14 @@ class PlacementController extends Controller
             : 'Placement data submitted for approval!';
 
         return redirect()
-            ->route('placements.index')
+            ->route('university.placements.index')
             ->with('success', $msg);
     }
 
     public function edit(Placement $placement)
     {
         $this->authorizePlacement($placement);
-        $recruiters = Recruiter::where('university_id', Auth::user()->university_id)->get();
+        $recruiters = Recruiter::where('university_id', Auth::user()->id)->get();
         return view('placements.edit', compact('placement', 'recruiters'));
     }
 
@@ -211,7 +230,7 @@ class PlacementController extends Controller
 
     private function authorizePlacement(Placement $placement)
     {
-        if ($placement->university_id !== Auth::user()->university_id) {
+        if ($placement->university_id !== Auth::user()->id) {
             abort(403);
         }
     }

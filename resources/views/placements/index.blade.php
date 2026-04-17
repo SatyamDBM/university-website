@@ -1,19 +1,40 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="p-6">
-
-```
+{{-- Header --}}
 {{-- Header --}}
 <div class="flex items-center justify-between mb-6">
+
+    {{-- LEFT --}}
     <div>
         <h1 class="text-2xl font-bold text-gray-800">Placement Records</h1>
         <p class="text-sm text-gray-500 mt-1">Manage all placement data</p>
     </div>
-    <a href="{{ route('university.placements.create') }}"
-       class="inline-flex items-center gap-2 bg-[#6b4a36] hover:bg-[#5a3d2e] text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-        + Add Placement
-    </a>
+
+    {{-- RIGHT (SEARCH + BUTTON) --}}
+    <div class="flex items-center gap-3">
+
+        {{-- SEARCH --}}
+        <div class="relative">
+            <input type="text"
+                   id="searchBox"
+                   placeholder="Search placement..."
+                   class="w-64 border rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring focus:border-[#6b4a36]">
+
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                🔍
+            </span>
+        </div>
+
+        {{-- BUTTON --}}
+        <a href="{{ route('university.placements.create') }}"
+           class="inline-flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+           style="background-color: #6b4a36;">
+            + Add Placement
+        </a>
+
+    </div>
+
 </div>
 
 {{-- Success Alert --}}
@@ -42,85 +63,9 @@
             </thead>
 
             {{-- Table Body --}}
-            <tbody class="bg-white divide-y divide-gray-100">
-            @foreach($placements as $placement)
-                <tr class="hover:bg-gray-50 transition">
-
-                    {{-- Year --}}
-                    <td class="px-4 py-4 text-sm text-gray-700">
-                        {{ $placement->academic_year }}
-                    </td>
-
-                    {{-- Highest --}}
-                    <td class="px-4 py-4 text-sm font-semibold text-gray-800">
-                        ₹{{ number_format($placement->highest_package, 2) }}
-                    </td>
-
-                    {{-- Average --}}
-                    <td class="px-4 py-4 text-sm text-gray-700">
-                        ₹{{ number_format($placement->average_package, 2) }}
-                    </td>
-
-                    {{-- Rate --}}
-                    <td class="px-4 py-4 text-sm text-gray-700">
-                        {{ $placement->placement_rate }}
-                    </td>
-
-                    {{-- Recruiters --}}
-                    <td class="px-4 py-4">
-                        @foreach($placement->recruiters as $recruiter)
-                            <div class="flex items-center gap-2 mb-1">
-                                @if($recruiter->logo)
-                                    <img src="{{ asset('storage/' . $recruiter->logo) }}"
-                                         class="w-8 h-8 rounded-full object-cover border">
-                                @endif
-                                <span class="text-sm text-gray-700">
-                                    {{ $recruiter->company_name }}
-                                </span>
-                            </div>
-                        @endforeach
-                    </td>
-
-                    {{-- Status --}}
-                    <td class="px-4 py-4">
-                        @php
-                            $statusColor = match($placement->status) {
-                                'approved' => 'bg-green-100 text-green-700',
-                                'pending'  => 'bg-amber-100 text-amber-700',
-                                'draft'    => 'bg-gray-100 text-gray-600',
-                                'rejected' => 'bg-red-100 text-red-600',
-                                default    => 'bg-blue-100 text-blue-700',
-                            };
-                        @endphp
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold {{ $statusColor }}">
-                            {{ ucfirst($placement->status) }}
-                        </span>
-                    </td>
-
-                    {{-- Actions --}}
-                    <td class="px-4 py-4">
-                        <div class="flex items-center gap-2">
-
-                            <a href="{{ route('placements.edit', $placement) }}"
-                               class="text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg transition">
-                                Edit
-                            </a>
-
-                            <form action="{{ route('university.placements.destroy', $placement) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button"
-                                        class="text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition delete-btn">
-                                    Delete
-                                </button>
-                            </form>
-
-                        </div>
-                    </td>
-
-                </tr>
-            @endforeach
-            </tbody>
+                 <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                    @include('placements.partials.table_body')
+                </tbody>
 
         </table>
     </div>
@@ -167,5 +112,17 @@ document.querySelectorAll('.delete-btn').forEach(btn => {
     });
 @endif
 </script>
-
 @endsection
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.initGlobalSearch) {
+        window.initGlobalSearch(
+            'searchBox',
+            '{{ url()->current() }}',
+            'tableBody'
+        );
+    }
+});
+</script>
+@endpush

@@ -188,14 +188,14 @@ tailwind.config = {
     <section class="hero detail-hero">
 
         <div class="hero-banner">
-        <img src="images/detail.png" alt="Background Image" class="bg-image">
+        <img src="{{ asset('images/detail.png') }}" alt="Background Image" class="bg-image">
         </div>
 
         <div class="middleware">
             <div class="hero-content">
                 <div class="left portion">
                 <h1 class="hero-title">Indian institute of technology,<br> Delhi</h1>
-                <p class="hero-subtitle"><img src="images/unversity.png" alt="unversity">India's premier engineering & technology institute - NAAC A+, NIRF #2 (Engineering)</p>
+                {{-- <p class="hero-subtitle"><img src="{{ asset('images/unversity.png') }}" alt="university">India's premier engineering & technology institute - NAAC A+, NIRF #2 (Engineering)</p> --}}
                   <div class="left-allign">
                     <p class="first">NIRF #2 ENGINEERING 2026</p>
                     <p class="second">NAAC A+ | 3.28 CGPA</p>
@@ -292,7 +292,7 @@ tailwind.config = {
           <span class="naac-chip">NAAC Accredited</span>
           <span class="naac-chip">Undergraduate</span>
         </div>
-        <h2 class="font-serif text-3xl font-bold text-[#25213B] mb-1">BE Computer Science &amp; Engineering</h2>
+        <h2 class="font-serif text-3xl font-bold text-[#25213B] mb-1">{{ $course->course_name ?? 'BE Computer Science & Engineering' }} &amp; Engineering</h2>
         <p class="text-gray-500  leading-relaxed mb-6">A globally recognized program focusing on ai, cloud computing, and software engineering with industry-aligned curriculum.</p>
 
         <!-- COURSE OVERVIEW CARD -->
@@ -301,61 +301,81 @@ tailwind.config = {
             <div class="w-1 h-5 rounded-full" style="background: var(--brand);"></div>
             <h3 class="font-bold text-3xl text-[#25213B]">Course Overview</h3>
           </div>
-          <p class="">The Bachelor Of Engineering In Computer Science &amp; Engineering At Chandigarh University Offers A Unique Fusion Of Fundamental Concepts And Specialized Specializations. Students Can Hands-On Experience In High-Tech Labs And Work On Real-World Projects Mentored By Industry Experts From Google, Microsoft, And IITs.</p>
+          <p class="">{{ $course->description ?? 'The Bachelor Of Engineering In Computer Science &amp; Engineering At Chandigarh University Offers A Unique Fusion Of Fundamental Concepts And Specialized Specializations. Students Can Hands-On Experience In High-Tech Labs And Work On Real-World Projects Mentored By Industry Experts From Google, Microsoft, And IITs.' }}</p>
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3" style="margin-top: 30px;">
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Duration</div>
-              <div class="font-bold  text-[#25213B]">4 Years (8 Semesters)</div>
+              <div class="font-bold  text-[#25213B]">{{ $course->duration ?? '4 Years' }} (8 Semesters)</div>
             </div>
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Eligibility</div>
-              <div class="font-bold  text-[#25213B]">10+2 with 60% (PCM)</div>
+              <div class="font-bold  text-[#25213B]">{{ $course->eligibility ?? '10+2 with 60% (PCM)' }}</div>
             </div>
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Avg. Package</div>
-              <div class="font-bold  text-[#c0813a]">₹7.35L</div>
+              {{-- <div class="font-bold  text-[#c0813a]">{{ $course->streams?->avg_package ?? '₹7.35L' }}</div> --}}
+              @php
+                $maxPackage = $course->streams->max('avg_package');
+            @endphp
+
+            <div class="font-bold text-[#c0813a]">
+                ₹{{ $maxPackage ? rtrim(rtrim(number_format($maxPackage / 100000, 2), '0'), '.') : '0' }} L
+            </div>
+              
             </div>
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Intake</div>
-              <div class="font-bold  text-[#25213B]">July 2026</div>
+              <div class="font-bold  text-[#25213B]">{{ $course->intake ?? 'July 2026' }}</div>
             </div>
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">JEAS Group/CAP</div>
-              <div class="font-bold  text-[#25213B]">62</div>
+              <div class="font-bold  text-[#25213B]">{{ $course->jeas_group ?? '62' }}</div>
             </div>
             <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <div class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Mode of Course</div>
-              <div class="font-bold  text-[#25213B]">Full Time</div>
+              <div class="font-bold  text-[#25213B]">{{ $course->course_type ?? 'Full Time' }}</div>
             </div>
           </div>
         </div>
 
         <!-- CURRICULUM HIGHLIGHTS -->
-        <div class="info-card">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-1 h-5 rounded-full" style="background: var(--brand);"></div>
-            <h3 class="font-bold text-3xl text-[#25213B]">Curriculum Highlights</h3>
-          </div>
-          <div class="flex flex-col gap-2">
+      <div class="info-card">
+    <div class="flex items-center gap-2 mb-4">
+        <div class="w-1 h-5 rounded-full" style="background: var(--brand);"></div>
+        <h3 class="font-bold text-3xl text-[#25213B]">Curriculum Highlights</h3>
+    </div>
+
+    <div class="flex flex-col gap-2">
+
+        @forelse($curriculum as $item)
             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-              <span class="">Data Structure &amp; Algorithms</span>
-              <span class="text-xs font-700 px-3 py-1 rounded-full tag-core">Core</span>
+
+                <span>
+                    {{ $item['title'] ?? '' }}
+                </span>
+
+                @php
+                    $type = $item['type'] ?? '';
+                @endphp
+
+                <span class="text-xs font-700 px-3 py-1 rounded-full
+                    @if($type == 'Core') tag-core
+                    @elseif($type == 'Specialization') tag-spec
+                    @elseif($type == 'Skill Based') tag-core
+                    @elseif($type == 'Elective') tag-elec
+                    @endif
+                ">
+                    {{ $type }}
+                </span>
+
             </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-              <span class="">Artificial Intelligence &amp; Machine Learning</span>
-              <span class="text-xs font-700 px-3 py-1 rounded-full tag-spec">Specialization</span>
-            </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-              <span class="">Full Stack Web Development</span>
-              <span class="text-xs font-700 px-3 py-1 rounded-full tag-skill">Skill Based</span>
-            </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-              <span class="">Cyber Security &amp; Forensics</span>
-              <span class="text-xs font-700 px-3 py-1 rounded-full tag-elec">Elective</span>
-            </div>
-          </div>
-        </div>
+        @empty
+            <p class="text-gray-400 text-sm">No curriculum data available</p>
+        @endforelse
+
+    </div>
+</div>
       </section>
 
       <!-- ADMISSION PROCESS -->
@@ -368,7 +388,7 @@ tailwind.config = {
         <!-- Counselling -->
         <div class="info-card mb-5">
           <h3 class="font-bold text-base text-[#25213B] mb-1">Counselling</h3>
-          <p class=" text-gray-500 mb-4">Admission Is Through JoSAA Counselling Based On The Rank Obtained In JEE Advanced.</p>
+          <p class=" text-gray-500 mb-4">{{ $course->admissionProcess->title ?? 'Admission details not available.' }}</p>
 
           <!-- Tab Pills -->
           <div class="inline-flex gap-2 bg-gray-50 border border-gray-200 rounded-full p-1 mb-5">
@@ -377,7 +397,7 @@ tailwind.config = {
             <span class="tab-pill" onclick="switchDateTab(this,'jeemain')">JEE MAIN</span>
           </div>
 
-          <div class="flex flex-col gap-2" id="datesList">
+          {{-- <div class="flex flex-col gap-2" id="datesList">
             <div class="flex gap-4 p-3 bg-gray-50 rounded-xl ">
               <span class="text-[#c0813a] font-700 font-mono flex-shrink-0 w-36">April 2 – 15, 2026</span>
               <span class="text-gray-600">JEE Main 2026 Exam Date Session 2</span>
@@ -390,11 +410,27 @@ tailwind.config = {
               <span class="text-[#c0813a] font-700 font-mono flex-shrink-0 w-36">April 21 – May 2, 2026</span>
               <span class="text-gray-600">JEE Advanced 2026 Registrations For Indian Nationals</span>
             </div>
+          </div> --}}
+          <div class="flex flex-col gap-2" id="datesList">
+
+              @forelse(optional($course->admissionProcess)->dates ?? [] as $date)
+                  <div class="flex gap-4 p-3 bg-gray-50 rounded-xl">
+                      <span class="text-[#c0813a] font-700 font-mono flex-shrink-0 w-36">
+                          {{ $date->value }}
+                      </span>
+                      <span class="text-gray-600">
+                          {{ $date->label }}
+                      </span>
+                  </div>
+              @empty
+                  <div class="text-gray-400 p-3">No admission dates available</div>
+              @endforelse
+
           </div>
         </div>
 
         <!-- Cutoffs -->
-        <div class="info-card mb-5">
+        {{-- <div class="info-card mb-5">
           <h3 class="font-bold text-3xl text-[#25213B] mb-1">Cutoffs</h3>
           <p class=" text-gray-400 mb-4">B.Tech in computer science and engineering at IIT delhi</p>
           <p class=" text-gray-500 mb-3 font-600">JEE Advanced round-wise cutoff Rank: (General All India)</p>
@@ -418,10 +454,42 @@ tailwind.config = {
               </tbody>
             </table>
           </div>
+        </div> --}}
+           <div class="info-card mb-5">
+          <h3 class="font-bold text-3xl text-[#25213B] mb-1">Cutoffs</h3>
+          <p class=" text-gray-400 mb-4">B.Tech in computer science and engineering at IIT delhi</p>
+          <p class=" text-gray-500 mb-3 font-600">JEE Advanced round-wise cutoff Rank: (General All India)</p>
+          <div class="overflow-x-auto rounded-xl border border-gray-100">
+            <table class="data-table">
+              <thead>
+                <tr>
+                 <thead>
+                  <tr>
+                      <th>ROUND</th>
+                      @foreach($years as $year)
+                          <th>{{ $year }}</th>
+                      @endforeach
+                  </tr>
+                  </thead>
+                </tr>
+              </thead>
+              <tbody>
+              @foreach($cutoffs as $round => $years)
+                <tr>
+                    <td class="font-700">{{ $round }}</td>
+
+                    <td>{{ optional($years->firstWhere('year', 2024))->cutoff ?? '-' }}</td>
+                    <td>{{ optional($years->firstWhere('year', 2025))->cutoff ?? '-' }}</td>
+                    <td>{{ optional($years->firstWhere('year', 2026))->cutoff ?? '-' }}</td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Seats -->
-        <div class="info-card">
+        {{-- <div class="info-card">
           <h3 class="font-bold text-3xl text-[#25213B] mb-1">Seats</h3>
           <p class=" text-gray-400 mb-4">B.Tech in computer science and engineering at IIT delhi</p>
           <div class="overflow-x-auto rounded-xl border border-gray-100">
@@ -439,11 +507,44 @@ tailwind.config = {
               </tbody>
             </table>
           </div>
-        </div>
+        </div> --}}
+        <div class="info-card">
+    <h3 class="font-bold text-3xl text-[#25213B] mb-1">Seats</h3>
+    <p class="text-gray-400 mb-4">
+        {{ $course->course_name }} at {{ $course->university->name ?? '' }}
+    </p>
+
+    <div class="overflow-x-auto rounded-xl border border-gray-100">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Break-Up by category</th>
+                    <th>SEATS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($course->seats as $seat)
+                    <tr>
+                        <td class="font-600">{{ $seat->category }}</td>
+                        <td class="font-serif font-bold text-[#c0813a]">
+                            {{ $seat->seats }}
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="2" class="text-center text-gray-500 py-4">
+                            No seat data available
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
       </section>
 
       <!-- FAQ -->
-      <section id="faq" class="mb-12 rv d2">
+      {{-- <section id="faq" class="mb-12 rv d2">
         <div class="flex items-center gap-2 mb-5">
           <div class="w-1 h-6 rounded-full" style="background: var(--brand);"></div>
           <h2 class="font-serif text-3xl font-bold text-[#25213B]">Frequently Asked Questions</h2>
@@ -483,7 +584,29 @@ tailwind.config = {
           </div>
           <div class="faq-a">For OBC-NCL candidates, the cutoff is typically around 1.5x the general cutoff rank. SC category closing ranks are approximately 3-4x general ranks, while ST category closing ranks are around 5-6x general ranks. EWS category follows similar patterns to general category with slight relaxation.</div>
         </div>
-      </section>
+      </section> --}}
+      <section id="faq" class="mb-12 rv d2">
+    <div class="flex items-center gap-2 mb-5">
+        <div class="w-1 h-6 rounded-full" style="background: var(--brand);"></div>
+        <h2 class="font-serif text-3xl font-bold text-[#25213B]">
+            Frequently Asked Questions
+        </h2>
+    </div>
+
+    @forelse($course->university->faqs as $faq)
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>Q. {{ $faq->question }}</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">
+                {{ $faq->answer }}
+            </div>
+        </div>
+    @empty
+        <p class="text-gray-500">No FAQs available.</p>
+    @endforelse
+</section>
 
     </div>
 
@@ -501,14 +624,18 @@ tailwind.config = {
           <button onclick="openSignupModal()" class="w-full text-white font-700 py-3 rounded-xl  transition-all hover:brightness-110" style="background: var(--dark3);">
             📩 Enquire Now
           </button>
-          <button class="w-full font-700 py-3 rounded-xl  border-2 border-[#775042] text-[#775042] hover:bg-[#775042] hover:text-white transition-all">
-            📥 Download Brochure
-          </button>
+        @if($course->curriculum_file)
+            <a href="{{ asset('storage/'.$course->curriculum_file) }}"
+              download
+              class="w-full font-700 py-3 rounded-xl border-2 border-[#775042] text-[#775042] hover:bg-[#775042] hover:text-white transition-all text-center block">
+                📄 Download Curriculum
+            </a>
+        @endif
         </div>
       </div>
 
       <!-- TOP RECRUITERS -->
-      <div class="sidebar-card mb-5 rv d1">
+      {{-- <div class="sidebar-card mb-5 rv d1">
         <div class="px-5 pt-5 pb-3">
           <div class="font-bold  text-[#25213B] mb-4">Top Recruiters</div>
           <div class="recruiter-row">
@@ -526,7 +653,34 @@ tailwind.config = {
             <span class="font-serif font-bold text-[#775042] ">₹40 LPA</span>
           </div>
         </div>
-      </div>
+      </div> --}}
+      <div class="sidebar-card mb-5 rv d1">
+    <div class="px-5 pt-5 pb-3">
+
+        <div class="font-bold text-[#25213B] mb-4">
+            Top Recruiters
+        </div>
+
+    @foreach($placement->recruiters as $recruiter)
+        <div class="recruiter-row">
+            <div class="flex items-center gap-3">
+                <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-black">
+                    {{ strtoupper(substr($recruiter->company_name, 0, 1)) }}
+                </span>
+
+                <span class="font-600">
+                    {{ $recruiter->company_name }}
+                </span>
+            </div>
+
+            <span class="font-serif font-bold text-[#775042]">
+                ₹{{ $recruiter->package }} LPA
+            </span>
+        </div>
+    @endforeach
+
+    </div>
+</div>
 
       <!-- QUICK FACTS -->
       <div class="sidebar-card rv d2">
@@ -544,7 +698,7 @@ tailwind.config = {
       </div>
 
       <div class="banner-add" style="margin-top: 40px;">
-          <img src="images/manipal.png" alt="View All Universities">
+          <img src="{{ asset('images/manipal.png') }}" alt="View All Universities">
       </div>
       <!-- End Addon section -->
 

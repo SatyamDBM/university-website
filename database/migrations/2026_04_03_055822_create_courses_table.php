@@ -40,7 +40,7 @@ return new class extends Migration
 
             // Curriculum / Syllabus
             $table->string('curriculum_file')->nullable(); // PDF or file path
-            $table->text('curriculum_text')->nullable();
+            $table->longText('curriculum_text')->nullable();
 
             // Additional Fields
             $table->integer('seat_availability')->nullable();

@@ -1,6 +1,6 @@
  <header class="header">
         <marquee class="top-bar">
-            <span class="welcome-text">  <img src="images/unversity.png" alt="unversity"> Welcome to Topuniversitiesinindia.Com</span>
+            <span class="welcome-text">  <img src="{{ asset('images/unversity.png') }}" alt="unversity"> Welcome to Topuniversitiesinindia.Com</span>
         </marquee>    
         <div class="container">
             <div class="nav-wrapper">

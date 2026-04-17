@@ -9,11 +9,60 @@ use Illuminate\Support\Facades\Storage;
 
 class FacilityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $facilities = Facility::where('university_id', auth()->user()->id)
-            ->latest()->paginate(10);
-        return view('facilities.index', compact('facilities'));
+        $universityId = auth()->id();
+
+        $process = AdmissionProcess::with(['steps', 'dates', 'cutoffs'])
+            ->where('university_id', $universityId)
+            ->latest()
+            ->first();
+
+        $steps = $process ? $process->steps : collect();
+        $dates = $process ? $process->dates : collect();
+        $cutoffs = $process ? $process->cutoffs : collect();
+
+        // 🔍 SEARCH QUERY FOR SCHOLARSHIPS
+        $scholarshipQuery = Scholarship::where('university_id', $universityId);
+
+        if ($request->search) {
+            $scholarshipQuery->where(function ($q) use ($request) {
+                $q->where('title', 'like', "%{$request->search}%")
+                    ->orWhere('description', 'like', "%{$request->search}%");
+            });
+        }
+
+        $scholarships = $scholarshipQuery->latest()->get();
+
+        // 🔍 SEARCH QUERY FOR LOAN PARTNERS
+        $loanQuery = LoanPartner::where('university_id', $universityId);
+
+        if ($request->search) {
+            $loanQuery->where(function ($q) use ($request) {
+                $q->where('bank_name', 'like', "%{$request->search}%")
+                    ->orWhere('description', 'like', "%{$request->search}%");
+            });
+        }
+
+        $loanPartners = $loanQuery->latest()->get();
+
+        // ⚡ AJAX RESPONSE
+        if ($request->ajax()) {
+            return view('university.university_data.partials.search_results', compact(
+                'scholarships',
+                'loanPartners'
+            ))->render();
+        }
+
+        // 📄 NORMAL LOAD
+        return view('university.university_data.index', compact(
+            'process',
+            'steps',
+            'dates',
+            'cutoffs',
+            'scholarships',
+            'loanPartners'
+        ));
     }
 
     public function create()

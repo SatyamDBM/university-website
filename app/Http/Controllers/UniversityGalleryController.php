@@ -9,11 +9,34 @@ use Illuminate\Support\Facades\Storage;
 
 class UniversityGalleryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $albums = Album::where('university_id', auth()->user()->university_id)->withCount('images')->get();
+        $universityId = auth()->user()->id;
+
+        $query = Album::where('university_id', $universityId)
+            ->withCount('images');
+
+        // 🔍 AJAX SEARCH
+        if ($request->ajax()) {
+
+            if ($request->search) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('name', 'like', "%{$request->search}%")
+                        ->orWhere('description', 'like', "%{$request->search}%");
+                });
+            }
+
+            $albums = $query->latest()->get();
+
+            return view('university.gallery.partials.table_body', compact('albums'))->render();
+        }
+
+        // 📄 NORMAL LOAD
+        $albums = $query->latest()->get();
+
         return view('university.gallery.index', compact('albums'));
     }
+
 
     public function create()
     {
@@ -22,7 +45,7 @@ class UniversityGalleryController extends Controller
 
     public function store(Request $request)
     {
-        $universityId = auth()->user()->university_id;
+        $universityId = auth()->user()->id;
         if (is_null($universityId)) {
             return redirect()->back()->withErrors(['university_id' => 'Your account is not linked to a university. Please contact admin.']);
         }
@@ -61,7 +84,7 @@ class UniversityGalleryController extends Controller
     public function showById($id)
     {
         $album = Album::where('id', $id)
-            ->where('university_id', auth()->user()->university_id)
+            ->where('university_id', auth()->user()->id)
             ->first();
         if (!$album) {
             abort(404, 'Album not found');
@@ -84,7 +107,7 @@ class UniversityGalleryController extends Controller
     public function update(Request $request, Album $gallery)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:albums,name,' . $gallery->id . ',id,university_id,' . auth()->user()->university_id,
+            'name' => 'required|string|max:255|unique:albums,name,' . $gallery->id . ',id,university_id,' . auth()->user()->id,
             'category' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'date' => 'nullable|date',

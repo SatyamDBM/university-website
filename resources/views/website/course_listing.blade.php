@@ -6,7 +6,6 @@
 
 @section('content')
 
-
          <!-- Banner section -->
     <section class="hero common-hero">
 
@@ -35,7 +34,7 @@
             <div class="sh-h">200+ Programs at <em>Every Level</em></div>
             <div class="sh-sub">UG, PG and PhD across Engineering, Management, Law, Medical Sciences, Architecture and more</div>
           </div>
-          <div class="course-grid">
+          {{-- <div class="course-grid">
             <div class="cc rv d1">
               <div class="cc-head"><div class="cc-name">⚙️ B.E. / B.Tech Engineering</div><span class="cc-dur">4 Years</span></div>
               <div class="cc-body">
@@ -119,7 +118,86 @@
                 <div class="cc-exams"><div class="cc-exam-l">Entrance Exams</div><span class="cc-exam">CLAT</span><span class="cc-exam">NATA</span><span class="cc-exam">CUCET</span><span class="cc-exam">GATE</span></div>
               </div>
             </div>
+          </div> --}}
+          <div class="course-grid">
+      @forelse($categories as $category)
+
+          <div class="cc rv">
+
+              {{-- HEADER --}}
+              <div class="cc-head">
+                  <div class="cc-name">
+                      {{ $category->icon ?? '📚' }} {{ $category->name }}
+                  </div>
+
+                  <span class="cc-dur">
+                      {{ optional($category->courses->first())->duration }}
+                  </span>
+              </div>
+
+              {{-- BODY --}}
+              <div class="cc-body">
+
+                  @foreach($category->courses as $course)
+
+                      {{-- COURSE NAME --}}
+                      <div class="font-semibold mt-2">
+                          {{ $course->course_name }}
+                      </div>
+
+                      {{-- STREAMS --}}
+                      @forelse($course->streams as $stream)
+                          <div class="fee-row">
+                              <span class="fee-spec">
+                                  {{ $stream->name }}
+                              </span>
+
+                              <span class="fee-amt">
+                                  ₹{{ number_format($course->total_fees ?? 0) }}
+                              </span>
+                          </div>
+                      @empty
+                          <div class="text-gray-400 text-sm">
+                              No streams
+                          </div>
+                      @endforelse
+
+                  @endforeach
+
+                  {{-- EXAMS --}}
+                  <div class="cc-exams">
+                      <div class="cc-exam-l">Entrance Exams</div>
+
+                      @php
+                          $exams = $category->courses
+                              ->pluck('required_exams')
+                              ->filter()
+                              ->flatMap(fn($e) => explode(',', $e))
+                              ->unique();
+                      @endphp
+
+                      @foreach($exams as $exam)
+                          <span class="cc-exam">{{ trim($exam) }}</span>
+                      @endforeach
+                  </div>
+
+              </div>
+
           </div>
+
+      @empty
+          <div class="text-center py-10">
+              No courses found
+          </div>
+      @endforelse
+
+          </div>
+         </div>
+       </div>
+
+      </div>
+
+      </div>
         </div>
       </section>
    @endsection

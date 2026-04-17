@@ -6,17 +6,39 @@
 <div class="p-6">
 
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Finance & Admission</h1>
-            <p class="text-sm text-gray-500 mt-1">Manage admission, scholarships & loans</p>
+   <div class="flex items-center justify-between mb-6">
+
+    {{-- LEFT --}}
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800">Finance & Admission</h1>
+        <p class="text-sm text-gray-500 mt-1">Manage admission, scholarships & loans</p>
+    </div>
+
+    {{-- RIGHT (SEARCH + BUTTON) --}}
+    <div class="flex items-center gap-3">
+
+        {{-- SEARCH --}}
+        <div class="relative">
+            <input type="text"
+                   id="searchBox"
+                   placeholder="Search data..."
+                   class="w-64 border rounded-lg pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring focus:border-[#6b4a36]">
+
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                🔍
+            </span>
         </div>
 
+        {{-- BUTTON --}}
         <a href="{{ route('university.finance.create') }}"
-           class="bg-[#6b4a36] text-white px-4 py-2 rounded-lg text-sm">
+           class="inline-flex items-center gap-2 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+           style="background-color: #6b4a36;">
             + Add Data
         </a>
+
     </div>
+
+</div>
 
     {{-- TABLE --}}
     <div class="bg-white rounded-xl shadow border overflow-hidden">
@@ -35,83 +57,10 @@
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-gray-100">
-
-                    {{-- ONE ROW = ONE UNIVERSITY FINANCE RECORD --}}
-                    @if($process)
-
-                    <tr class="hover:bg-gray-50">
-
-                        {{-- STEPS --}}
-                        <td class="px-4 py-4 text-sm text-gray-700">
-                            @forelse($steps as $step)
-                                <div>• {{ $step->title }}</div>
-                            @empty
-                                <span class="text-gray-400">No steps</span>
-                            @endforelse
-                        </td>
-
-                        {{-- DATES --}}
-                        <td class="px-4 py-4 text-sm text-gray-700">
-                            @forelse($dates as $date)
-                                <div>{{ $date->label }}: {{ $date->value }}</div>
-                            @empty
-                                <span class="text-gray-400">No dates</span>
-                            @endforelse
-                        </td>
-
-                        {{-- CUTOFFS --}}
-                        <td class="px-4 py-4 text-sm text-gray-700">
-                            @forelse($cutoffs as $cutoff)
-                                <div>{{ $cutoff->course }} - {{ $cutoff->cutoff }}</div>
-                            @empty
-                                <span class="text-gray-400">No cutoffs</span>
-                            @endforelse
-                        </td>
-
-                        {{-- SCHOLARSHIPS --}}
-                        <td class="px-4 py-4 text-sm text-gray-700">
-                            {{ $scholarships->count() }} Items
-                        </td>
-
-                        {{-- LOANS --}}
-                        <td class="px-4 py-4 text-sm text-gray-700">
-                            {{ $loanPartners->count() }} Banks
-                        </td>
-
-                        {{-- ACTIONS --}}
-                        <td class="px-4 py-4">
-                            <div class="flex gap-2">
-
-                                <a href="{{ route('university.finance.edit', $process->id) }}"
-                                   class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded">
-                                    Edit
-                                </a>
-
-                               <a href="{{ route('university.finance.show', $process->id) }}"
-                                    class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded">
-                                        View
-                                    </a>
-
-                                    <button onclick="deleteRecord({{ $process->id }})"
-                                    class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded">
-                                Delete
-                            </button>
-
-                            </div>
-                        </td>
-
-                    </tr>
-
-                    @else
-                    <tr>
-                        <td colspan="6" class="text-center py-10 text-gray-400">
-                            No Finance Data Found
-                        </td>
-                    </tr>
-                    @endif
-
+               <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                    @include('university.university_data.partials.table_body')
                 </tbody>
+
 
             </table>
 
@@ -163,3 +112,16 @@ function deleteRecord(id) {
 
 }
 </script>
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.initGlobalSearch) {
+        window.initGlobalSearch(
+            'searchBox',
+            '{{ url()->current() }}',
+            'tableBody'
+        );
+    }
+});
+</script>
+@endpush
