@@ -23,8 +23,9 @@ class Placement extends Model
         return $this->belongsTo(University::class);
     }
 
+
     public function recruiters()
     {
-        return $this->belongsToMany(Recruiter::class, 'placement_recruiter');
+        return $this->hasMany(PlacementRecruiter::class);
     }
 }

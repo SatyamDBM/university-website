@@ -161,9 +161,9 @@
                     <span>Admission</span>
                 </a>
 
-                <a href="#"
+                <a href="{{route('university.lead')}}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('university.leads*')
+                        {{ request()->routeIs('university.lead*')
                                 ? 'bg-violet-50 text-violet-700 font-medium'
                                 : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
                     <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -173,9 +173,9 @@
                     <span class="ml-auto bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full">32</span>
                 </a>
 
-                <a href="#"
+                <a href="{{route('university.admin.lead')}}"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
-                        {{ request()->routeIs('university.enquiries*')
+                        {{ request()->routeIs('university.admin-lead*')
                                 ? 'bg-violet-50 text-violet-700 font-medium'
                                 : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
                     <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
@@ -186,7 +186,6 @@
             </div>
         </div>
         <div x-data="{ marketingOpen: {{ request()->routeIs('banners*') ? 'true' : 'false' }} }" class="space-y-1">
-
             <button
                 type="button"
                 @click="marketingOpen = !marketingOpen"

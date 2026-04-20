@@ -11,6 +11,7 @@ use App\Models\Enquiry;
 use App\Models\Category;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Models\CmsPage;
 use App\Models\AdminFaq;
 use App\Models\ContactUs;
@@ -136,13 +137,58 @@ class WebsiteController extends Controller
     // Course Listing
     public function courses()
     {
-        return view('website.course_listing');
-    }
+        $categories = Category::with(['courses.streams'])
+            ->whereHas('courses', function ($q) {
+                $q->where('status', 'Live');
+            })
+            ->get();
 
+        return view('website.course_listing', compact('categories'));
+    }
     // Course Detail
-    public function courseDetail()
+    public function courseDetail($slug)
     {
-        return view('website.course_details');
+        $course = Course::with([
+            'university',
+            'streams',
+            'admissionProcess.dates',
+            'admissionProcess.steps',
+            'seats',
+            'university.faqs',
+            'university.recruiters'
+        ])
+            ->where('slug', $slug)
+            ->where('status', 'Live')
+            ->firstOrFail();
+
+        $cutoffs = DB::table('admission_cutoffs')
+            ->where('course_id', $course->id)
+            ->orderBy('round')
+            ->get()
+            ->groupBy('round');
+
+        $currentYear = now()->year;
+
+        $years = [
+            $currentYear - 2,
+            $currentYear - 1,
+            $currentYear
+        ];
+
+        // ✅ FIX HERE
+        $curriculum = [];
+
+        if (!empty($course->curriculum_text)) {
+            $decoded = json_decode($course->curriculum_text, true);
+            $curriculum = is_array($decoded) ? $decoded : [];
+        }
+
+        return view('website.course_details', compact(
+            'course',
+            'cutoffs',
+            'years',
+            'curriculum'
+        ));
     }
 
     public function blog()
@@ -198,7 +244,7 @@ class WebsiteController extends Controller
 
         return view('website.about', compact('aboutUs'));
     }
-    
+
     public function contact()
     {
         $contactUs = ContactUs::with('regionalOffices')->first();
@@ -208,8 +254,8 @@ class WebsiteController extends Controller
     public function faq()
     {
         $faqs = AdminFaq::where('is_active', 1)
-                        ->orderBy('sort_order', 'asc')
-                        ->get();
+            ->orderBy('sort_order', 'asc')
+            ->get();
 
         return view('website.faq', compact('faqs'));
     }
@@ -250,7 +296,7 @@ class WebsiteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'min:2', 'max:100', 'regex:/^[a-zA-Z\s]+$/'],
-            'email' => ['required', 'email:rfc,dns', 'max:150', 'unique:enquiries,email'],
+            'email' => ['required', 'email:rfc,dns', 'max:150'],
             'mobile' => ['required', 'digits_between:10,10', 'regex:/^[0-9]+$/'],
             'course' => ['required', 'string', 'min:2', 'max:255'],
             'message' => ['required', 'string', 'min:10', 'max:1000'],

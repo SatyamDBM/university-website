@@ -336,7 +336,6 @@ function subscribeNewsletter() {
 function handleEnquiry(event) {
     event.preventDefault();
 
-    // clear previous errors
     document.querySelectorAll('.error').forEach(e => e.innerText = '');
 
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -357,65 +356,59 @@ function handleEnquiry(event) {
             'X-CSRF-TOKEN': token
         },
         body: JSON.stringify(data)
-    }).then(async (response) => {
+    })
+    .then(response => response.json().then(res => ({
+        statusCode: response.status,
+        body: res
+    })))
+    .then(({ statusCode, body }) => {
 
-          let res = await response.json().catch(() => null);
+        // ❌ VALIDATION ERROR
+        if (statusCode === 422) {
 
-          if (!res) return;
+            let errors = body.errors;
 
-          // ❌ VALIDATION ERROR
-            if (!response.ok) {
+            if (errors.name) document.getElementById('err_name').innerText = errors.name[0];
+            if (errors.email) document.getElementById('err_email').innerText = errors.email[0];
+            if (errors.mobile) document.getElementById('err_mobile').innerText = errors.mobile[0];
+            if (errors.course) document.getElementById('err_course').innerText = errors.course[0];
+            if (errors.message) document.getElementById('err_message').innerText = errors.message[0];
 
-          if (res.errors) {
+            return;
+        }
 
-              if (res.errors.name) {
-                  document.getElementById('err_name').innerText = res.errors.name[0];
-              }
+        // ✅ SUCCESS
+        if (body.status === true) {
 
-              if (res.errors.email) {
-                  document.getElementById('err_email').innerText = res.errors.email[0];
-              }
+            // 👉 FIX: correct function
+            showToast(body.message, "success");
 
-              if (res.errors.mobile) {
-                  document.getElementById('err_mobile').innerText = res.errors.mobile[0];
-              }
+            // reset form safely
+            let form = document.getElementById('enquiryForm');
+            if (form) form.reset();
 
-              if (res.errors.course) {
-                  document.getElementById('err_course').innerText = res.errors.course[0];
-              }
+            // close modal safely
+            setTimeout(() => {
+                if (typeof closeEnquiryModal === "function") {
+                    closeEnquiryModal();
+                }
+            }, 500);
+        }
 
-              if (res.errors.message) {
-                  document.getElementById('err_message').innerText = res.errors.message[0];
-              }
-          }
+    })
+    .catch((error) => {
+        console.error("Fetch Error:", error);
 
-          return;
-      }
-
-      // ✅ SUCCESS CASE
-     if (res.status === true) {
-
-    showSuccessPopup(res.message);
-
-    document.getElementById('enquiryForm').reset();
-
-    setTimeout(() => {
-        closeEnquiryModal();
-    }, 500); // small delay so user sees success message
-
-    return;
-}
-
-  })
-    .catch(() => {
-        alert("Something went wrong!");
+        // 👉 show proper error instead of alert
+        showToast("Something went wrong!", "error");
     });
 }
-
 
 function showToast(message, type = "success") {
 
     let toast = document.getElementById("toast");
+
+    if (!toast) return; // safety
 
     toast.className = "toast " + type;
     toast.innerText = message;

@@ -52,9 +52,21 @@ class Course extends Model
     {
         return $this->belongsTo(Category::class, 'subcategory_id');
     }
-    public function stream()
+    public function streams()
     {
         return $this->hasMany(CourseStream::class);
+    }
+
+
+
+    public function admissionProcess()
+    {
+        return $this->hasOne(AdmissionProcess::class, 'course_id', 'id');
+    }
+
+    public function seats()
+    {
+        return $this->hasMany(CourseSeat::class);
     }
 
 

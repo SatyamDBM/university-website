@@ -4,35 +4,45 @@ namespace App\Http\Controllers\University;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use app\models\Enquiry;
+use App\Models\Enquiry;
 
 class LeadController extends Controller
 {
-    public function lead()
+    public function lead(Request $request)
     {
         $universityId = auth()->user()->id;
-
-        $directLeads = Enquiry::where('id', $universityId)
+        $enquiries = Enquiry::query()
+            ->where('user_id', $universityId)
             ->whereNull('assigned_by')
+            ->search($request->search)
             ->latest()
-            ->get();
-
-        $assignedLeads = Enquiry::where('university_id', $universityId)
-            ->whereNotNull('assigned_by')
-            ->latest()
-            ->get();
-
-        return view('university.leads', compact('directLeads', 'assignedLeads'));
+            ->paginate(10);
+        if ($request->ajax()) {
+            return view('university.lead.partials.table_body', compact('enquiries'))->render();
+        }
+        return view('university.lead.university_lead', compact('enquiries'));
     }
-    public function leadByAdmin()
+    public function leadByAdmin(Request $request)
     {
         $universityId = auth()->user()->id;
-
-        $leads = Enquiry::where('user_id', $universityId)
+        $search = $request->search;
+        $enquiries = Enquiry::where('user_id', $universityId)
             ->whereNotNull('assigned_by')
-            ->latest()
-            ->get();
 
-        return view('university.assigned-leads', compact('leads'));
+            // ✅ SEARCH ADDED
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($qq) use ($search) {
+                    $qq->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('mobile', 'like', "%$search%")
+                        ->orWhere('course', 'like', "%$search%");
+                });
+            })
+            ->latest()
+            ->paginate(10);
+        if ($request->ajax()) {
+            return view('university.lead.partials.table_body', compact('enquiries'))->render();
+        }
+        return view('university.lead.admin_assign_lead', compact('enquiries'));
     }
 }

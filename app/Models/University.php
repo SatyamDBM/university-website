@@ -70,4 +70,13 @@ class University extends Model
     {
         return $this->hasMany(LoanPartner::class);
     }
+    public function faqs()
+    {
+        return $this->hasMany(\App\Models\UniversityFaq::class);
+    }
+
+    public function recruiters()
+    {
+        return $this->hasMany(Recruiter::class);
+    }
 }

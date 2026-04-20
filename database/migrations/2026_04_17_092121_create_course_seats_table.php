@@ -11,23 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admission_cutoffs', function (Blueprint $table) {
+        Schema::create('course_seats', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('course_id')
                 ->constrained()
                 ->onDelete('cascade');
 
-            $table->foreignId('admission_process_id')
-                ->nullable()
-                ->constrained()
-                ->onDelete('cascade');
-
-            $table->string('round'); // Round 1, Round 2 etc.
-            $table->year('year');    // 2024, 2025, 2026
-            $table->string('exam');  // JEE, NEET etc.
-
-            $table->integer('cutoff');
+            $table->string('category'); // OBC, SC, ST, General
+            $table->integer('seats')->default(0);
 
             $table->timestamps();
         });
@@ -38,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admission_cutoffs');
+        Schema::dropIfExists('course_seats');
     }
 };

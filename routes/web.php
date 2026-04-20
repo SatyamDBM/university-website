@@ -37,7 +37,8 @@ Route::controller(WebsiteController::class)->group(function () {
     Route::post('/newsletter/subscribe', 'subscribeNewsletter');
     // Route::prefix('web')->group(function () {
     Route::get('/universities', 'universities')->name('universities');
-    Route::get('/universities-details', 'universityDetail')->name('university.detail');
+    Route::get('/course/{slug}', [WebsiteController::class, 'courseDetail'])
+        ->name('course.detail');
     Route::get('/courses', 'courses')->name('courses');
     Route::get('/courses-details', 'courseDetail')->name('course.detail');
     Route::get('/faq', 'faq')->name('web-faq');
@@ -161,7 +162,7 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     |---------------- Lead ----------------|
     */
     Route::get('lead', [LeadController::class, 'lead'])->name('lead');
-    Route::post('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin-lead');
+    Route::get('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin.lead');
 
     /*
     |---------------- Notifications ----------------|

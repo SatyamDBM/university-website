@@ -5,16 +5,40 @@ namespace App\Http\Controllers\University;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 use App\Models\CourseStream;
 
 class CourseStreamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $streams = CourseStream::with('course')->paginate(10); // eager load courses, paginated
+        $universityId = Auth::user()->id;
+
+        $query = CourseStream::with('course')
+            ->whereHas('course', function ($q) use ($universityId) {
+                $q->where('user_id', $universityId);
+            });
+
+        // 🔍 AJAX SEARCH
+        if ($request->ajax()) {
+            if ($request->search) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('name', 'like', "%{$request->search}%")
+                        ->orWhereHas('course', function ($q2) use ($request) {
+                            $q2->where('course_name', 'like', "%{$request->search}%");
+                        });
+                });
+            }
+
+            $streams = $query->latest()->paginate(10);
+
+            return view('university.courseStream.partials.table_body', compact('streams'))->render();
+        }
+
+        // NORMAL LOAD
+        $streams = $query->latest()->paginate(10);
+
         return view('university.courseStream.index', compact('streams'));
     }
 
@@ -44,7 +68,7 @@ class CourseStreamController extends Controller
 
         CourseStream::create($validated);
 
-        return redirect()->route('streams.index')->with('success', 'Stream added');
+        return redirect()->route('university.streams.index')->with('success', 'Stream added');
     }
     public function edit($id)
     {

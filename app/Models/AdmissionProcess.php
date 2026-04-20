@@ -12,14 +12,14 @@ class AdmissionProcess extends Model
         'title'
     ];
 
-    public function steps()
-    {
-        return $this->hasMany(AdmissionStep::class);
-    }
-
     public function dates()
     {
         return $this->hasMany(AdmissionDate::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasMany(AdmissionStep::class);
     }
 
     public function cutoffs()

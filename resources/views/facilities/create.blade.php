@@ -9,7 +9,7 @@
         <p class="text-sm text-gray-500 mt-1">Create a new campus facility</p>
     </div>
 
-    <form method="POST" action="{{ route('facilities.store') }}" enctype="multipart/form-data"
+    <form method="POST" action="{{ route('university.facilities.store') }}" enctype="multipart/form-data"
           class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         @csrf
 
@@ -300,7 +300,7 @@
 
         {{-- Submit --}}
         <div class="mt-6 flex justify-end">
-            <a href="{{ route('facilities.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition mr-3">← Back</a>
+            <a href="{{ route('university.facilities.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition mr-3">← Back</a>
             <button type="submit"
                     class="bg-[#6b4a36] hover:bg-[#5a3d2e] text-white px-6 py-2 rounded-lg text-sm font-medium transition">
                 Save Facility
