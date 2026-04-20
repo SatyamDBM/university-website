@@ -22,7 +22,7 @@
             </div>
         </a>
 
-        <a href="{{ \App\Filament\Pages\LogoBrandingSettings::getUrl() }}"
+        <a href=""
            class="group rounded border border-gray-200 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
             <div class="flex items-start justify-between">
                 <div>
@@ -88,7 +88,7 @@
             </div>
         </a>
 
-        <a href="{{ \App\Filament\Pages\SmtpSettings::getUrl() }}"
+        <a href=""
            class="group rounded border border-gray-200 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
             <div class="flex items-start justify-between">
                 <div>
