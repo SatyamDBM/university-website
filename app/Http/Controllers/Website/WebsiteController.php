@@ -17,7 +17,10 @@ use App\Models\AdminFaq;
 use App\Models\ContactUs;
 use App\Models\AboutUs;
 use App\Models\Blog;
+use App\Models\University;
+use App\Models\UniversityOverview;
 use Carbon\Carbon;
+
 
 class WebsiteController extends Controller
 {
@@ -58,7 +61,6 @@ class WebsiteController extends Controller
                 'university_count' => $uniCount,
             ];
         }
-
         return view('website.index', compact(
             'universityCount',
             'courseCount',
@@ -125,13 +127,20 @@ class WebsiteController extends Controller
     // University Listing
     public function universities()
     {
-        return view('website.university_listing');
+        $universities = University::where('is_verified', 0)->get();
+        return view('website.university_listing', compact('universities'));
     }
 
     // University Detail
-    public function universityDetail()
+    public function universityDetail($id)
     {
-        return view('website.university_details');
+        $university_details = University::with([
+            'placements.recruiters',
+            'facilities.images'
+        ])->findOrFail($id);
+        $overview = UniversityOverview::where('university_id', $id)->first();
+        $courses = Course::with('university', 'streams')->where('university_id', $id)->where('status', 'Live')->get();
+        return view('website.university_details', compact('university_details', 'overview', 'courses'));
     }
 
     // Course Listing
@@ -175,7 +184,6 @@ class WebsiteController extends Controller
             $currentYear
         ];
 
-        // ✅ FIX HERE
         $curriculum = [];
 
         if (!empty($course->curriculum_text)) {
@@ -183,11 +191,17 @@ class WebsiteController extends Controller
             $curriculum = is_array($decoded) ? $decoded : [];
         }
 
+        // ✅ ADD THIS
+        $placement = \App\Models\Placement::with('recruiters')
+            ->where('university_id', $course->university_id)
+            ->first();
+
         return view('website.course_details', compact(
             'course',
             'cutoffs',
             'years',
-            'curriculum'
+            'curriculum',
+            'placement'
         ));
     }
 

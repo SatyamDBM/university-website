@@ -14,7 +14,7 @@
         $girls = $hostel['girls'] ?? [];
     @endphp
 
-    <form method="POST" action="{{ route('facilities.update', $facility->id) }}" enctype="multipart/form-data"
+    <form method="POST" action="{{ route('university.facilities.update', $facility->id) }}" enctype="multipart/form-data"
           class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
 
         @csrf
@@ -131,7 +131,7 @@
         </div>
 
         <div class="mt-6 flex justify-end">
-            <a href="{{ route('facilities.index') }}" class="bg-gray-200 px-4 py-2 rounded">Back</a>
+            <a href="{{ route('university.facilities.index') }}" class="bg-gray-200 px-4 py-2 rounded">Back</a>
 
             <button class="bg-[#6b4a36] text-white px-6 py-2 rounded">
                 Update Facility

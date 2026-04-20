@@ -26,6 +26,15 @@ class Placement extends Model
 
     public function recruiters()
     {
-        return $this->hasMany(PlacementRecruiter::class);
+        return $this->belongsToMany(
+            Recruiter::class,
+            'placement_recruiter',
+            'placement_id',
+            'recruiter_id'
+        );
     }
+    // public function topRecruiters()
+    // {
+    //     return $this->recruiters()->orderBy('salary', 'desc')->take(5);
+    // }
 }

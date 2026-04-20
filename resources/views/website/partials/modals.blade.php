@@ -53,6 +53,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeEnquiryModal()">&times;</span>
         <h2>Enquire Now</h2>
+        
             <form id="enquiryForm" onsubmit="handleEnquiry(event)">
 
             <div class="form-group">

@@ -661,26 +661,26 @@ tailwind.config = {
             Top Recruiters
         </div>
 
-    @foreach($placement->recruiters as $recruiter)
-        <div class="recruiter-row">
-            <div class="flex items-center gap-3">
-                <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-black">
-                    {{ strtoupper(substr($recruiter->company_name, 0, 1)) }}
-                </span>
+        @foreach($placement->recruiters as $recruiter)
+            <div class="recruiter-row">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-black">
+                        {{ strtoupper(substr($recruiter->company_name, 0, 1)) }}
+                    </span>
 
-                <span class="font-600">
-                    {{ $recruiter->company_name }}
+                    <span class="font-600">
+                        {{ $recruiter->company_name }}
+                    </span>
+                </div>
+
+                <span class="font-serif font-bold text-[#775042]">
+                    ₹{{ $recruiter->package }} LPA
                 </span>
             </div>
+        @endforeach
 
-            <span class="font-serif font-bold text-[#775042]">
-                ₹{{ $recruiter->package }} LPA
-            </span>
         </div>
-    @endforeach
-
     </div>
-</div>
 
       <!-- QUICK FACTS -->
       <div class="sidebar-card rv d2">

@@ -200,44 +200,44 @@
         {{-- Room Types --}}
         <label class="text-sm font-medium block mt-4 mb-2">Room Type Available</label>
 
-<div class="space-y-3">
+        <div class="space-y-3">
 
-    <!-- AC Rooms -->
-    <div>
-        <p class="text-xs font-semibold text-gray-500 mb-1">AC Rooms</p>
-        <div class="flex flex-wrap gap-4 text-sm">
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="girls_rooms_ac[]" value="single">
-                Single
-            </label>
+            <!-- AC Rooms -->
+            <div>
+                <p class="text-xs font-semibold text-gray-500 mb-1">AC Rooms</p>
+                <div class="flex flex-wrap gap-4 text-sm">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="girls_rooms_ac[]" value="single">
+                        Single
+                    </label>
 
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="girls_rooms_ac[]" value="double">
-                Double
-            </label>
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="girls_rooms_ac[]" value="double">
+                        Double
+                    </label>
+                </div>
+            </div>
+
+            <!-- Non-AC Rooms -->
+            <div>
+                <p class="text-xs font-semibold text-gray-500 mb-1">Non-AC Rooms</p>
+                <div class="flex flex-wrap gap-4 text-sm">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="girls_rooms_non_ac[]" value="single">
+                        Single
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="girls_rooms_non_ac[]" value="double">
+                        Double
+                    </label>
+                </div>
+            </div>
+
         </div>
-    </div>
+            </div>
 
-    <!-- Non-AC Rooms -->
-    <div>
-        <p class="text-xs font-semibold text-gray-500 mb-1">Non-AC Rooms</p>
-        <div class="flex flex-wrap gap-4 text-sm">
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="girls_rooms_non_ac[]" value="single">
-                Single
-            </label>
-
-            <label class="flex items-center gap-2">
-                <input type="checkbox" name="girls_rooms_non_ac[]" value="double">
-                Double
-            </label>
         </div>
-    </div>
-
-</div>
-    </div>
-
-</div>
             
             
             {{-- ✅ END HOSTEL FIELDS --}}

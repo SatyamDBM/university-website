@@ -558,163 +558,93 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
       <div id="universityContainer" class="flex flex-col gap-4">
 
         <!-- Card 1 -->
-        <div class="uni-list-card rv d1" data-location="Delhi" data-naac="A+" data-fees-num="6" data-nirf="2" data-rating="4.5" data-stream="engineering" data-specialization="Computer Science" data-mode="Full Time" data-level="UG">
-          <div class="card-body">
-            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;flex-wrap: wrap;">
-              <div style="display:flex; align-items:flex-start; gap:12px;">
-                <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
-                  <img src="images/list1.png" alt="" style="width:36px;height:36px;object-fit:contain;" onerror="this.parentNode.innerHTML='🏛'">
-                </div>
-                <div>
-                  <h3 style="font-weight:700; font-size:15px; color:#25213B; line-height:1.3;">IIT Delhi - Indian Institute of Technology</h3>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap: wrap;">
-                    <img src="images/location.png" alt="Location Icon" style="width:18px;height:18px;object-fit:contain;">
-                    <span style="font-size:12px;color:#0E2A46;">Hauz Kauz Delhi- Govt </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="flex flex-col gap-4">
+            @foreach($universities as $uni)
 
-            <div style="display:flex;flex-wrap:wrap;gap:60px;grid-row-gap:10px;align-items:center;font-size:15px;color:#797979;padding-top:10px;justify-content: space-between;" class="course-portion">
-              <span>Offering Courses <strong style="color:#0E2A46;">15 Courses</strong></span>
-              <span>NIRF Ranking <strong style="color:#775042;">#3</strong></span>
-              <span>NAAC Grade <strong style="color:#775042;">A++</strong></span>
-              <span>Median Salary <strong style="color:#775042;">₹3.37LPA</strong></span>
+            <div class="uni-list-card rv d1"
+                data-location="{{ $uni->city }}"
+                data-naac="{{ $uni->naac ?? '' }}"
+                data-fees-num="{{ $uni->fees ?? 0 }}">
 
-              <div style="display:flex;gap:8px;margin-top:4px;margin-left:auto;margin-right:0;justify-content: flex-end;">
-              <button onclick="openEnquiry('VIT Vellore')" style="background:var(--dark3);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Enquire Now</button>
-              <a href="University-details.html" style="border:1.5px solid #c0813a;color:#c0813a;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;">View Details</a>
+                <div class="card-body">
+
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;flex-wrap: wrap;">
+                        
+                        <div style="display:flex; align-items:flex-start; gap:12px;">
+                            
+                            <!-- Logo -->
+                            <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;">
+                                <img src="{{ !empty($uni->logo) ? asset('storage/'.$uni->logo) : asset('images/list1.png') }}" alt="Location Icon" 
+                                    onerror="this.src='{{ asset('images/default.png') }}'" 
+                                    style="width:36px;height:36px;">
+                            </div>
+
+                            <!-- Name -->
+                            <div>
+                                <h3 style="font-weight:700; font-size:15px;">
+                                    {{ $uni->name }}
+                                </h3>
+
+                                <div style="display:flex;gap:6px;margin-top:3px;">
+                                    <span style="font-size:12px;">
+                                        {{ $uni->city }}, {{ $uni->state }}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Info Row -->
+                    <div class="course-portion" style="display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+
+                        <span>
+                            Courses 
+                            <strong>{{ $uni->courses_count ?? 'N/A' }}</strong>
+                        </span>
+
+                        <span>
+                            Ranking 
+                            <strong>#{{ $uni->ranking ?? 'N/A' }}</strong>
+                        </span>
+
+                        <span>
+                            NAAC 
+                            <strong>{{ $uni->naac ?? 'N/A' }}</strong>
+                        </span>
+
+                        <span>
+                            Avg Salary 
+                            <strong>₹{{ $uni->avg_salary ?? 'N/A' }}</strong>
+                        </span>
+
+                        <!-- Buttons -->
+                        <div style="display:flex;gap:8px;margin-left:auto;">
+                            <button onclick="openEnquiry('{{ $uni->name }}')" 
+                                    class="bg-[#775042] text-white px-4 py-2 rounded-lg">
+                                Enquire
+                            </button>
+
+                            <a href="{{ route('university.detail', $uni->id) }}" 
+                              class="border border-[#c0813a] text-[#c0813a] px-4 py-2 rounded-lg">
+                              View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
+            @endforeach
           </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="uni-list-card rv d2" data-location="Lucknow" data-naac="A" data-fees-num="3" data-nirf="45" data-rating="4.0" data-stream="engineering" data-specialization="Civil Engineering" data-mode="Full Time" data-level="UG">
-          <div class="card-body">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap: wrap;">
-              <div style="display:flex;align-items:flex-start;gap:12px;">
-                <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;"><img src="images/list2.png" alt="" style="width:36px;height:36px;object-fit:contain;" onerror="this.parentNode.innerHTML='🏛'"></div>
-                <div>
-                  <h3 style="font-weight:700;font-size:16px;color:#0E2A46;line-height:1.3;">Integral University</h3>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap: wrap;">
-                     <img src="images/location.png" alt="Location Icon" style="width:18px;height:18px;object-fit:contain;">
-                    <span style="font-size:12px;color:#0E2A46;">Kursi Lucknow- Private</span>
-                  </div>
-                </div>
-              </div>
+        <!--Addon section -->
+        <section class="destination-add">
+            <div class="container">
+                <img src="{{ asset('images/addon.png') }}" alt="View All Universities">
             </div>
-            <div style="display:flex;flex-wrap:wrap;gap:60px;grid-row-gap:10px;align-items:center;font-size:15px;color:#797979;padding-top:10px;justify-content: space-between;" class="course-portion">
-              <span>Offering Courses <strong style="color:#0E2A46;">15 Courses</strong></span>
-              <span>NIRF Ranking <strong style="color:#775042;">#11</strong></span>
-              <span>NAAC Grade <strong style="color:#775042;">A+</strong></span>
-              <span>Median Salary <strong style="color:#775042;">₹3.37LPA</strong></span>
-
-              <div style="display:flex;gap:8px;margin-top:4px;margin-left:auto;margin-right:0;justify-content: flex-end;">
-              <button onclick="openEnquiry('VIT Vellore')" style="background:var(--dark3);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Enquire Now</button>
-              <a href="University-details.html" style="border:1.5px solid #c0813a;color:#c0813a;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;">View Details</a>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="uni-list-card rv d3" data-location="Lucknow" data-naac="A" data-fees-num="4" data-nirf="23" data-rating="4.2" data-stream="engineering" data-specialization="Electrical Engineering" data-mode="Full Time" data-level="UG">
-          <div class="card-body">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap: wrap;">
-              <div style="display:flex;align-items:flex-start;gap:12px;">
-                <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;"><img src="images/list3.png" alt="" style="width:36px;height:36px;object-fit:contain;" onerror="this.parentNode.innerHTML='🏛'"></div>
-                <div>
-                  <h3 style="font-weight:700;font-size:16px;color:#0E2A46;line-height:1.3;">Babu Banarsi Das University</h3>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;">
-                    <img src="images/location.png" alt="Location Icon" style="width:18px;height:18px;object-fit:contain;">
-                    <span style="font-size:12px;color:#0E2A46;">Hauz Kauz Delhi- Govt </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:60px;grid-row-gap:10px;align-items:center;font-size:15px;color:#797979;padding-top:10px;justify-content: space-between;" class="course-portion">
-              <span>Offering Courses <strong style="color:#0E2A46;">15 Courses</strong></span>
-              <span>NIRF Ranking <strong style="color:#775042;">#25</strong></span>
-              <span>NAAC Grade <strong style="color:#775042;">A++</strong></span>
-              <span>Median Salary <strong style="color:#775042;">₹3.37LPA</strong></span>
-
-              <div style="display:flex;gap:8px;margin-top:4px;margin-left:auto;margin-right:0;justify-content: flex-end;">
-              <button onclick="openEnquiry('VIT Vellore')" style="background:var(--dark3);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Enquire Now</button>
-              <a href="University-details.html" style="border:1.5px solid #c0813a;color:#c0813a;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;">View Details</a>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="uni-list-card rv d4" data-location="Delhi" data-naac="A+" data-fees-num="8" data-nirf="8" data-rating="4.3" data-stream="management" data-specialization="AI" data-mode="Full Time" data-level="PG">
-          <div class="card-body">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap: wrap;">
-              <div style="display:flex;align-items:flex-start;gap:12px;">
-                <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;"><img src="images/list4.png" alt="" style="width:36px;height:36px;object-fit:contain;" onerror="this.parentNode.innerHTML='🏛'"></div>
-                <div>
-                  <h3 style="font-weight:700;font-size:16px;color:#0E2A46;line-height:1.3;">Amity University</h3>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;">
-                   <img src="images/location.png" alt="Location Icon" style="width:18px;height:18px;object-fit:contain;">
-                    <span style="font-size:12px;color:#0E2A46;">Hauz Kauz Noida- Private</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:60px;grid-row-gap:10px;align-items:center;font-size:15px;color:#797979;padding-top:10px;justify-content: space-between;" class="course-portion">
-              <span>Offering Courses <strong style="color:#0E2A46;">15 Courses</strong></span>
-              <span>NIRF Ranking <strong style="color:#775042;">#8</strong></span>
-              <span>NAAC Grade <strong style="color:#775042;">A++</strong></span>
-              <span>Median Salary <strong style="color:#775042;">₹3.37LPA</strong></span>
-
-              <div style="display:flex;gap:8px;margin-top:4px;margin-left:auto;margin-right:0;justify-content: flex-end;">
-              <button onclick="openEnquiry('VIT Vellore')" style="background:var(--dark3);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Enquire Now</button>
-              <a href="University-details.html" style="border:1.5px solid #c0813a;color:#c0813a;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;">View Details</a>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="uni-list-card rv d5" data-location="Lucknow" data-naac="A+" data-fees-num="2" data-nirf="1" data-rating="4.7" data-stream="engineering" data-specialization="Computer Science" data-mode="Distance" data-level="UG">
-          <div class="card-body">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap: wrap;">
-              <div style="display:flex;align-items:flex-start;gap:12px;">
-                <div style="width:52px;height:52px;border-radius:10px;border:1.5px solid #e8edf5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;"><img src="images/list5.png" alt="" style="width:36px;height:36px;object-fit:contain;" onerror="this.parentNode.innerHTML='🏛'"></div>
-                <div>
-                  <h3 style="font-weight:700;font-size:16px;color:#0E2A46;line-height:1.3;">Lucknow University</h3>
-                  <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;">
-                     <img src="images/location.png" alt="Location Icon" style="width:18px;height:18px;object-fit:contain;">
-                    <span style="font-size:12px;color:#0E2A46;">Hauz Kauz Lucknow- Govt </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:60px;grid-row-gap:10px;align-items:center;font-size:15px;color:#797979;padding-top:10px;justify-content: space-between;" class="course-portion">
-              <span>Offering Courses <strong style="color:#0E2A46;">15 Courses</strong></span>
-              <span>NIRF Ranking <strong style="color:#775042;">#25</strong></span>
-              <span>NAAC Grade <strong style="color:#775042;">A+</strong></span>
-              <span>Median Salary <strong style="color:#775042;">₹3.37LPA</strong></span>
-
-              <div style="display:flex;gap:8px;margin-top:4px;margin-left:auto;margin-right:0;justify-content: flex-end;">
-              <button onclick="openEnquiry('VIT Vellore')" style="background:var(--dark3);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Enquire Now</button>
-              <a href="University-details.html" style="border:1.5px solid #c0813a;color:#c0813a;padding:9px 20px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;">View Details</a>
-            </div>
-            </div>
-          </div>
-        </div>
-
-             <!--Addon section -->
-    <section class="destination-add">
-        <div class="container">
-            <img src="images/addon.png" alt="View All Universities">
-        </div>
-    </section>
+        </section>
  <!-- End Addon section -->
 
         <!-- Card 6 -->
-        <div class="uni-list-card rv d4" data-location="Delhi" data-naac="A+" data-fees-num="8" data-nirf="8" data-rating="4.3" data-stream="management" data-specialization="AI" data-mode="Full Time" data-level="PG">
+        {{-- <div class="uni-list-card rv d4" data-location="Delhi" data-naac="A+" data-fees-num="8" data-nirf="8" data-rating="4.3" data-stream="management" data-specialization="AI" data-mode="Full Time" data-level="PG">
           <div class="card-body">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap: wrap;">
               <div style="display:flex;align-items:flex-start;gap:12px;">
@@ -768,7 +698,7 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
             </div>
             </div>
           </div>
-        </div>
+        </div> --}}
 
         <!-- No Results -->
         <div id="noResults" style="display:none; text-align:center; padding:60px 20px; background:#fff; border-radius:16px; border:1.5px solid #e8edf5;">
@@ -795,7 +725,7 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
       </div>
     </div>
   </div>
-</div>
+   </div>
 
 
     <!-- Login Modal -->
@@ -843,35 +773,55 @@ So When Choosing A Btech College In India, You Must Be Considering Accreditat
     </div>
 
         <!-- Enquiry Modal -->
-    <div id="enquiryModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEnquiryModal()">&times;</span>
-            <h2>Enquire Now</h2>
-            <form onsubmit="handleEnquiry(event)">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="Full Name" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <label>Mobile Number</label>
-                    <input type="tel" placeholder="Mobile Number" required>
-                </div>
-                <div class="form-group">
-                    <label>Course Interested In</label>
-                    <input type="text" placeholder="Course Interested In" required>
-                </div>
-                <div class="form-group">
-                    <label>Write message here...</label>
-                    <textarea type="text" placeholder="Write your message here..." required></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Enquire Now</button>
-            </form>
-        </div>
+{{-- ========== ENQUIRY MODAL ========== --}}
+<div id="enquiryModal" class="modal" onclick="handleModalBackdrop(event)">
+    <div class="modal-content">
+        <span class="close" onclick="closeEnquiryModal()">&times;</span>
+        <h2>Enquire Now</h2>
+
+        {{-- University name --}}
+        <p id="enquiryUniName"
+           style="color:#775042; font-weight:600; font-size:14px; margin:-8px 0 14px 0; display:none;">
+        </p>
+
+        <form id="enquiryForm" onsubmit="handleEnquiry(event)">
+
+            <input type="hidden" id="enq_university" name="university">
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="enq_name" placeholder="Full Name">
+                <small class="error" id="err_name" style="color:red;font-size:11px;"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="enq_email" placeholder="Email Address">
+                <small class="error" id="err_email" style="color:red;font-size:11px;"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="text" id="enq_mobile" placeholder="Mobile Number">
+                <small class="error" id="err_mobile" style="color:red;font-size:11px;"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Course Interested In</label>
+                <input type="text" id="enq_course" placeholder="Course Interested In">
+                <small class="error" id="err_course" style="color:red;font-size:11px;"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="enq_message" placeholder="Write your message here..."></textarea>
+                <small class="error" id="err_message" style="color:red;font-size:11px;"></small>
+            </div>
+
+            <button type="submit" class="btn-submit">Enquire Now</button>
+        </form>
     </div>
+</div>
 
 
 <!-- ══════════ MOBILE FILTER DRAWER ══════════ -->
@@ -1056,16 +1006,35 @@ function sortUniversities(sortBy) {
 
 // ── ENQUIRY ──
 function openEnquiry(name) {
-  document.getElementById('enquiryUniName').textContent = name !== 'General' ? '→ ' + name : '→ General Enquiry';
-  const m = document.getElementById('enquiryModal');
-  m.style.removeProperty('display');
-  m.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+    const nameEl = document.getElementById('enquiryUniName');
+    const hiddenEl = document.getElementById('enq_university');
+
+    if (name && name !== 'General') {
+        nameEl.textContent = '🏛️ ' + name;
+        nameEl.style.display = 'block';
+        if (hiddenEl) hiddenEl.value = name;
+    } else {
+        nameEl.style.display = 'none';
+        if (hiddenEl) hiddenEl.value = '';
+    }
+
+    // Clear previous errors
+    ['err_name','err_email','err_mobile','err_course','err_message'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '';
+    });
+
+    const modal = document.getElementById('enquiryModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 }
-function closeEnquiry() {
-  document.getElementById('enquiryModal').style.setProperty('display','none','important');
-  document.body.style.overflow = '';
+
+function closeEnquiryModal() {
+    document.getElementById('enquiryModal').style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('enquiryForm').reset();
 }
+
 function submitEnquiry() {
   closeEnquiry();
   const t = document.getElementById('toast');

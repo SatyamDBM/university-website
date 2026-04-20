@@ -7,14 +7,14 @@
     <section class="hero detail-hero">
 
         <div class="hero-banner">
-        <img src="images/detail.png" alt="Background Image" class="bg-image">
+        <img src="{{ asset('images/detail.png') }}" alt="Background Image" class="bg-image">
         </div>
 
         <div class="middleware">
             <div class="hero-content">
                 <div class="left portion">
                 <h1 class="hero-title">Indian institute of technology,<br> Delhi</h1>
-                <p class="hero-subtitle"><img src="images/unversity.png" alt="unversity">India’s premier engineering & technology institute - NAAC A+, NIRF #2 (Engineering)</p>
+                <p class="hero-subtitle"><img src="{{ asset('images/university.png') }}" alt="unversity">India’s premier engineering & technology institute - NAAC A+, NIRF #2 (Engineering)</p>
                   <div class="left-allign">
                     <p class="first">NIRF #2 ENGINEERING 2026</p>
                     <p class="second">NAAC A+ | 3.28 CGPA</p>
@@ -106,15 +106,15 @@
       <!--  PROFILE SECTION NAV  -->
       <nav class="pnav">
         <div class="pnav-in">
-          <button class="pnb on" onclick="navTo(this,'sec-overview')"><img src="images/overview.png" alt="Overview"> Overview</button>
-          <button class="pnb" onclick="navTo(this,'sec-rankings')"><img src="images/rankings.png" alt="Rankings">Rankings</button>
-          <button class="pnb" onclick="navTo(this,'sec-placements')"><img src="images/placements.png" alt="Placements">Placements</button>
-          <button class="pnb" onclick="navTo(this,'sec-courses')"><img src="images/courses.png" alt="Courses">Courses & Fees</button>
-          <button class="pnb" onclick="navTo(this,'sec-campus')"><img src="images/campus.png" alt="Campus">Campus</button>
-          <button class="pnb" onclick="navTo(this,'sec-hostel')"><img src="images/hostel.png" alt="Hostel">Hostel & Food</button>
-          <button class="pnb" onclick="navTo(this,'sec-admission')"><img src="images/admission.png" alt="Admission">Admission</button>
-          <button class="pnb" onclick="navTo(this,'sec-scholarships')"><img src="images/scholarship.png" alt="Scholarships">Scholarships</button>
-          <button class="pnb" onclick="navTo(this,'sec-loan-partners')"><img src="images/scholarship.png" alt="Loan Partners">Loan Partners</button>
+          <button class="pnb on" onclick="navTo(this,'sec-overview')"><img src="{{ asset('images/overview.png') }}" alt="Overview"> Overview</button>
+          <button class="pnb" onclick="navTo(this,'sec-rankings')"><img src="{{ asset('images/rankings.png') }}" alt="Rankings">Rankings</button>
+          <button class="pnb" onclick="navTo(this,'sec-placements')"><img src="{{ asset('images/placements.png') }}" alt="Placements">Placements</button>
+          <button class="pnb" onclick="navTo(this,'sec-courses')"><img src="{{ asset('images/courses.png') }}" alt="Courses">Courses & Fees</button>
+          <button class="pnb" onclick="navTo(this,'sec-campus')"><img src="{{ asset('images/campus.png') }}" alt="Campus">Campus</button>
+          <button class="pnb" onclick="navTo(this,'sec-hostel')"><img src="{{ asset('images/hostel.png') }}" alt="Hostel">Hostel & Food</button>
+          <button class="pnb" onclick="navTo(this,'sec-admission')"><img src="{{ asset('images/admission.png') }}" alt="Admission">Admission</button>
+          <button class="pnb" onclick="navTo(this,'sec-scholarships')"><img src="{{ asset('images/scholarship.png') }}" alt="Scholarships">Scholarships</button>
+          <button class="pnb" onclick="navTo(this,'sec-loan-partners')"><img src="{{ asset('images/scholarship.png') }}" alt="Loan Partners">Loan Partners</button>
         </div>
       </nav>
 
@@ -127,28 +127,24 @@
               <div class="card about-card rv">
                 <div class="sh" style="margin-bottom:0px">
                   <p class="section-btn">About University</p>
-                  <div class="sh-h">Indian Institute Of Technology, Delhi</div>
+                  <div class="sh-h">{{$overview->university_type ?? 'Indian Institute Of Technology, Delhi'}}</div>
                 </div>
-                <p class="about-p">IIT, Delhi (Cu), Established On 10 July 2012, Is A Private University Located In Gharuan Village, Mohali, Punjab — Approximately 10 Km From Chandigarh. In Just 12 Years, Cu Has Become India's Youngest And Fastest-rising Private University To Receive Naac A+ Accreditation, A Feat No Other State Private University In Punjab Has Achieved In Its First Assessment Cycle.
-                Recognized By The University Grants Commission (Ugc) Under Section 2(f) And Approved By Aicte, Bci, Pci, Nba, Coa, Ncte, And Icar Among Others, The University Comprises 14+ Institutes Offering 200+ Programs Across Engineering, Management, Law, Pharmacy, Architecture, Sciences, Commerce, And More. Cu Is The Only Private University In The Tricity Region To Earn Full Naac A+ Accreditation.
-                Cu Has Forged Over 515 Global Academic Collaborations With Universities Across Usa, Uk, Canada, Europe And Asia. These Enable Student & Faculty Exchange, Dual Degrees, And Joint Research. Ranked #109 In Qs Asia 2026 And #1 Among India's Private Universities In Qs Asia For 3 Consecutive Years, Cu's Global Standing Continues To Rise Sharply.</p>
+                <p class="about-p">{{$overview->about ?? 'IIT, Delhi (Cu), Established On 10 July 2012, Is A Private University Located In Gharuan Village, Mohali, Punjab — Approximately 10 Km From Chandigarh. In Just 12 Years, Cu Has Become India\'s Youngest And Fastest-rising Private University To Receive Naac A+ Accreditation, A Feat No Other State Private University In Punjab Has Achieved In Its First Assessment Cycle.'}}</p>
               </div>
 
               <div class="card facts-wrap rv d1">
                 <p class="section-btn">Key facts</p>
-                <div class="fact-row"><span class="fact-k">Established</span><span class="fact-v">15 June 2016</span></div>
-                <div class="fact-row"><span class="fact-k">Type</span><span class="fact-v">Government University (State Act, Delhi)</span></div>
-                <div class="fact-row"><span class="fact-k">Location</span><span class="fact-v">NH-5, Ludhiana Highway, Mohali, Punjab 140413</span></div>
-                <div class="fact-row"><span class="fact-k">Chancellor</span><span class="fact-v">Satnam Singh Sandhu (MP, Rajya Sabha)</span></div>
-                <div class="fact-row"><span class="fact-k">Campus Area</span><span class="fact-v">200 Acres (Mohali)</span></div>
-                <div class="fact-row"><span class="fact-k">Total Students</span><span class="fact-v">30,000+</span></div>
-                <div class="fact-row"><span class="fact-k">ACADEMIC STAFF</span><span class="fact-v">687</span></div>
-                <div class="fact-row"><span class="fact-k">Admission Exam</span><span class="fact-v">CUCET / JEE Main / CAT / NEET / GATE / CLAT</span></div>
-                <div class="fact-row"><span class="fact-k">Application Fee</span><span class="fact-v">₹1,000</span></div>
-                <div class="fact-row"><span class="fact-k">Official Website</span><span class="fact-v">https://home.iitd.ac.in/</span></div>
+                <div class="fact-row"><span class="fact-k">Established</span><span class="fact-v">{{$overview->established_date ?? '15 June 2016'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Type</span><span class="fact-v">{{$overview->university_type ?? 'Government University (State Act, Delhi)'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Location</span><span class="fact-v">{{$overview->location ?? 'NH-5, Ludhiana Highway, Mohali, Punjab 140413'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Chancellor</span><span class="fact-v">{{$overview->chancellor ?? 'Satnam Singh Sandhu (MP, Rajya Sabha)'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Campus Area</span><span class="fact-v">{{$overview->campus_area ?? '200 Acres (Mohali)'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Total Students</span><span class="fact-v">{{$overview->total_students ?? '30,000+'}}</span></div>
+                <div class="fact-row"><span class="fact-k">ACADEMIC STAFF</span><span class="fact-v">{{$overview->academic_staff ?? '687'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Admission Exam</span><span class="fact-v">{{$overview->exams ?? 'CUCET / JEE Main / CAT / NEET / GATE / CLAT'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Application Fee</span><span class="fact-v">{{$overview->application_fee ?? '₹1,000'}}</span></div>
+                <div class="fact-row"><span class="fact-k">Official Website</span><span class="fact-v">{{$overview->website ?? 'https://home.iitd.ac.in/'}}</span></div>
               </div>
-
-
                     <!--  RANKINGS  -->
       <section class="sec" id="sec-rankings">
         <div class="bg-colr">
@@ -232,11 +228,11 @@
 
                    <!--Addon section -->
           <div class="banner-add" style="margin-top: 40px;">
-            <img src="images/addon-banner.jpg" alt="View All Universities">
+            <img src="{{ asset('images/addon-banner.jpg') }}" alt="View All Universities">
           </div>
 
           <div class="banner-add" style="margin-top: 40px;">
-            <img src="images/addon-feature.jpg" alt="View All Universities">
+            <img src="{{ asset('images/addon-feature.jpg') }}" alt="View All Universities">
         </div>
  <!-- End Addon section -->
 
@@ -461,48 +457,50 @@
             <div class="sh-sub">UG, PG and PhD Across Engineering, Management, Law, Medical Sciences, Architecture And More</div>
           </div>
           <div class="course-grid">
-            <div class="cc rv d1">
-              <div class="cc-head"><div class="cc-name">B.E. / B.Tech Engineering</div><span class="cc-dur">4 Years</span></div>
-              <div class="cc-body">
-                <div class="fee-row"><span class="fee-spec">CSE (General)</span><span class="fee-amt">₹5.97 – 9.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">CSE with AI / ML / Cloud</span><span class="fee-amt">₹10.5 – 14.84L total</span></div>
-                <div class="fee-row"><span class="fee-spec">ECE / Electrical / Mech</span><span class="fee-amt">₹5.97 – 8.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">Aerospace / Robotics</span><span class="fee-amt">₹9.0 – 12.8L total</span></div>
-                <div class="fee-row"><span class="fee-spec">Civil / Chemical / Food Tech</span><span class="fee-amt">₹5.97 – 7.5L total</span></div>
-                <div class="cc-exams"><div class="cc-exam-l">Entrance Exams</div><span class="cc-exam">JEE Main</span><span class="cc-exam">CUCET</span><span class="cc-exam">Board Merit</span></div>
+            @foreach($courses as $course)
+              <div class="cc rv d1">
+
+                  <div class="cc-head">
+                      <div class="cc-name">{{ $course->course_name }}</div>
+                      <span class="cc-dur">{{ $course->duration }}</span>
+                  </div>
+
+                  <div class="cc-body">
+
+                      {{-- STREAMS --}}
+                      @foreach ($course->streams as $stream)
+                          <div class="fee-row">
+                              <span class="fee-spec">{{ $stream->name }}</span>
+                              <span class="fee-amt">
+                                  {{ $stream->fee ? '₹' . $stream->fee . 'L total' : '' }}
+                              </span>
+                          </div>
+                      @endforeach
+
+                      {{-- EXAMS --}}
+                      @php
+                          $exams = collect([$course->required_exams])
+                              ->filter()
+                              ->flatMap(fn($e) => explode(',', $e))
+                              ->map(fn($e) => trim($e))
+                              ->unique();
+                      @endphp
+
+                      @if($exams->count())
+                      <div class="cc-exams">
+                          <div class="cc-exam-l">Entrance Exams</div>
+
+                          @foreach($exams as $exam)
+                              <span class="cc-exam">{{ $exam }}</span>
+                          @endforeach
+                      </div>
+                      @endif
+
+                  </div>
+
               </div>
-            </div>
-            <div class="cc rv d2">
-              <div class="cc-head"><div class="cc-name">MBA / Management</div><span class="cc-dur">2 Years</span></div>
-              <div class="cc-body">
-                <div class="fee-row"><span class="fee-spec">MBA General</span><span class="fee-amt">₹3.84 – 5.04L total</span></div>
-                <div class="fee-row"><span class="fee-spec">MBA Business Analytics</span><span class="fee-amt">₹6.0 – 7.57L total</span></div>
-                <div class="fee-row"><span class="fee-spec">MBA Digital Marketing</span><span class="fee-amt">₹5.5 – 7.0L total</span></div>
-                <div class="fee-row"><span class="fee-spec">MBA Finance / HR / Ops</span><span class="fee-amt">₹3.84 – 5.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">BBA (3 Years)</span><span class="fee-amt">₹2.2 – 3.5L total</span></div>
-                <div class="cc-exams"><div class="cc-exam-l">Entrance Exams</div><span class="cc-exam">CAT</span><span class="cc-exam">MAT</span><span class="cc-exam">XAT</span><span class="cc-exam">CUCET</span></div>
-              </div>
-            </div>
-            <div class="cc rv d3">
-              <div class="cc-head"><div class="cc-name">Pharmacy &amp; Health Sciences</div><span class="cc-dur">2–6 Years</span></div>
-              <div class="cc-body">
-                <div class="fee-row"><span class="fee-spec">B.Pharm (4 Years)</span><span class="fee-amt">₹4.8 – 6.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">M.Pharm (2 Years)</span><span class="fee-amt">₹3.2 – 4.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">Pharm D (6 Years)</span><span class="fee-amt">₹8.5 – 10.0L total</span></div>
-                <div class="fee-row"><span class="fee-spec">BPT / B.Optom</span><span class="fee-amt">₹3.5 – 5.0L total</span></div>
-                <div class="cc-exams"><div class="cc-exam-l">Entrance Exams</div><span class="cc-exam">NEET</span><span class="cc-exam">CUCET</span></div>
-              </div>
-            </div>
-            <div class="cc rv d4">
-              <div class="cc-head"><div class="cc-name">Law / Architecture / Sciences</div><span class="cc-dur">3–5 Years</span></div>
-              <div class="cc-body">
-                <div class="fee-row"><span class="fee-spec">LLB (3 Years)</span><span class="fee-amt">₹3.0 – 4.2L total</span></div>
-                <div class="fee-row"><span class="fee-spec">BA LLB / BBA LLB (5 Yrs)</span><span class="fee-amt">₹5.5 – 8.0L total</span></div>
-                <div class="fee-row"><span class="fee-spec">B.Arch (5 Years)</span><span class="fee-amt">₹7.5 – 10.5L total</span></div>
-                <div class="fee-row"><span class="fee-spec">BCA / MCA / B.Sc / M.Sc</span><span class="fee-amt">₹1.35 – 4.8L total</span></div>
-                <div class="cc-exams"><div class="cc-exam-l">Entrance Exams</div><span class="cc-exam">CLAT</span><span class="cc-exam">NATA</span><span class="cc-exam">CUCET</span><span class="cc-exam">GATE</span></div>
-              </div>
-            </div>
+              @endforeach
+   
           </div>
 
         </div>
@@ -514,15 +512,27 @@
         <div class="W">
 
         <div class="bg-colr">
-                                <p class="section-btn">Recruiters Details</p>
-            <div class="sh-h">Top Recruiters - Batch 2025-2026</div>
+             <p class="section-btn">Recruiters Details</p>
+                <div class="sh-h">Top Recruiters - Batch 2025-2026</div>
                 <div class="ptab-highlights">
-                <div class="pth"><div class="pth-co">Google</div><div class="pth-role">₹40 LPA</div></div>
-                <div class="pth"><div class="pth-co">Amazon</div><div class="pth-role">₹44 LPA</div></div>
-                <div class="pth"><div class="pth-co">Microsoft</div><div class="pth-role">₹170 LPA</div></div>
-                <div class="pth"><div class="pth-co">Infosys</div><div class="pth-role">₹4.5 LPA</div></div>
-                <div class="pth"><div class="pth-co">Wipro</div><div class="pth-role">D₹3.5 LPA</div></div>
-                <div class="pth"><div class="pth-co">Accenture</div><div class="pth-role">₹4.5 LPA</div></div>
+                   @foreach ($university_details->placements as $placement)
+
+            @foreach ($placement->recruiters as $recruiter)
+
+                <div class="pth">
+                    <div class="pth-co">
+                        {{ $recruiter->company_name }}
+                    </div>
+
+                    <div class="pth-role">
+                        ₹{{ number_format($placement->average_package, 0) }} LPA
+                    </div>
+                </div>
+
+            @endforeach
+
+        @endforeach
+             
               </div>
         </div>
       </div>
@@ -532,13 +542,13 @@
                  <!--Addon section -->
     <section class="Addsection setails">
         <div class="container">
-            <img src="images/add.gif" alt="View All Universities">
+            <img src="{{ asset('images/add.gif') }}" alt="View All Universities">
         </div>
     </section>
  <!-- End Addon section -->
 
       <!--  CAMPUS  -->
-      <section class="sec alt" id="sec-campus">
+      {{-- <section class="sec alt" id="sec-campus">
         <div class="W">
           <div class="sh rv">
             <p class="section-btn">Campus &amp; Facilities</p>
@@ -549,7 +559,7 @@
           <div class="gallery-wrap rv">
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class1.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class1.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Academic campus</div><div class="ci-desc">50+ state-of-the-art buildings · Smart classrooms</div></div>
               </div>
@@ -557,7 +567,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class2.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class2.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Central Library</div><div class="ci-desc">5 lakh+ books, 15,000+ e-journals, JSTOR & Springer access. Air-conditioned 24×7 reading halls.</div></div>
               </div>
@@ -565,7 +575,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class3.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class3.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Research Labs</div><div class="ci-desc">500+ advanced labs with IBM, Cisco & Intel certified infrastructure. AI/ML, IoT, Robotics & Biotech centres.</div></div>
               </div>
@@ -573,7 +583,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class4.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class4.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Auditorium</div><div class="ci-desc">5,000-seat air-conditioned auditorium hosting national tech fests, cultural events & convocations.</div></div>
               </div>
@@ -581,7 +591,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class5.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class5.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Sports Complex</div><div class="ci-desc">Olympic-size swimming pool, cricket stadium, football ground, basketball, badminton & 20+ other sports.</div></div>
               </div>
@@ -589,7 +599,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class6.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class6.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">University Hospital</div><div class="ci-desc">On-campus 200-bed hospital with 24×7 emergency, OPD, dental, physiotherapy & pharmacy services.</div></div>
               </div>
@@ -597,7 +607,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class7.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class7.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">GYM</div><div class="ci-desc">State-of-the-art gym, yoga hall, aerobics studio and wellness centre open 6 AM – 10 PM daily.</div></div>
               </div>
@@ -605,7 +615,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class8.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class8.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Multi-Cuisine Food Court</div><div class="ci-desc">20+ food outlets with North Indian, South Indian, Chinese, Continental and fast food. Open 7 AM – 11 PM.</div></div>
               </div>
@@ -613,7 +623,7 @@
 
             <div class="gallery-hero">
               <div class="camp-photo">
-                <img src="images/Campass-class9.png" alt="Main Campus Building" loading="lazy">
+                <img src="{{ asset('images/Campass-class9.png') }}" alt="Main Campus Building" loading="lazy">
                 <div class="camp-ov"></div>
                 <div class="camp-info"><div class="ci-name">Smart Classrooms</div><div class="ci-desc">800+ smart classrooms with interactive panels, high-speed internet, projectors and ergonomic seating.</div></div>
               </div>
@@ -644,10 +654,89 @@
           </div>
 
         </div>
-      </section>
+      </section> --}}
+      <section class="sec alt" id="sec-campus">
+    <div class="W">
+
+        {{-- SECTION HEADER --}}
+        <div class="sh rv">
+            <p class="section-btn">Campus & Facilities</p>
+
+            <div class="sh-h">
+                {{ $campus->title ?? 'World-Class Campus' }}
+            </div>
+
+            <div class="sh-sub">
+                {{ $campus->subtitle ?? 'Modern infrastructure' }}
+            </div>
+        </div>
+
+        {{-- MAIN GALLERY --}}
+        <div class="gallery-wrap rv">
+
+            @forelse($university_details->facilities as $facility)
+                <div class="gallery-hero">
+                    <div class="camp-photo">
+
+                        {{-- IMAGE --}}
+                        <img 
+                          src="{{ $facility->images->first() 
+                              ? asset('storage/'.$facility->images->first()->image_url) 
+                              : asset('images/default.png') }}"
+                          alt="{{ $facility->facility_name }}"
+                          loading="lazy">
+
+                        <div class="camp-ov"></div>
+
+                        {{-- INFO --}}
+                        <div class="camp-info">
+                            <div class="ci-name">
+                                {{ $facility->facility_name }}/{{ $facility->facility_type }}
+                            </div>
+
+                            <div class="ci-desc" title="{{ $facility->description }}">
+                              {{ \Illuminate\Support\Str::limit($facility->description, 70) }}
+                          </div>
+                        </div>
+
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-gray-400">No facilities available</p>
+            @endforelse
+
+        </div>
+
+        {{-- LIGHTBOX --}}
+        <div class="gallery-lb" id="galleryLB" onclick="closeGallery()">
+            <div class="lb-inner" onclick="event.stopPropagation()">
+                <button class="lb-close" onclick="closeGallery()">✕</button>
+
+                <div class="lb-title">Campus Photo Gallery</div>
+
+                <div class="lb-grid">
+
+                    @foreach($facility->images as $image)
+                    <div class="lb-item">
+                        <img 
+                            src="{{ asset('storage/'.$image->image_url) }}"
+                            alt="{{ $facility->facility_name }}"
+                            loading="lazy">
+
+                        <span>{{ $facility->facility_name }}</span>
+                    </div>
+                @endforeach
+
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </section>
 
       <!--  HOSTEL & FOOD  -->
-      <section class="sec" id="sec-hostel">
+  
+      {{-- <section class="sec" id="sec-hostel">
         <div class="W">
         <div class="bg-colr">
           <div class="sh rv">
@@ -658,7 +747,7 @@
           </div>
           <div class="hostel-grid">
             <div class="hostel-photos">
-              <div class="hp wide rv d1"><img src="images/student-living.png" alt="Hostel" loading="lazy"><div class="hp-lbl">Boys Hostel Block</div>
+              <div class="hp wide rv d1"><img src="{{ asset('images/student-living.png') }}" alt="Hostel" loading="lazy"><div class="hp-lbl">Boys Hostel Block</div>
             <div class="card hi rv d1">
                 <p class="section-btn">Key facts</p>
                 <div class="feats">
@@ -681,7 +770,7 @@
               </div>
             
             </div>
-              <div class="hp rv d2"><img src="images/student-living2.png" alt="Room" loading="lazy"><div class="hp-lbl">Single AC Room</div>
+              <div class="hp rv d2"><img src="{{ asset('images/student-living2.png') }}" alt="Room" loading="lazy"><div class="hp-lbl">Single AC Room</div>
             
                           <div class="card hi rv d2">
                 <p class="section-btn">Key facts</p>
@@ -706,7 +795,143 @@
 
           </div>
         </div></div>
-      </section>
+      </section> --}}
+@php
+$hostel = $university_details->facilities->where('facility_type','Hostel')->first();
+@endphp
+
+@if($hostel)
+@php
+    $boys  = $hostel->hostel_details['boys'] ?? [];
+    $girls = $hostel->hostel_details['girls'] ?? [];
+@endphp
+
+<section class="sec" id="sec-hostel">
+    <div class="W">
+        <div class="bg-colr">
+
+            {{-- HEADER --}}
+            <div class="sh rv">
+                <p class="section-btn">Hostel & Campus Life</p>
+                <div class="sh-h">Student Living</div>
+                <div class="sh-sub">{{ $hostel->description }}</div>
+            </div>
+
+            <div class="hostel-grid">
+                <div class="hostel-photos">
+
+                    {{-- ================= LEFT (BOYS) ================= --}}
+                    @if(in_array($hostel->gender_specific,['boys','both']))
+                    <div class="hp wide rv d1">
+
+                        {{-- IMAGE --}}
+                        <img src="{{ $hostel->images->first() 
+                            ? asset('storage/'.$hostel->images->first()->image_url) 
+                            : asset('images/default.png') }}">
+
+                        <div class="hp-lbl">Boys Hostel Block</div>
+
+                        {{-- KEY FACTS --}}
+                        <div class="card hi rv d1">
+                            <p class="section-btn">Key facts</p>
+
+                            <div class="feats">
+                                @foreach($boys['features'] ?? [] as $feature)
+                                    <span class="feat">
+                                        ✓ {{ ucfirst(str_replace('_',' ',$feature)) }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- ROOM TYPES --}}
+                        <div class="card hi rv d3">
+                            <div class="hi-t">Room Types Available</div>
+
+                            <div class="rooms">
+
+                                @foreach($boys['rooms']['ac'] ?? [] as $room)
+                                    <div class="room">
+                                        <div class="room-icon">🛏️</div>
+                                        <div class="room-n">{{ ucfirst($room) }}</div>
+                                        <div class="room-d">AC · Attached bath</div>
+                                    </div>
+                                @endforeach
+
+                                @foreach($boys['rooms']['non_ac'] ?? [] as $room)
+                                    <div class="room">
+                                        <div class="room-icon">🏠</div>
+                                        <div class="room-n">{{ ucfirst($room) }}</div>
+                                        <div class="room-d">Budget · Non-AC</div>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+
+                    </div>
+                    @endif
+
+
+                    {{-- ================= RIGHT (GIRLS) ================= --}}
+                    @if(in_array($hostel->gender_specific,['girls','both']))
+                    <div class="hp rv d2">
+
+                        {{-- IMAGE --}}
+                        <img src="{{ $hostel->images->skip(1)->first() 
+                            ? asset('storage/'.$hostel->images->skip(1)->first()->image_url) 
+                            : asset('images/default.png') }}">
+
+                        <div class="hp-lbl">Single AC Room</div>
+
+                        {{-- KEY FACTS --}}
+                        <div class="card hi rv d2">
+                            <p class="section-btn">Key facts</p>
+
+                            <div class="feats">
+                                @foreach($girls['features'] ?? [] as $feature)
+                                    <span class="feat">
+                                        ✓ {{ ucfirst(str_replace('_',' ',$feature)) }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- ROOM TYPES --}}
+                        <div class="card hi rv d3">
+                            <div class="hi-t">Room Types Available</div>
+
+                            <div class="rooms">
+
+                                @foreach($girls['rooms']['ac'] ?? [] as $room)
+                                    <div class="room">
+                                        <div class="room-icon">🛏️</div>
+                                        <div class="room-n">{{ ucfirst($room) }}</div>
+                                        <div class="room-d">AC · Attached bath</div>
+                                    </div>
+                                @endforeach
+
+                                @foreach($girls['rooms']['non_ac'] ?? [] as $room)
+                                    <div class="room">
+                                        <div class="room-icon">🏠</div>
+                                        <div class="room-n">{{ ucfirst($room) }}</div>
+                                        <div class="room-d">Budget · Non-AC</div>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+
+                    </div>
+                    @endif
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+@endif
 
 
 

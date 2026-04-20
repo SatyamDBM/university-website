@@ -44,7 +44,7 @@ class University extends Model
 
     public function facilities()
     {
-        return $this->hasMany(UniversityFacility::class);
+        return $this->hasMany(Facility::class);
     }
 
     public function media()
@@ -78,5 +78,10 @@ class University extends Model
     public function recruiters()
     {
         return $this->hasMany(Recruiter::class);
+    }
+
+    public function placements()
+    {
+        return $this->hasMany(Placement::class);
     }
 }

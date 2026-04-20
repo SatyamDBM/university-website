@@ -37,6 +37,7 @@ Route::controller(WebsiteController::class)->group(function () {
     Route::post('/newsletter/subscribe', 'subscribeNewsletter');
     // Route::prefix('web')->group(function () {
     Route::get('/universities', 'universities')->name('universities');
+    Route::get('/universities/{id}', 'universityDetail')->name('university.detail');
     Route::get('/course/{slug}', [WebsiteController::class, 'courseDetail'])
         ->name('course.detail');
     Route::get('/courses', 'courses')->name('courses');
@@ -126,7 +127,7 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
         'index' => 'gallery.index',
         'create' => 'gallery.create',
-        'store' => 'gallery.store', 
+        'store' => 'gallery.store',
         'edit' => 'gallery.edit',
         'update' => 'gallery.update',
         'destroy' => 'gallery.destroy',
