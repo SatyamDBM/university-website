@@ -45,7 +45,7 @@ class SupportTickets extends Page implements HasTable
                     ->label('Ticket ID')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('university_id')
+                Tables\Columns\TextColumn::make('user_id')
                     ->label('University ID')
                     ->sortable(),
 

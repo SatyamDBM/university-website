@@ -32,7 +32,7 @@
                     <div class="flex flex-wrap gap-6 text-sm text-gray-500">
                         <div>
                             <span class="font-medium text-gray-700">University ID:</span>
-                            {{ $this->ticket->university_id }}
+                            {{ $this->ticket->user_id }}
                         </div>
 
                         <div>
