@@ -59,7 +59,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandName($brandName ?? config('app.name'))
             ->brandLogoHeight('2.5rem')
             ->assets([
-                Css::make('admin-theme', resource_path('css/filament/admin.css')),
                 Css::make('app-css', Vite::asset('resources/css/app.css')),
             ])
             ->colors([
