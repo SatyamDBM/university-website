@@ -86,9 +86,15 @@ class AdminPanelProvider extends PanelProvider
 
                 NavigationGroup::make('Universities Account')
                     ->icon('heroicon-o-building-library'),
+                
+                NavigationGroup::make('University Staff')
+                    ->icon('heroicon-o-user-group'),
 
                 NavigationGroup::make('Leads')
                     ->icon('heroicon-o-chart-bar'),
+
+                NavigationGroup::make('Support & Tickets')
+                    ->icon('heroicon-o-lifebuoy'),
 
                 NavigationGroup::make('Subscriptions')
                     ->icon('heroicon-o-credit-card'),

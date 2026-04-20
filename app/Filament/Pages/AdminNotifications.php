@@ -3,16 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Models\UserNotification;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Concerns\InteractsWithTable;
 
-class AdminNotifications extends Page implements HasTable
+class AdminNotifications extends Page
 {
-    use InteractsWithTable;
-
     protected static ?string $navigationLabel = 'All Notifications';
 
     protected static ?string $title = 'All Notifications';
@@ -25,40 +20,59 @@ class AdminNotifications extends Page implements HasTable
 
     protected string $view = 'filament.pages.admin-notifications';
 
-    public function table(Table $table): Table
+    public $notifications;
+
+    public function mount(): void
     {
-        return $table
-            ->query(
-                UserNotification::query()
-                    ->where('user_id', auth()->id())
-                    ->latest()
-            )
-            ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('message')
-                    ->label('Message')
-                    ->limit(80)
-                    ->tooltip(fn ($record) => $record->message),
-
-                Tables\Columns\IconColumn::make('is_read')
-                    ->label('Read')
-                    ->boolean(),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
-                    ->dateTime('d M Y h:i A')
-                    ->sortable(),
-            ])
-            ->defaultSort('created_at', 'desc')
-            ->paginated([10, 25, 50, 100]);
+        $this->loadNotifications();
     }
 
-    public static function canAccess(): bool
+    public function loadNotifications(): void
     {
-        return auth()->user()?->role === 'admin';
+        $this->notifications = UserNotification::query()
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+    }
+
+    public function markAsRead(int $notificationId): void
+    {
+        $notification = UserNotification::where('user_id', auth()->id())
+            ->where('id', $notificationId)
+            ->first();
+
+        if (! $notification) {
+            return;
+        }
+
+        $notification->update([
+            'is_read' => true,
+        ]);
+
+        $this->loadNotifications();
+
+        Notification::make()
+            ->title('Notification marked as read')
+            ->success()
+            ->send();
+    }
+
+    public function openNotification(int $notificationId)
+    {
+            $notification = UserNotification::where('user_id', auth()->id())
+                ->where('id', $notificationId)
+                ->first();
+
+            if (! $notification) {
+                return;
+            }
+
+            if (! $notification->is_read) {
+                $notification->update([
+                    'is_read' => true,
+                ]);
+            }
+
+            $this->loadNotifications();
     }
 }
