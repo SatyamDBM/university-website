@@ -1,0 +1,26 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-BJ6GRJOf.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/css/university.css": {
+    "file": "assets/university-dtl-3mJZ.css",
+    "src": "resources/css/university.css",
+    "isEntry": true,
+    "name": "university",
+    "names": [
+      "university.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DUDf-mJW.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
