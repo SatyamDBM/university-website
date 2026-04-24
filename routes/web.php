@@ -43,7 +43,7 @@ Route::controller(WebsiteController::class)->group(function () {
     Route::get('/course/{slug}', [WebsiteController::class, 'courseDetail'])
         ->name('course.detail');
     Route::get('/courses', 'courses')->name('courses');
-    Route::get('/courses-details', 'courseDetail')->name('course.detail');
+    // Route::get('/courses-details', 'courseDetail')->name('course.detail');
     Route::get('/faq', 'faq')->name('web-faq');
     // });
     Route::get('/blog', 'blog')->name('blog');
