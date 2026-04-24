@@ -7,11 +7,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Notification;
-use Illuminate\Auth\Events\Registered;
-use App\Listeners\SendRegistrationSuccessEmail;
-use Illuminate\Support\Facades\Event;
 use App\Models\GeneralSetting;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,17 +22,37 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Enable Tailwind pagination
         Paginator::useTailwind();
 
+        /**
+         * Mail configuration (only in web requests)
+         */
         if (!App::runningInConsole()) {
             MailConfigurationService::setMailConfig();
         }
-        $brandingSettings = GeneralSetting::where('group', 'branding')
-        ->pluck('value', 'key')
-        ->toArray();
-         View::share('brandingSettings', $brandingSettings);
 
+        /**
+         * SAFE: Load branding settings only if table exists
+         */
+        $brandingSettings = [];
+
+        if (!App::runningInConsole() && Schema::hasTable('general_settings')) {
+            $brandingSettings = GeneralSetting::where('group', 'branding')
+                ->pluck('value', 'key')
+                ->toArray();
+        }
+
+        View::share('brandingSettings', $brandingSettings);
+
+        /**
+         * Global notifications (safe)
+         */
         View::composer('*', function ($view) {
+
+            if (App::runningInConsole()) {
+                return;
+            }
 
             if (auth()->check()) {
 
