@@ -16,7 +16,7 @@
 
 <body class="bg-gray-100 text-gray-900">
 
-    <x-header />
+    {{-- <x-header /> --}}
 
     <main>
         @yield('content')
