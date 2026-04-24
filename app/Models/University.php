@@ -35,7 +35,10 @@ class University extends Model
         return $this->hasMany(User::class);
     }
 
-
+    public function overview()
+    {
+        return $this->hasOne(UniversityOverview::class);
+    }
 
     public function profile()
     {
@@ -83,5 +86,23 @@ class University extends Model
     public function placements()
     {
         return $this->hasMany(Placement::class);
+    }
+    public function activeSubscription()
+    {
+        return $this->hasOne(\App\Models\Subscription::class)
+            ->where('status', 'active')
+            ->where('payment_status', 'paid')
+            ->where('end_date', '>=', now())
+            ->latestOfMany(); // important
+    }
+
+    public function banners()
+    {
+        return $this->hasMany(UniversityBanner::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(\App\Models\Package::class);
     }
 }

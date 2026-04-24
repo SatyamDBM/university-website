@@ -19,7 +19,10 @@ use App\Models\AboutUs;
 use App\Models\Blog;
 use App\Models\University;
 use App\Models\UniversityOverview;
+use App\Models\Subscription;
 use Carbon\Carbon;
+use App\Models\Banner;
+
 
 
 class WebsiteController extends Controller
@@ -61,12 +64,23 @@ class WebsiteController extends Controller
                 'university_count' => $uniCount,
             ];
         }
+
+        $featuredUniversities = Subscription::with('university')
+            ->where('payment_status', 'paid')
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', now())
+            ->latest()
+            ->take(6) // limit to 6 cards
+            ->get();
+
+
         return view('website.index', compact(
             'universityCount',
             'courseCount',
             'student_helped',
             'categories',
-            'courseData'
+            'courseData',
+            'featuredUniversities'
         ));
     }
 
@@ -136,7 +150,12 @@ class WebsiteController extends Controller
     {
         $university_details = University::with([
             'placements.recruiters',
-            'facilities.images'
+            'facilities.images',
+            'loanPartners' => function ($query) {
+                $query->where('is_active', 1);
+            },
+            'scholarships',
+            'overview',
         ])->findOrFail($id);
         $overview = UniversityOverview::where('university_id', $id)->first();
         $courses = Course::with('university', 'streams')->where('university_id', $id)->where('status', 'Live')->get();

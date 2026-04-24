@@ -211,7 +211,19 @@
                   <div class="ab-deadline">Admission 2026-27 Open - Deadline July 2027</div>
                   <div class="ab-h">Enquiry to IIT, DELHI</div>
                   <button class="ab-btn">Enquire Now</button>
-                  <button class="ab-btn2">Download Brochure</button>
+                  {{-- <button class="ab-btn2">Download Brochure</button> --}}
+                  <div>
+                   @if(!empty($university_details->overview->brochure))
+                     <a href="{{ asset('storage/' . $university_details->overview->brochure) }}"
+                                target="_blank"
+                                class="ab-btn2 w-full block text-center"
+                                style="display:inline-block;">
+                                  Download Brochure
+                              </a>
+                  @else
+                      <span class="text-sm text-gray-400">No brochure uploaded.</span>
+                  @endif
+                </div>
                 </div>
               </div>
 
@@ -234,7 +246,7 @@
           <div class="banner-add" style="margin-top: 40px;">
             <img src="{{ asset('images/addon-feature.jpg') }}" alt="View All Universities">
         </div>
- <!-- End Addon section -->
+         <!-- End Addon section -->
 
             </div>
           </div>
@@ -797,142 +809,163 @@
         </div></div>
       </section> --}}
 @php
-$hostel = $university_details->facilities->where('facility_type','Hostel')->first();
+    $boysHostel  = $university_details->facilities->where('facility_type','Hostel')->where('gender_specific','boys')->first();
+    $girlsHostel = $university_details->facilities->where('facility_type','Hostel')->where('gender_specific','girls')->first();
+    $anyHostel   = $boysHostel ?? $girlsHostel;
+
+    // hostel_details is the column name (from your DB screenshot)
+    $boys  = $boysHostel?->hostel_details['boys']  ?? [];
+    $girls = $girlsHostel?->hostel_details['girls'] ?? [];
 @endphp
 
-@if($hostel)
-@php
-    $boys  = $hostel->hostel_details['boys'] ?? [];
-    $girls = $hostel->hostel_details['girls'] ?? [];
-@endphp
-
+@if($anyHostel)
 <section class="sec" id="sec-hostel">
     <div class="W">
         <div class="bg-colr">
 
-            {{-- HEADER --}}
             <div class="sh rv">
                 <p class="section-btn">Hostel & Campus Life</p>
                 <div class="sh-h">Student Living</div>
-                <div class="sh-sub">{{ $hostel->description }}</div>
+                    <div class="sh-sub" title="{{ $anyHostel->description }}">{{ \Illuminate\Support\Str::limit($anyHostel->description, 70) }}</div>
             </div>
 
             <div class="hostel-grid">
                 <div class="hostel-photos">
 
-                    {{-- ================= LEFT (BOYS) ================= --}}
-                    @if(in_array($hostel->gender_specific,['boys','both']))
+                    {{-- ── BOYS HOSTEL ── --}}
+                    @if($boysHostel)
                     <div class="hp wide rv d1">
 
-                        {{-- IMAGE --}}
-                        <img src="{{ $hostel->images->first() 
-                            ? asset('storage/'.$hostel->images->first()->image_url) 
-                            : asset('images/default.png') }}">
+                        @php $boysImg = $boysHostel->images->first(); @endphp
+                        <img src="{{ $boysImg ? asset('storage/'.$boysImg->image_url) : asset('images/default.png') }}"
+                             onerror="this.src='{{ asset('images/default.png') }}'">
 
                         <div class="hp-lbl">Boys Hostel Block</div>
 
-                        {{-- KEY FACTS --}}
+                        {{-- Fee Range --}}
+                        {{-- @if(!empty($boys['fee_min']) || !empty($boys['fee_max']))
+                        <div class="card hi rv d1" style="margin-top:12px;">
+                            <div class="hi-t">💰 Fee Range</div>
+                            <p style="font-size:14px;color:#555;">
+                                ₹{{ number_format($boys['fee_min'] ?? 0) }}
+                                —
+                                ₹{{ number_format($boys['fee_max'] ?? 0) }} / year
+                            </p>
+                        </div>
+                        @endif --}}
+
+                        {{-- Key Facts --}}
+                        @if(!empty($boys['features']))
                         <div class="card hi rv d1">
                             <p class="section-btn">Key facts</p>
-
                             <div class="feats">
-                                @foreach($boys['features'] ?? [] as $feature)
-                                    <span class="feat">
-                                        ✓ {{ ucfirst(str_replace('_',' ',$feature)) }}
-                                    </span>
+                                @foreach($boys['features'] as $feature)
+                                    <span class="feat">{{ ucfirst(str_replace('_',' ',$feature)) }}</span>
                                 @endforeach
                             </div>
                         </div>
+                        @endif
 
-                        {{-- ROOM TYPES --}}
+                        {{-- Room Types --}}
+                        @if(!empty($boys['rooms_ac']) || !empty($boys['rooms_non_ac']))
                         <div class="card hi rv d3">
                             <div class="hi-t">Room Types Available</div>
-
                             <div class="rooms">
 
-                                @foreach($boys['rooms']['ac'] ?? [] as $room)
-                                    <div class="room">
-                                        <div class="room-icon">🛏️</div>
-                                        <div class="room-n">{{ ucfirst($room) }}</div>
-                                        <div class="room-d">AC · Attached bath</div>
-                                    </div>
+                                {{-- AC Rooms --}}
+                                @foreach($boys['rooms_ac'] ?? [] as $room)
+                                <div class="room">
+                                    <div class="room-icon">🛏️</div>
+                                    <div class="room-n">{{ ucfirst($room) }}</div>
+                                    <div class="room-d">AC · Attached bath</div>
+                                </div>
                                 @endforeach
 
-                                @foreach($boys['rooms']['non_ac'] ?? [] as $room)
-                                    <div class="room">
-                                        <div class="room-icon">🏠</div>
-                                        <div class="room-n">{{ ucfirst($room) }}</div>
-                                        <div class="room-d">Budget · Non-AC</div>
-                                    </div>
+                                {{-- Non-AC Rooms --}}
+                                @foreach($boys['rooms_non_ac'] ?? [] as $room)
+                                <div class="room">
+                                    <div class="room-icon">🏠</div>
+                                    <div class="room-n">{{ ucfirst($room) }}</div>
+                                    <div class="room-d">Non-AC · Shared bath</div>
+                                </div>
                                 @endforeach
 
                             </div>
                         </div>
+                        @endif
 
                     </div>
                     @endif
 
-
-                    {{-- ================= RIGHT (GIRLS) ================= --}}
-                    @if(in_array($hostel->gender_specific,['girls','both']))
+                    {{-- ── GIRLS HOSTEL ── --}}
+                    @if($girlsHostel)
                     <div class="hp rv d2">
 
-                        {{-- IMAGE --}}
-                        <img src="{{ $hostel->images->skip(1)->first() 
-                            ? asset('storage/'.$hostel->images->skip(1)->first()->image_url) 
-                            : asset('images/default.png') }}">
+                        @php $girlsImg = $girlsHostel->images->first(); @endphp
+                        <img src="{{ $girlsImg ? asset('storage/'.$girlsImg->image_url) : asset('images/default.png') }}"
+                             onerror="this.src='{{ asset('images/default.png') }}'">
 
-                        <div class="hp-lbl">Single AC Room</div>
+                        <div class="hp-lbl">Girls Hostel Block</div>
 
-                        {{-- KEY FACTS --}}
+                        {{-- Fee Range
+                        @if(!empty($girls['fee_min']) || !empty($girls['fee_max']))
+                        <div class="card hi rv d2" style="margin-top:12px;">
+                            <div class="hi-t">💰 Fee Range</div>
+                            <p style="font-size:14px;color:#555;">
+                                ₹{{ number_format($girls['fee_min'] ?? 0) }}
+                                —
+                                ₹{{ number_format($girls['fee_max'] ?? 0) }} / year
+                            </p>
+                        </div>
+                        @endif --}}
+
+                        {{-- Key Facts --}}
+                        @if(!empty($girls['features']))
                         <div class="card hi rv d2">
                             <p class="section-btn">Key facts</p>
-
                             <div class="feats">
-                                @foreach($girls['features'] ?? [] as $feature)
-                                    <span class="feat">
-                                        ✓ {{ ucfirst(str_replace('_',' ',$feature)) }}
-                                    </span>
+                                @foreach($girls['features'] as $feature)
+                                    <span class="feat">{{ ucfirst(str_replace('_',' ',$feature)) }}</span>
                                 @endforeach
                             </div>
                         </div>
+                        @endif
 
-                        {{-- ROOM TYPES --}}
+                        {{-- Room Types --}}
+                        @if(!empty($girls['rooms_ac']) || !empty($girls['rooms_non_ac']))
                         <div class="card hi rv d3">
                             <div class="hi-t">Room Types Available</div>
-
                             <div class="rooms">
 
-                                @foreach($girls['rooms']['ac'] ?? [] as $room)
-                                    <div class="room">
-                                        <div class="room-icon">🛏️</div>
-                                        <div class="room-n">{{ ucfirst($room) }}</div>
-                                        <div class="room-d">AC · Attached bath</div>
-                                    </div>
+                                {{-- AC Rooms --}}
+                                @foreach($girls['rooms_ac'] ?? [] as $room)
+                                <div class="room">
+                                    <div class="room-icon">🛏️</div>
+                                    <div class="room-n">{{ ucfirst($room) }}</div>
+                                    <div class="room-d">AC · Attached bath</div>
+                                </div>
                                 @endforeach
 
-                                @foreach($girls['rooms']['non_ac'] ?? [] as $room)
-                                    <div class="room">
-                                        <div class="room-icon">🏠</div>
-                                        <div class="room-n">{{ ucfirst($room) }}</div>
-                                        <div class="room-d">Budget · Non-AC</div>
-                                    </div>
+                                {{-- Non-AC Rooms --}}
+                                @foreach($girls['rooms_non_ac'] ?? [] as $room)
+                                <div class="room">
+                                    <div class="room-icon">🏠</div>
+                                    <div class="room-n">{{ ucfirst($room) }}</div>
+                                    <div class="room-d">Non-AC · Shared bath</div>
+                                </div>
                                 @endforeach
-
                             </div>
                         </div>
-
+                        @endif
                     </div>
                     @endif
 
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 @endif
-
 
 
       <!--  SCHOLARSHIPS  -->
@@ -944,12 +977,15 @@ $hostel = $university_details->facilities->where('facility_type','Hostel')->firs
             <div class="sh-h">Don’t Let Fees Stop Your Dream</div>
             <div class="sh-sub">Merit Scholarships, Category Concessions, And Easy Education Loans From Leading Banks</div>
           </div>
-          <div class="schol-grid">
-            <div class="sch rv d1"><div><div class="sch-t">CUCET Merit Scholarship</div><div class="sch-d">Auto-computed based on CUCET score. 95+ percentile = 100% tuition waiver. Renewable each semester if CGPA ≥ 7.5.</div></div></div>
-            <div class="sch rv d2"><div><div class="sch-t">JEE Main / NEET Score Scholarship</div><div class="sch-d">Valid JEE/NEET scorers get automatic merit scholarship. Top JEE rankers get 100% fee waiver — applicable at admission only.</div></div></div>
-            <div class="sch rv d3"><div><div class="sch-t">Sports & NCC Excellence</div><div class="sch-d">National / international sports achievers get 100% tuition waiver + dedicated training infrastructure. NCC A/B/C holders also eligible.</div></div></div>
-            <div class="sch rv d4"><div><div class="sch-t">SC / ST / OBC Concessions</div><div class="sch-d">Government post-matric scholarships applicable. CU additionally provides fee concessions over and above state govt schemes.</div></div></div>
-          </div>
+                @if($university_details->scholarships->count())
+              <div class="schol-grid">
+              @foreach($university_details->scholarships as $scholarship)
+                <div class="sch rv d1"><div><div class="sch-t">{{$scholarship->title ?? 'Merit Scholarship'}}</div><div class="sch-d">{{$scholarship->description ?? 'Auto-computed based on CUCET score. 95+ percentile = 100% tuition waiver. Renewable each semester if CGPA ≥ 7.5.'}}</div></div></div>
+                @endforeach
+              </div>
+              @else
+                <p class="text-center text-gray-400">No scholarships available</p>  
+              @endif
 
         </div></div>
       </section>
@@ -957,9 +993,9 @@ $hostel = $university_details->facilities->where('facility_type','Hostel')->firs
             <!--  SCHOLARSHIPS  -->
       <section class="sec" id="sec-loan-partners">
          <div class="W">
-        <div class="bg-colr">
+         <div class="bg-colr">
 
-                    <div class="sh rv">
+           <div class="sh rv">
             <p class="section-btn">Funds</p>
             <div class="sh-h">Education loan Partners</div>
             <div class="sh-sub">Apply directly through CU's empanelled banks — faster processing, pre-approved limits, no collateral up to ₹7.5l</div>
@@ -967,16 +1003,34 @@ $hostel = $university_details->facilities->where('facility_type','Hostel')->firs
 
           <!-- Education Loan Partners -->
           <div class="loan-section rv" style="margin-bottom:28px">
+            @if($university_details->loanPartners->count())
             <div class="loan-grid">
-              <a class="loan-card" href="#" onclick="return false" title="SBI Student Loan Scheme"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#22409a"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#fff" text-anchor="middle">SBI</text></svg></div><div class="loan-info"><div class="loan-name">State Bank of India</div><div class="loan-rate">8.55% p.a. · Up to ₹30L</div><div class="loan-tag">No Collateral up to ₹7.5L</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="PNB Saraswati Loan"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#ff6600"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="12" font-weight="900" fill="#fff" text-anchor="middle">PNB</text></svg></div><div class="loan-info"><div class="loan-name">Punjab National Bank</div><div class="loan-rate">8.75% p.a. · Up to ₹20L</div><div class="loan-tag">Saraswati Education Loan</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="Canara Vidya Turant"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#006bb6"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="9.5" font-weight="900" fill="#fff" text-anchor="middle">CANARA</text></svg></div><div class="loan-info"><div class="loan-name">Canara Bank</div><div class="loan-rate">8.90% p.a. · Up to ₹25L</div><div class="loan-tag">Vidya Turant Scheme</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="HDFC Credila Education Loan"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#004C8F"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#fff" text-anchor="middle">HDFC</text></svg></div><div class="loan-info"><div class="loan-name">HDFC Credila</div><div class="loan-rate">10.50% p.a. · Up to ₹1Cr</div><div class="loan-tag">Fastest Disbursement</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="Axis Bank Education Loan"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#820024"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="10" font-weight="900" fill="#fff" text-anchor="middle">AXIS</text></svg></div><div class="loan-info"><div class="loan-name">Axis Bank</div><div class="loan-rate">11.00% p.a. · Up to ₹75L</div><div class="loan-tag">15-Year Repayment Option</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="BoB Baroda Gyan"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#f47920"/><text x="36" y="14" font-family="Arial,sans-serif" font-size="8" font-weight="900" fill="#fff" text-anchor="middle">BANK OF</text><text x="36" y="23" font-family="Arial,sans-serif" font-size="8" font-weight="900" fill="#fff" text-anchor="middle">BARODA</text></svg></div><div class="loan-info"><div class="loan-name">Bank of Baroda</div><div class="loan-rate">8.85% p.a. · Up to ₹80L</div><div class="loan-tag">Baroda Gyan Scheme</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="IDBI Education Loan"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#003d7a"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#fff" text-anchor="middle">IDBI</text></svg></div><div class="loan-info"><div class="loan-name">IDBI Bank</div><div class="loan-rate">9.20% p.a. · Up to ₹20L</div><div class="loan-tag">Vidya Lakshmi Portal</div></div><div class="loan-arrow">→</div></a>
-              <a class="loan-card" href="#" onclick="return false" title="Avanse Financial Services"><div class="loan-logo"><svg width="72" height="28" viewBox="0 0 72 28" xmlns="http://www.w3.org/2000/svg"><rect width="72" height="28" rx="4" fill="#00a651"/><text x="36" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#fff" text-anchor="middle">AVANSE</text></svg></div><div class="loan-info"><div class="loan-name">Avanse Financial</div><div class="loan-rate">11.5% p.a. · Up to ₹60L</div><div class="loan-tag">NBFC — Fast Approval</div></div><div class="loan-arrow">→</div></a>
+                @foreach($university_details->loanPartners as $loan)
+                    <a class="loan-card" href="#" onclick="return false" title="{{ $loan->bank_name }}">
+                        
+                        <div class="loan-logo">
+                            <img src="{{ asset('storage/' . $loan->logo) }}" alt="{{ $loan->bank_name }}" width="72">
+                        </div>
+
+                        <div class="loan-info">
+                            <div class="loan-name">{{ $loan->bank_name }}</div>
+
+                            <div class="loan-rate">
+                                {{ $loan->interest_rate }}% p.a. · Up to ₹{{ $loan->amount }}
+                            </div>
+
+                            <div class="loan-tag">
+                                {{ $loan->highlight ?? 'Education Loan' }}
+                            </div>
+                        </div>
+
+                        <div class="loan-arrow">→</div>
+                    </a>
+                @endforeach
             </div>
+            @else
+                <p class="text-center text-gray-400">No loan partners available</p>
+            @endif
             <div class="loan-note">Note: Interest rates are indicative as of 2025 and subject to change. CU's Financial Aid cell assists with documentation, bank liaison and disbursal tracking — contact them atfinancialaid@cuchd.in</strong></div>
           </div>
 

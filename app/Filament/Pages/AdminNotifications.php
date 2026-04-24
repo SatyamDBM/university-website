@@ -59,20 +59,20 @@ class AdminNotifications extends Page
 
     public function openNotification(int $notificationId)
     {
-            $notification = UserNotification::where('user_id', auth()->id())
-                ->where('id', $notificationId)
-                ->first();
+        $notification = UserNotification::where('user_id', auth()->id())
+            ->where('id', $notificationId)
+            ->first();
 
-            if (! $notification) {
-                return;
-            }
+        if (! $notification) {
+            return;
+        }
 
-            if (! $notification->is_read) {
-                $notification->update([
-                    'is_read' => true,
-                ]);
-            }
+        if (! $notification->is_read) {
+            $notification->update([
+                'is_read' => true,
+            ]);
+        }
 
-            $this->loadNotifications();
+        $this->loadNotifications();
     }
 }

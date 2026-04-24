@@ -59,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName($brandName ?? config('app.name'))
             ->brandLogoHeight('2.5rem')
             ->assets([
+                Css::make('admin-theme', resource_path('css/filament/admin.css')),
                 Css::make('app-css', Vite::asset('resources/css/app.css')),
             ])
             ->colors([
@@ -86,7 +87,7 @@ class AdminPanelProvider extends PanelProvider
 
                 NavigationGroup::make('Universities Account')
                     ->icon('heroicon-o-building-library'),
-                
+
                 NavigationGroup::make('University Staff')
                     ->icon('heroicon-o-user-group'),
 

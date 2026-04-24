@@ -223,9 +223,9 @@
             </div>
 
             <div class="universities-grid">
-
                 {{-- University Card 1 --}}
-                <div class="university-card">
+
+                {{-- <div class="university-card">
                     <div class="card-badge">NIRF #1</div>
                     <img src="{{ asset('images/featue1.png') }}" alt="IIT Delhi" class="university-image">
                     <div class="university-info">
@@ -243,114 +243,54 @@
                             <a href="{{ url('university-details') }}" class="btn-apply">View</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                {{-- University Card 2 --}}
-                <div class="university-card">
-                    <div class="card-badge featured">NIRF #2</div>
-                    <img src="{{ asset('images/featue2.png') }}" alt="IIT Guwahati" class="university-image">
-                    <div class="university-info">
-                        <h3>Indian Institute of Technology, Guwahati</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Assam, India</p>
-                        <div class="equal">
-                            <p><i class="fas fa-star"></i> 4.8 (122)</p>
-                            <p>
-                                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70833 9.51109L14.25 9.47388V1.58334L10.1571 1.58888L8.721 3.02496L8.70833 9.51109ZM7.125 3.02496L5.68337 1.61975L1.58333 1.59204V9.47388L7.125 9.51109V3.02496ZM6.33333 0.0403769L7.91667 1.58967L9.5 0.00633504L14.2476 1.78409e-06C14.4556 -0.000310339 14.6615 0.0403346 14.8537 0.119616C15.0459 0.198898 15.2207 0.315264 15.3679 0.462069C15.5152 0.608875 15.632 0.783246 15.7119 0.975225C15.7918 1.1672 15.833 1.37303 15.8333 1.58096V9.47388C15.8333 9.89189 15.6681 10.2929 15.3735 10.5896C15.079 10.8862 14.6791 11.0543 14.2611 11.0572L9.5 11.0897L7.91983 12.673L6.33333 11.0897L1.57225 11.0572C1.15425 11.0543 0.754362 10.8862 0.459822 10.5896C0.165282 10.2929 -1.0241e-05 9.89189 4.75887e-10 9.47388V1.59204C4.75887e-10 1.17212 0.166815 0.76939 0.463748 0.472458C0.76068 0.175525 1.16341 0.00870986 1.58333 0.00870986L6.33333 0.0403769Z" fill="#3E4095"/></svg>
-                                30 Courses
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-explore" onclick="openEnquiryModal()">Enquire Now</button>
-                            <a href="{{ url('university-details') }}" class="btn-apply">View</a>
-                        </div>
-                    </div>
-                </div>
+                    @foreach($featuredUniversities as $item)
+                        @php $uni = $item->university; @endphp
 
-                {{-- University Card 3 --}}
-                <div class="university-card">
-                    <div class="card-badge">NIRF #3</div>
-                    <img src="{{ asset('images/featue3.png') }}" alt="IIT Kanpur" class="university-image">
-                    <div class="university-info">
-                        <h3>Indian Institute of Technology, Kanpur</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Kanpur, India</p>
-                        <div class="equal">
-                            <p><i class="fas fa-star"></i> 4.8 (122)</p>
-                            <p>
-                                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70833 9.51109L14.25 9.47388V1.58334L10.1571 1.58888L8.721 3.02496L8.70833 9.51109ZM7.125 3.02496L5.68337 1.61975L1.58333 1.59204V9.47388L7.125 9.51109V3.02496ZM6.33333 0.0403769L7.91667 1.58967L9.5 0.00633504L14.2476 1.78409e-06C14.4556 -0.000310339 14.6615 0.0403346 14.8537 0.119616C15.0459 0.198898 15.2207 0.315264 15.3679 0.462069C15.5152 0.608875 15.632 0.783246 15.7119 0.975225C15.7918 1.1672 15.833 1.37303 15.8333 1.58096V9.47388C15.8333 9.89189 15.6681 10.2929 15.3735 10.5896C15.079 10.8862 14.6791 11.0543 14.2611 11.0572L9.5 11.0897L7.91983 12.673L6.33333 11.0897L1.57225 11.0572C1.15425 11.0543 0.754362 10.8862 0.459822 10.5896C0.165282 10.2929 -1.0241e-05 9.89189 4.75887e-10 9.47388V1.59204C4.75887e-10 1.17212 0.166815 0.76939 0.463748 0.472458C0.76068 0.175525 1.16341 0.00870986 1.58333 0.00870986L6.33333 0.0403769Z" fill="#3E4095"/></svg>
-                                30 Courses
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-explore" onclick="openEnquiryModal()">Enquire Now</button>
-                            <a href="{{ url('university-details') }}" class="btn-apply">View</a>
-                        </div>
-                    </div>
-                </div>
+                        <div class="university-card">
+                            <div class="card-badge">
+                                Featured
+                            </div>
 
-                {{-- University Card 4 --}}
-                <div class="university-card">
-                    <div class="card-badge">NIRF #4</div>
-                    <img src="{{ asset('images/featue4.png') }}" alt="Integral University" class="university-image">
-                    <div class="university-info">
-                        <h3>Integral University, Lucknow</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Dasauli Lucknow, India</p>
-                        <div class="equal">
-                            <p><i class="fas fa-star"></i> 4.8 (122)</p>
-                            <p>
-                                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70833 9.51109L14.25 9.47388V1.58334L10.1571 1.58888L8.721 3.02496L8.70833 9.51109ZM7.125 3.02496L5.68337 1.61975L1.58333 1.59204V9.47388L7.125 9.51109V3.02496ZM6.33333 0.0403769L7.91667 1.58967L9.5 0.00633504L14.2476 1.78409e-06C14.4556 -0.000310339 14.6615 0.0403346 14.8537 0.119616C15.0459 0.198898 15.2207 0.315264 15.3679 0.462069C15.5152 0.608875 15.632 0.783246 15.7119 0.975225C15.7918 1.1672 15.833 1.37303 15.8333 1.58096V9.47388C15.8333 9.89189 15.6681 10.2929 15.3735 10.5896C15.079 10.8862 14.6791 11.0543 14.2611 11.0572L9.5 11.0897L7.91983 12.673L6.33333 11.0897L1.57225 11.0572C1.15425 11.0543 0.754362 10.8862 0.459822 10.5896C0.165282 10.2929 -1.0241e-05 9.89189 4.75887e-10 9.47388V1.59204C4.75887e-10 1.17212 0.166815 0.76939 0.463748 0.472458C0.76068 0.175525 1.16341 0.00870986 1.58333 0.00870986L6.33333 0.0403769Z" fill="#3E4095"/></svg>
-                                30 Courses
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-explore" onclick="openEnquiryModal()">Enquire Now</button>
-                            <a href="{{ url('university-details') }}" class="btn-apply">View</a>
-                        </div>
-                    </div>
-                </div>
+                            <img 
+                                src="{{ $uni->image ? asset('storage/'.$uni->image) : asset('images/featue1.png') }}" 
+                                class="university-image"
+                            >
 
-                {{-- University Card 5 --}}
-                <div class="university-card">
-                    <div class="card-badge">NIRF #5</div>
-                    <img src="{{ asset('images/featue5.png') }}" alt="BBD Technical University" class="university-image">
-                    <div class="university-info">
-                        <h3>Babu Banarsi Das Technical University</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Faizabad Road Lucknow, India</p>
-                        <div class="equal">
-                            <p><i class="fas fa-star"></i> 4.8 (122)</p>
-                            <p>
-                                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70833 9.51109L14.25 9.47388V1.58334L10.1571 1.58888L8.721 3.02496L8.70833 9.51109ZM7.125 3.02496L5.68337 1.61975L1.58333 1.59204V9.47388L7.125 9.51109V3.02496ZM6.33333 0.0403769L7.91667 1.58967L9.5 0.00633504L14.2476 1.78409e-06C14.4556 -0.000310339 14.6615 0.0403346 14.8537 0.119616C15.0459 0.198898 15.2207 0.315264 15.3679 0.462069C15.5152 0.608875 15.632 0.783246 15.7119 0.975225C15.7918 1.1672 15.833 1.37303 15.8333 1.58096V9.47388C15.8333 9.89189 15.6681 10.2929 15.3735 10.5896C15.079 10.8862 14.6791 11.0543 14.2611 11.0572L9.5 11.0897L7.91983 12.673L6.33333 11.0897L1.57225 11.0572C1.15425 11.0543 0.754362 10.8862 0.459822 10.5896C0.165282 10.2929 -1.0241e-05 9.89189 4.75887e-10 9.47388V1.59204C4.75887e-10 1.17212 0.166815 0.76939 0.463748 0.472458C0.76068 0.175525 1.16341 0.00870986 1.58333 0.00870986L6.33333 0.0403769Z" fill="#3E4095"/></svg>
-                                30 Courses
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-explore" onclick="openEnquiryModal()">Enquire Now</button>
-                            <a href="{{ url('university-details') }}" class="btn-apply">View</a>
-                        </div>
-                    </div>
-                </div>
+                            <div class="university-info">
+                                <h3>{{ $uni->name  ?? 'Indian Institute of Technology, Delhi' }}</h3>
 
-                {{-- University Card 6 --}}
-                <div class="university-card">
-                    <div class="card-badge">NIRF #6</div>
-                    <img src="{{ asset('images/featue6.png') }}" alt="AKTU Technical University" class="university-image">
-                    <div class="university-info">
-                        <h3>AKTU Technical University</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Kanpur, India</p>
-                        <div class="equal">
-                            <p><i class="fas fa-star"></i> 4.8 (122)</p>
-                            <p>
-                                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70833 9.51109L14.25 9.47388V1.58334L10.1571 1.58888L8.721 3.02496L8.70833 9.51109ZM7.125 3.02496L5.68337 1.61975L1.58333 1.59204V9.47388L7.125 9.51109V3.02496ZM6.33333 0.0403769L7.91667 1.58967L9.5 0.00633504L14.2476 1.78409e-06C14.4556 -0.000310339 14.6615 0.0403346 14.8537 0.119616C15.0459 0.198898 15.2207 0.315264 15.3679 0.462069C15.5152 0.608875 15.632 0.783246 15.7119 0.975225C15.7918 1.1672 15.833 1.37303 15.8333 1.58096V9.47388C15.8333 9.89189 15.6681 10.2929 15.3735 10.5896C15.079 10.8862 14.6791 11.0543 14.2611 11.0572L9.5 11.0897L7.91983 12.673L6.33333 11.0897L1.57225 11.0572C1.15425 11.0543 0.754362 10.8862 0.459822 10.5896C0.165282 10.2929 -1.0241e-05 9.89189 4.75887e-10 9.47388V1.59204C4.75887e-10 1.17212 0.166815 0.76939 0.463748 0.472458C0.76068 0.175525 1.16341 0.00870986 1.58333 0.00870986L6.33333 0.0403769Z" fill="#3E4095"/></svg>
-                                30 Courses
-                            </p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-explore" onclick="openEnquiryModal()">Enquire Now</button>
-                            <a href="{{ url('university-details') }}" class="btn-apply">View</a>
-                        </div>
-                    </div>
-                </div>
+                                <p>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {{ $uni->city ?? 'New Delhi, India' }}, {{ $uni->state ?? 'National Capital Territory of Delhi' }}
+                                </p>
 
+                                <div class="equal">
+                                    <p>
+                                        <i class="fas fa-star"></i> 
+                                        {{ $uni->rating ?? '4.5' }}
+                                    </p>
+
+                                    <p>
+                                        {{ $uni->courses_count ?? '0' }} Courses
+                                    </p>
+                                </div>
+
+                                <div class="card-actions">
+                                    <button class="btn-explore" onclick="openEnquiryModal()">
+                                        Enquire Now
+                                    </button>
+
+                                    <a href="{{ url('university-details/'.$uni->id) }}" class="btn-apply">
+                                        View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
             </div>
+            
         </div>
     </section>
     {{-- ========== END FEATURED UNIVERSITIES ========== --}}

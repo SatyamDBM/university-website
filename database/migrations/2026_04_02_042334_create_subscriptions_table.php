@@ -29,6 +29,9 @@ return new class extends Migration
 
             $table->string('payment_status')->default('pending');
             $table->string('transaction_id')->nullable();
+            $table->string('razorpay_order_id')->nullable();
+            $table->string('razorpay_payment_id')->nullable();
+            $table->string('razorpay_signature')->nullable();
 
             $table->boolean('auto_renew')->default(false);
             $table->date('renewal_date')->nullable();

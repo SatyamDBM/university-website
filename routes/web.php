@@ -24,6 +24,8 @@ use App\Http\Controllers\UniversityFaqController;
 use App\Http\Controllers\University\CourseStreamController;
 use App\Http\Controllers\University\NotificationController;
 use App\Http\Controllers\University\LeadController;
+use App\Http\Controllers\University\BannerController;
+use App\Http\Controllers\University\FeaturedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +78,7 @@ Route::get('/dashboard', function () {
 | UNIVERSITY PANEL (AUTH REQUIRED)
 |--------------------------------------------------------------------------
 */
+Route::post('/razorpay/webhook', [FeaturedController::class, 'webhook']);
 Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')->name('university.')->group(function () {
     /*
     |---------------- Dashboard ----------------|
@@ -147,6 +150,7 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('overview.show');
     Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('overview.store');
 
+
     /*
     |---------------- FAQ ----------------|
     */
@@ -166,10 +170,41 @@ Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')
     Route::get('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin.lead');
 
     /*
+    |---------------- Banner ----------------|
+    */
+    Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
+    Route::get('banners/create/{id}', [BannerController::class, 'create'])->name('banners.create');
+    Route::post('banners/{id}', [BannerController::class, 'store'])->name('banners.store');
+    Route::get('banners/payment/{id}', [BannerController::class, 'payment'])->name('banners.payment');
+    Route::get('payment-success', [BannerController::class, 'paymentSuccess'])->name('payment.success');
+    Route::post('/razorpay/webhook', [BannerController::class, 'webhook']);
+    Route::get('banners/history', [BannerController::class, 'history'])->name('banners.payment.history');
+    Route::get('banners/invoice/{id}', [BannerController::class, 'downloadInvoice'])
+        ->name('banners.invoice');
+    Route::get('subscription/invoice/{id}', [FeaturedController::class, 'downloadInvoice'])->name('subscription.invoice');
+
+
+    /*
     |---------------- Notifications ----------------|
     */
     Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+
+
+
+    /*
+    |---------------- Featured Listings ----------------|
+    */
+    Route::get('featured', [FeaturedController::class, 'featured'])
+        ->name('featured.index');
+    Route::get('subscription/payment/{id}', [FeaturedController::class, 'payment'])
+        ->name('subscription.payment');
+    Route::post('featured/purchase/{id}', [FeaturedController::class, 'purchase'])
+        ->name('featured.purchase');
+    Route::get('featured/payment-success', [FeaturedController::class, 'paymentSuccess'])
+        ->name('featured.payment.success');
+    Route::get('subscription/history', [FeaturedController::class, 'history'])
+        ->name('subscription.history');
 });
 
 

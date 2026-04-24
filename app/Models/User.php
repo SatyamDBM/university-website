@@ -103,4 +103,17 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         return $this->hasMany(LoanPartner::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('end_date', '>=', now())
+            ->latestOfMany(); // VERY IMPORTANT
+    }
 }

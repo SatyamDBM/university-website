@@ -30,6 +30,9 @@ class Subscription extends Model
         'city_used',
         'state_used',
         'status',
+        'razorpay_order_id',    // ← add this
+        'razorpay_payment_id',  // ← add this
+        'razorpay_signature',
     ];
 
     protected $casts = [

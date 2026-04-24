@@ -23,9 +23,13 @@ class UniversityBanner extends Model
         'live_status',
         'rejection_reason',
         'status',
+        'razorpay_order_id',
+        'razorpay_payment_id',
+        'razorpay_signature',
+        'paid_at',
     ];
 
-   public function university()
+    public function university()
     {
         return $this->belongsTo(\App\Models\University::class, 'university_id', 'id');
     }
