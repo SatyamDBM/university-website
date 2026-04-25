@@ -1,8 +1,16 @@
-*.log
+# System files
 .DS_Store
+Thumbs.db
+
+# Environment files
 .env
 .env.backup
 .env.production
+
+# Logs
+*.log
+
+# IDE / Editors
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -11,15 +19,25 @@
 /.phpunit.cache
 /.vscode
 /.zed
-/auth.json
-/composer.lock
+
+# Dependency folders
 /node_modules
-public/build
-/public/hot
-/public/storage
+/vendor
+
+# Laravel cache / runtime
 /storage/*.key
 /storage/pail
-/vendor
+/public/hot
+
+# ❌ IMPORTANT: DO NOT IGNORE BUILD (FOR CPANEL)
+# /public/build   ← REMOVE THIS
+
+# Composer (recommended to track for production stability)
+# composer.lock  ← KEEP in repo (important)
+
+# Homestead / local dev
 Homestead.json
 Homestead.yaml
-Thumbs.db
+
+# Cache
+.phpunit.result.cache
