@@ -38,26 +38,35 @@ class RegisteredUserController extends Controller
 
         $otp = rand(100000, 999999);
 
-        $user = User::create([
-            'name'             => $validated['name'],
-            'email'            => $validated['email'],
-            'mobile'           => $validated['mobile'],
-            'password'         => Hash::make($validated['password']),
-            'role'             => 'university',
-            'status'           => 'active',
-            'linking_status'   => 'not_linked',
-            'email_otp'        => $otp,
-            'email_otp_expiry' => now()->addMinutes(10),
-            'is_email_verified' => false,
-        ]);
-
         try {
-            $user->notify(new RegistrationSuccessNotification('otp', $otp));
+            $user = User::create([
+                'name'              => $validated['name'],
+                'email'             => $validated['email'],
+                'mobile'            => $validated['mobile'],
+                'password'          => Hash::make($validated['password']),
+                'role'              => 'university',
+                'status'            => 'active',
+                'linking_status'    => 'not_linked',
+                'email_otp'         => $otp,
+                'email_otp_expiry'  => now()->addMinutes(10), // ✅ make sure this matches DB column
+                'is_email_verified' => false,
+            ]);
         } catch (\Exception $e) {
-            \Log::error('Notification Error: ' . $e->getMessage());
+            \Log::error('User Create Error: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'Registration failed. Try again.'])->withInput();
         }
 
-        // ✅ Session bilkul nahi — sirf email URL mein
+        // Send OTP — don't let this block registration
+        try {
+            Mail::to($user->email)->send(new SendOtpMail($otp));
+        } catch (\Exception $e) {
+            \Log::error('OTP Mail Error: ' . $e->getMessage());
+            // Continue even if mail fails
+        }
+
+        \Log::info('User registered, redirecting to OTP: ' . $user->email);
+
+        // ✅ Redirect with email in URL
         return redirect()->route('otp.verify.form', ['email' => $user->email]);
     }
 

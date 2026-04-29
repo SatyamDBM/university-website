@@ -25,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         $middleware->validateCsrfTokens(except: [
-            'register/university',
+            // 'register/university',
             'login',
             'otp-verify',
             'otp-resend',
