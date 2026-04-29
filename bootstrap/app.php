@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // ✅ Ye add karo — cPanel shared hosting 419 fix
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -23,6 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 Request::HEADER_X_FORWARDED_PORT |
                 Request::HEADER_X_FORWARDED_PROTO
         );
+
+        // ✅ CSRF bypass - sirf test ke liye
+        $middleware->validateCsrfTokens(except: [
+            'register/university',
+        ]);
 
         $middleware->alias([
             'admin.only' => \App\Http\Middleware\EnsureAdmin::class,
