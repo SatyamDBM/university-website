@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // ✅ CSRF bypass - sirf test ke liye
         $middleware->validateCsrfTokens(except: [
             'register/university',
+            'login',
         ]);
 
         $middleware->alias([
