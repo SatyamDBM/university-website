@@ -5,8 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\PreventBackHistory;
-
-
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,11 +15,19 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
+        // ✅ Ye add karo — cPanel shared hosting 419 fix
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR |
+                Request::HEADER_X_FORWARDED_HOST |
+                Request::HEADER_X_FORWARDED_PORT |
+                Request::HEADER_X_FORWARDED_PROTO
+        );
+
         $middleware->alias([
             'admin.only' => \App\Http\Middleware\EnsureAdmin::class,
             'role' => CheckRole::class,
             'no-cache' => PreventBackHistory::class,
-
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
