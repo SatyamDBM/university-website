@@ -32,20 +32,17 @@
         @csrf
 
         {{-- ✅ email session se aa raha hai --}}
-        <input type="hidden" name="email" value="{{ $email }}">
-
+<input type="hidden" name="user_id" value="{{ $user_id }}">
         <div style="margin-bottom:20px;">
             <label style="display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:6px;">
                 Enter 6-digit OTP
             </label>
             <input type="text"
-                   name="otp"
-                   maxlength="6"
-                   placeholder="_ _ _ _ _ _"
-                   autofocus
-                   style="width:100%; border:2px solid #e5e7eb; border-radius:10px; padding:14px 16px; font-size:22px; text-align:center; letter-spacing:8px; outline:none; font-weight:700; color:#2d2d2d; box-sizing:border-box;"
-                   onfocus="this.style.borderColor='#6b4a36'"
-                   onblur="this.style.borderColor='#e5e7eb'">
+       name="otp"
+       maxlength="6"
+       pattern="\d{6}"
+       inputmode="numeric"
+       required>
         </div>
 
         <button type="submit"
@@ -58,8 +55,7 @@
     {{-- Resend OTP --}}
     <form method="POST" action="{{ route('otp.resend') }}" style="margin-top:16px; text-align:center;">
         @csrf
-        <input type="hidden" name="email" value="{{ $email }}">
-        <button type="submit"
+<input type="hidden" name="user_id" value="{{ $user_id }}">        <button type="submit"
                 style="background:none; border:none; color:#6b4a36; font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline;">
             Didn't receive OTP? Resend
         </button>

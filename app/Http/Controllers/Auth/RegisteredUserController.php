@@ -39,16 +39,16 @@ class RegisteredUserController extends Controller
         $otp = rand(100000, 999999);
 
         $user = User::create([
-            'name'             => $validated['name'],
-            'email'            => $validated['email'],
-            'mobile'           => $validated['mobile'],
-            'password'         => Hash::make($validated['password']),
-            'role'             => 'university',
-            'status'           => 'active',
-            'linking_status'   => 'not_linked',
-            'email_otp'        => $otp,
-            'email_otp_expiry' => now()->addMinutes(10),
-            'is_email_verified' => false,
+            'name'               => $validated['name'],
+            'email'              => $validated['email'],
+            'mobile'             => $validated['mobile'],
+            'password'           => Hash::make($validated['password']),
+            'role'               => 'university',
+            'status'             => 'active',
+            'linking_status'     => 'not_linked',
+            'email_otp'          => $otp,
+            'email_otp_expiry'   => now()->addMinutes(10),
+            'is_email_verified'  => false,
         ]);
 
         try {
@@ -57,45 +57,42 @@ class RegisteredUserController extends Controller
             \Log::error('Notification Error: ' . $e->getMessage());
         }
 
-        // ✅ Session bilkul nahi — sirf email URL mein
-        return redirect()->route('otp.verify.form', ['email' => $user->email]);
+        // ✅ Use user ID (SAFE)
+        return redirect()->route('otp.verify.form', $user->id);
     }
 
-    public function showOtpForm(Request $request)
+    public function showOtpForm(User $user)
     {
-        // ✅ URL se email lo
-        $email = $request->query('email');
-
-        if (!$email) {
-            return redirect()->route('university.register')
-                ->with('error', 'Please register again.');
+        if ($user->is_email_verified) {
+            return redirect()->route('login')
+                ->with('success', 'Email already verified.');
         }
 
-        return view('auth.verify-otp', compact('email'));
+        return view('auth.verify-otp', [
+            'user_id' => $user->id,
+            'email'   => $user->email
+        ]);
     }
 
     public function verifyOtp(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'otp'   => ['required'],
+            'user_id' => ['required', 'exists:users,id'],
+            'otp'     => ['required', 'digits:6'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::find($request->user_id);
 
         if (!$user) {
-            return redirect()->route('otp.verify.form', ['email' => $request->email])
-                ->withErrors(['email' => 'User not found.']);
+            return back()->withErrors(['otp' => 'User not found.']);
         }
 
         if ((string)$user->email_otp !== (string)$request->otp) {
-            return redirect()->route('otp.verify.form', ['email' => $request->email])
-                ->withErrors(['otp' => 'Invalid OTP. Please try again.']);
+            return back()->withErrors(['otp' => 'Invalid OTP.']);
         }
 
         if ($user->email_otp_expiry < now()) {
-            return redirect()->route('otp.verify.form', ['email' => $request->email])
-                ->withErrors(['otp' => 'OTP expired. Please resend.']);
+            return back()->withErrors(['otp' => 'OTP expired.']);
         }
 
         $user->update([
@@ -114,27 +111,29 @@ class RegisteredUserController extends Controller
      */
     public function resendOtp(Request $request): RedirectResponse
     {
-        // ✅ session hatao, sirf request se email lo
-        $email = $request->email;
+        $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+        ]);
 
-        $user = User::where('email', $email)->first();
+        $user = User::find($request->user_id);
 
-        if (!$user) {
-            return back()->withErrors(['email' => 'User not found.']);
+        // ⛔ Prevent spam (1 resend per 30 sec)
+        if ($user->updated_at && $user->updated_at->diffInSeconds(now()) < 30) {
+            return back()->withErrors(['otp' => 'Please wait before requesting again.']);
         }
 
         $otp = rand(100000, 999999);
 
         $user->update([
             'email_otp'        => $otp,
-            'email_otp_expiry' => now()->addMinutes(10), // ✅ sahi column name
+            'email_otp_expiry' => now()->addMinutes(10),
         ]);
 
         try {
             Mail::to($user->email)->send(new SendOtpMail($otp));
         } catch (\Exception $e) {
             \Log::error('Resend OTP Mail Error: ' . $e->getMessage());
-            return back()->with('error', 'Failed to send OTP. Try again.');
+            return back()->with('error', 'Failed to send OTP.');
         }
 
         return back()->with('success', 'OTP resent successfully!');

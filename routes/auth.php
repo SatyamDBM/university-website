@@ -12,9 +12,14 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('otp-verify-form', [RegisteredUserController::class, 'showOtpForm'])->name('otp.verify.form');
-Route::post('/otp-verify', [RegisteredUserController::class, 'verifyOtp'])->name('otp.verify');
-Route::post('/otp-resend', [RegisteredUserController::class, 'resendOtp'])->name('otp.resend');
+Route::get('otp-verify-form/{user}', [RegisteredUserController::class, 'showOtpForm'])
+    ->name('otp.verify.form');
+
+Route::post('/otp-verify', [RegisteredUserController::class, 'verifyOtp'])
+    ->name('otp.verify');
+
+Route::post('/otp-resend', [RegisteredUserController::class, 'resendOtp'])
+    ->name('otp.resend');
 Route::middleware('guest')->group(function () {
     Route::get('register/university', [RegisteredUserController::class, 'create'])
         ->name('university.register');
