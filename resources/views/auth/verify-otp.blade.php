@@ -32,7 +32,7 @@
         @csrf
 
         {{-- ✅ email session se aa raha hai --}}
-        <input type="hidden" name="email" value="{{ $email }}">
+        {{-- <input type="hidden" name="email" value="{{ $email }}"> --}}
 
         <div style="margin-bottom:20px;">
             <label style="display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:6px;">

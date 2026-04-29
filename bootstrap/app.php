@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // ✅ Proxy fix for cPanel
+        // ✅ cPanel reverse proxy fix
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -24,7 +24,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 Request::HEADER_X_FORWARDED_PROTO
         );
 
-        // ✅ CSRF bypass - sab POST routes ke liye
         $middleware->validateCsrfTokens(except: [
             'register/university',
             'login',
