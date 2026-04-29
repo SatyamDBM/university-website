@@ -29,10 +29,13 @@ return new class extends Migration {
             $table->boolean('is_top')->default(false);
             $table->boolean('is_highlight')->default(false);
 
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
 
             $table->softDeletes();
             $table->timestamps();
+
+
+
 
             $table->foreign('university_id')
                 ->references('id')

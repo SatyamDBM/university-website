@@ -1,233 +1,232 @@
-<?php
+    <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-
-/*
-|--------------------------------------------------------------------------
-| CONTROLLERS
-|--------------------------------------------------------------------------
-*/
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CmsPageController;
-
-/* Website */
-use App\Http\Controllers\Website\WebsiteController;
-use App\Http\Controllers\Website\HomeController;
-
-/* University Panel */
-use App\Http\Controllers\AdmissionProcessController;
-use App\Http\Controllers\University\DashboardController;
-use App\Http\Controllers\University\UniversityLinkingController;
-use App\Http\Controllers\UniversityOverviewController;
-use App\Http\Controllers\UniversityFaqController;
-use App\Http\Controllers\University\CourseStreamController;
-use App\Http\Controllers\University\NotificationController;
-use App\Http\Controllers\University\LeadController;
-use App\Http\Controllers\University\BannerController;
-use App\Http\Controllers\University\FeaturedController;
-
-/*
-|--------------------------------------------------------------------------
-| WEBSITE ROUTES (Public)
-|--------------------------------------------------------------------------
-*/
-
-Route::controller(WebsiteController::class)->group(function () {
-    Route::get('/', 'home')->name('home');
-    Route::get('/filter-courses', 'filterCourses');
-    Route::post('/newsletter/subscribe', 'subscribeNewsletter');
-    // Route::prefix('web')->group(function () {
-    Route::get('/universities', 'universities')->name('universities');
-    Route::get('/universities/{id}', 'universityDetail')->name('university.detail');
-    Route::get('/course/{slug}', [WebsiteController::class, 'courseDetail'])
-        ->name('course.detail');
-    Route::get('/courses', 'courses')->name('courses');
-    // Route::get('/courses-details', 'courseDetail')->name('course.detail');
-    Route::get('/faq', 'faq')->name('web-faq');
-    // });
-    Route::get('/blog', 'blog')->name('blog');
-    Route::get('/blog-detail/{slug}', 'blogDetail')->name('blog.detail');
-    Route::get('/about-us', 'about')->name('about');
-    Route::get('/contact-us', 'contact')->name('contact');
-    Route::get('/terms-conditions', 'terms')->name('terms');
-    Route::get('/privacy-policy', 'privacy')->name('privacy');
-    Route::get('/search', 'search')->name('search');
-    Route::post('/enquiry/store',  'enquiryStore')->name('enquiry.store');
-});
-
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD REDIRECT
-|--------------------------------------------------------------------------
-*/
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user->role === 'admin') {
-        return redirect('/admin');
-    }
-    if ($user->role === 'university') {
-        return redirect()->route('university.dashboard');
-    }
-    abort(403);
-})->middleware('auth')->name('dashboard');
-
-
-/*
-|--------------------------------------------------------------------------
-| UNIVERSITY PANEL (AUTH REQUIRED)
-|--------------------------------------------------------------------------
-*/
-Route::post('/razorpay/webhook', [FeaturedController::class, 'webhook']);
-Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')->name('university.')->group(function () {
-    /*
-    |---------------- Dashboard ----------------|
-    */
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Auth;
 
     /*
-    |---------------- Linking ----------------|
+    |--------------------------------------------------------------------------
+    | CONTROLLERS
+    |--------------------------------------------------------------------------
     */
-    Route::get('/linking', [UniversityLinkingController::class, 'index'])->name('linking');
-    Route::post('/linking', [UniversityLinkingController::class, 'store'])->name('linking.store');
+    use App\Http\Controllers\ProfileController;
+    use App\Http\Controllers\CmsPageController;
+
+    /* Website */
+    use App\Http\Controllers\Website\WebsiteController;
+    use App\Http\Controllers\Website\HomeController;
+
+    /* University Panel */
+    use App\Http\Controllers\AdmissionProcessController;
+    use App\Http\Controllers\University\DashboardController;
+    use App\Http\Controllers\University\UniversityLinkingController;
+    use App\Http\Controllers\UniversityOverviewController;
+    use App\Http\Controllers\UniversityFaqController;
+    use App\Http\Controllers\University\CourseStreamController;
+    use App\Http\Controllers\University\NotificationController;
+    use App\Http\Controllers\University\LeadController;
+    use App\Http\Controllers\University\BannerController;
+    use App\Http\Controllers\University\FeaturedController;
 
     /*
-    |---------------- Finance ----------------|
+    |--------------------------------------------------------------------------
+    | WEBSITE ROUTES (Public)
+    |--------------------------------------------------------------------------
     */
-    Route::prefix('finance')->name('finance.')->group(function () {
-        Route::get('/', [AdmissionProcessController::class, 'index'])->name('index');
-        Route::get('/create', [AdmissionProcessController::class, 'create'])->name('create');
-        Route::post('/', [AdmissionProcessController::class, 'storeAll'])->name('store');
-        Route::get('/{id}', [AdmissionProcessController::class, 'show'])->name('show');
-        Route::get('/{id}/edit', [AdmissionProcessController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [AdmissionProcessController::class, 'update'])->name('update');
-        Route::delete('/{id}', [AdmissionProcessController::class, 'destroy'])->name('destroy');
+
+    Route::controller(WebsiteController::class)->group(function () {
+        Route::get('/', 'home')->name('home');
+        Route::get('/filter-courses', 'filterCourses');
+        Route::post('/newsletter/subscribe', 'subscribeNewsletter');
+        // Route::prefix('web')->group(function () {
+        Route::get('/universities', 'universities')->name('universities');
+        Route::get('/universities/{id}', 'universityDetail')->name('university.detail');
+        Route::get('/course/{slug}', [WebsiteController::class, 'courseDetail'])
+            ->name('course.detail');
+        Route::get('/courses', 'courses')->name('courses');
+        // Route::get('/courses-details', 'courseDetail')->name('course.detail');
+        Route::get('/faq', 'faq')->name('web-faq');
+        // });
+        Route::get('/blog', 'blog')->name('blog');
+        Route::get('/blog-detail/{slug}', 'blogDetail')->name('blog.detail');
+        Route::get('/about-us', 'about')->name('about');
+        Route::get('/contact-us', 'contact')->name('contact');
+        Route::get('/terms-conditions', 'terms')->name('terms');
+        Route::get('/privacy-policy', 'privacy')->name('privacy');
+        Route::get('/search', 'search')->name('search');
+        Route::post('/enquiry/store',  'enquiryStore')->name('enquiry.store');
     });
 
     /*
-    |---------------- Courses ----------------|
+    |--------------------------------------------------------------------------
+    | DASHBOARD REDIRECT
+    |--------------------------------------------------------------------------
     */
-    Route::resource('courses', App\Http\Controllers\CourseController::class);
-    Route::post('courses/{course}/toggle-active', [App\Http\Controllers\CourseController::class, 'toggleActive'])->name('courses.toggleActive');
-    Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
-    Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
-
-    /*
-    |---------------- Departments ----------------|
-    */
-    Route::resource('departments', App\Http\Controllers\DepartmentController::class);
-
-    /*
-    |---------------- Placements ----------------|
-    */
-    Route::resource('placements', App\Http\Controllers\PlacementController::class);
-    Route::post('/placements/add-recruiter', [App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
-    Route::resource('recruiters', App\Http\Controllers\RecruiterController::class);
-
-    /*
-    |---------------- Gallery ----------------|
-    */
-    Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
-        'index' => 'gallery.index',
-        'create' => 'gallery.create',
-        'store' => 'gallery.store',
-        'edit' => 'gallery.edit',
-        'update' => 'gallery.update',
-        'destroy' => 'gallery.destroy',
-    ]);
-
-    Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])
-        ->name('gallery.showById');
-
-    /*
-    |---------------- Facilities ----------------|
-    */
-    Route::resource('facilities', App\Http\Controllers\FacilityController::class);
-
-    /*
-    |---------------- Overview ----------------|
-    */
-    Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('overview.show');
-    Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('overview.store');
+    Route::get('/dashboard', function () {
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect('/admin');
+        }
+        if ($user->role === 'university') {
+            return redirect()->route('university.dashboard');
+        }
+        abort(403);
+    })->middleware('auth')->name('dashboard');
 
 
     /*
-    |---------------- FAQ ----------------|
+    |--------------------------------------------------------------------------
+    | UNIVERSITY PANEL (AUTH REQUIRED)
+    |--------------------------------------------------------------------------
     */
-    Route::get('faq', [UniversityFaqController::class, 'index'])->name('faq.index');
-    Route::post('faq', [UniversityFaqController::class, 'store'])->name('faq.store');
-    Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('faq.edit');
-    Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('faq.destroy');
+    Route::post('/razorpay/webhook', [FeaturedController::class, 'webhook']);
+    Route::middleware(['auth', 'role:university', 'no-cache'])->prefix('university')->name('university.')->group(function () {
+        /*
+        |---------------- Dashboard ----------------|
+        */
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        /*
+        |---------------- Linking ----------------|
+        */
+        Route::get('/linking', [UniversityLinkingController::class, 'index'])->name('linking');
+        Route::post('/linking', [UniversityLinkingController::class, 'store'])->name('linking.store');
+
+        /*
+        |---------------- Finance ----------------|
+        */
+        Route::prefix('finance')->name('finance.')->group(function () {
+            Route::get('/', [AdmissionProcessController::class, 'index'])->name('index');
+            Route::get('/create', [AdmissionProcessController::class, 'create'])->name('create');
+            Route::post('/', [AdmissionProcessController::class, 'storeAll'])->name('store');
+            Route::get('/{id}', [AdmissionProcessController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [AdmissionProcessController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdmissionProcessController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdmissionProcessController::class, 'destroy'])->name('destroy');
+        });
+
+        /*
+        |---------------- Courses ----------------|
+        */
+        Route::resource('courses', App\Http\Controllers\CourseController::class);
+        // Route::post('courses/{course}/toggle-active', [App\Http\Controllers\CourseController::class, 'toggleActive'])->name('courses.toggleActive');
+        Route::post('courses/{course}/approve', [App\Http\Controllers\CourseController::class, 'approve'])->name('courses.approve');
+        Route::post('courses/{course}/reject', [App\Http\Controllers\CourseController::class, 'reject'])->name('courses.reject');
+        Route::post('courses/{course}/toggle-active', [App\Http\Controllers\CourseController::class, 'toggleStatus'])
+            ->name('courses.toggleStatus');
+
+        /*
+        |---------------- Departments ----------------|
+        */
+        Route::resource('departments', App\Http\Controllers\DepartmentController::class);
+
+        /*
+        |---------------- Placements ----------------|
+        */
+        Route::resource('placements', App\Http\Controllers\PlacementController::class);
+        Route::post('/placements/add-recruiter', [App\Http\Controllers\PlacementController::class, 'addRecruiter'])->name('placements.addRecruiter');
+        Route::resource('recruiters', App\Http\Controllers\RecruiterController::class);
+
+        /*
+        |---------------- Gallery ----------------|
+        */
+        Route::resource('gallery', App\Http\Controllers\UniversityGalleryController::class)->names([
+            'index' => 'gallery.index',
+            'create' => 'gallery.create',
+            'store' => 'gallery.store',
+            'edit' => 'gallery.edit',
+            'update' => 'gallery.update',
+            'destroy' => 'gallery.destroy',
+        ]);
+
+        Route::get('gallery/view/{id}', [App\Http\Controllers\UniversityGalleryController::class, 'showById'])
+            ->name('gallery.showById');
+
+        /*
+        |---------------- Facilities ----------------|
+        */
+        Route::resource('facilities', App\Http\Controllers\FacilityController::class);
+
+        /*
+        |---------------- Overview ----------------|
+        */
+        Route::get('/overview', [UniversityOverviewController::class, 'show'])->name('overview.show');
+        Route::post('/overview', [UniversityOverviewController::class, 'store'])->name('overview.store');
+
+
+        /*
+        |---------------- FAQ ----------------|
+        */
+        Route::get('faq', [UniversityFaqController::class, 'index'])->name('faq.index');
+        Route::post('faq', [UniversityFaqController::class, 'store'])->name('faq.store');
+        Route::get('faq/{id}/edit', [UniversityFaqController::class, 'edit'])->name('faq.edit');
+        Route::delete('faq/{id}', [UniversityFaqController::class, 'destroy'])->name('faq.destroy');
+
+        /*
+        |---------------- Streams ----------------|
+        */
+        Route::resource('streams', CourseStreamController::class);
+        /*
+        |---------------- Lead ----------------|
+        */
+        Route::get('lead', [LeadController::class, 'lead'])->name('lead');
+        Route::get('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin.lead');
+
+        /*
+        |---------------- Banner ----------------|
+        */
+        Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
+        Route::get('banners/create/{id}', [BannerController::class, 'create'])->name('banners.create');
+        Route::post('banners/{id}', [BannerController::class, 'store'])->name('banners.store');
+        Route::get('banners/payment/{id}', [BannerController::class, 'payment'])->name('banners.payment');
+        Route::get('payment-success', [BannerController::class, 'paymentSuccess'])->name('payment.success');
+        Route::post('/razorpay/webhook', [BannerController::class, 'webhook']);
+        Route::get('banners/history', [BannerController::class, 'history'])->name('banners.payment.history');
+        Route::get('banners/invoice/{id}', [BannerController::class, 'downloadInvoice'])
+            ->name('banners.invoice');
+        Route::get('subscription/invoice/{id}', [FeaturedController::class, 'downloadInvoice'])->name('subscription.invoice');
+
+
+        /*
+        |---------------- Notifications ----------------|
+        */
+        Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
+        Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+
+
+
+        /*
+        |---------------- Featured Listings ----------------|
+        */
+        Route::get('featured', [FeaturedController::class, 'featured'])
+            ->name('featured.index');
+        Route::get('subscription/payment/{id}', [FeaturedController::class, 'payment'])
+            ->name('subscription.payment');
+        Route::post('featured/purchase/{id}', [FeaturedController::class, 'purchase'])
+            ->name('featured.purchase');
+        Route::get('featured/payment-success', [FeaturedController::class, 'paymentSuccess'])
+            ->name('featured.payment.success');
+        Route::get('subscription/history', [FeaturedController::class, 'history'])
+            ->name('subscription.history');
+    });
+
 
     /*
-    |---------------- Streams ----------------|
+    |--------------------------------------------------------------------------
+    | PROFILE (Auth)
+    |--------------------------------------------------------------------------
     */
-    Route::resource('streams', CourseStreamController::class);
-    /*
-    |---------------- Lead ----------------|
-    */
-    Route::get('lead', [LeadController::class, 'lead'])->name('lead');
-    Route::get('admin-assign-lead', [LeadController::class, 'leadByAdmin'])->name('admin.lead');
-
-    /*
-    |---------------- Banner ----------------|
-    */
-    Route::get('banners', [BannerController::class, 'index'])->name('banners.index');
-    Route::get('banners/create/{id}', [BannerController::class, 'create'])->name('banners.create');
-    Route::post('banners/{id}', [BannerController::class, 'store'])->name('banners.store');
-    Route::get('banners/payment/{id}', [BannerController::class, 'payment'])->name('banners.payment');
-    Route::get('payment-success', [BannerController::class, 'paymentSuccess'])->name('payment.success');
-    Route::post('/razorpay/webhook', [BannerController::class, 'webhook']);
-    Route::get('banners/history', [BannerController::class, 'history'])->name('banners.payment.history');
-    Route::get('banners/invoice/{id}', [BannerController::class, 'downloadInvoice'])
-        ->name('banners.invoice');
-    Route::get('subscription/invoice/{id}', [FeaturedController::class, 'downloadInvoice'])->name('subscription.invoice');
-
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+    require __DIR__ . '/auth.php';
 
     /*
-    |---------------- Notifications ----------------|
+    |--------------------------------------------------------------------------
+    | CMS PAGES (Dynamic Slug)
+    |--------------------------------------------------------------------------
     */
-    Route::get('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
-    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
-
-
-
-    /*
-    |---------------- Featured Listings ----------------|
-    */
-    Route::get('featured', [FeaturedController::class, 'featured'])
-        ->name('featured.index');
-    Route::get('subscription/payment/{id}', [FeaturedController::class, 'payment'])
-        ->name('subscription.payment');
-    Route::post('featured/purchase/{id}', [FeaturedController::class, 'purchase'])
-        ->name('featured.purchase');
-    Route::get('featured/payment-success', [FeaturedController::class, 'paymentSuccess'])
-        ->name('featured.payment.success');
-    Route::get('subscription/history', [FeaturedController::class, 'history'])
-        ->name('subscription.history');
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| PROFILE (Auth)
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| CMS PAGES (Dynamic Slug)
-|--------------------------------------------------------------------------
-*/
-Route::get('/{slug}', [CmsPageController::class, 'show'])
-    ->where('slug', '^(?!admin|dashboard|university|profile|login|register).*$')
-    ->name('cms.page');
-
-
-require __DIR__ . '/auth.php';
+    Route::get('/{slug}', [CmsPageController::class, 'show'])
+        ->where('slug', '^(?!admin|dashboard|university|profile|login|register).*$')
+        ->name('cms.page');

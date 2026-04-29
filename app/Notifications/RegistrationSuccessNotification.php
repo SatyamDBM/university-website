@@ -11,12 +11,16 @@ class RegistrationSuccessNotification extends Notification
 {
     use Queueable;
 
+    public $otp;
+    public $type;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($type = 'welcome', $otp = null)
     {
-        //
+        $this->type = $type;
+        $this->otp = $otp;
     }
 
     /**
@@ -38,6 +42,14 @@ class RegistrationSuccessNotification extends Notification
             ->subject('🎉 Welcome to University Portal - Registration Successful')
             ->greeting('Hello ' . $notifiable->name . ' 👋')
             ->line('We are happy to inform you that your account has been successfully created in the University Portal.')
+
+            // 🔥 OTP SECTION (CENTER PART)
+            ->line('━━━━━━━━━━━━━━━━━━━━━━')
+            ->line('🔐 Your OTP for Email Verification:')
+            ->line('### ' . $this->otp)
+            ->line('This OTP is valid for 10 minutes.')
+            ->line('━━━━━━━━━━━━━━━━━━━━━━')
+
             ->line('You can now access all features including:')
             ->line('📌 Browse university brochures')
             ->line('📌 View latest notices and updates')

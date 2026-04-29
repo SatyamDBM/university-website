@@ -46,7 +46,6 @@ class AdminPanelProvider extends PanelProvider
         $brandLogo = $this->getBranding('admin_logo');
         $favicon = $this->getBranding('favicon');
         $brandName = $this->getBranding('brand_name');
-
         $panel = $panel
             ->default()
             ->id('admin')

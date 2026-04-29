@@ -72,37 +72,42 @@
 </div>
 
 <script>
-function toggleActive(id, btn) {
-    const isActive = btn.dataset.active === '1' ? 0 : 1;
+function changeStatus(id, action, btn) {
 
-    fetch(`/courses/${id}/toggle-active`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ is_active: isActive })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            btn.dataset.active = isActive;
-            // Update toggle color
-            if (isActive) {
-                btn.classList.remove('bg-gray-300');
-                btn.classList.add('bg-purple-600');
-                btn.querySelector('span').classList.remove('translate-x-1');
-                btn.querySelector('span').classList.add('translate-x-6');
+    const url = btn.dataset.url;
+
+    let label = action === 'draft' ? 'Move to Draft' : 'Submit for Approval';
+
+    Swal.fire({
+        title: label + '?',
+        text: "Are you sure?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#6b4a36',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Success', data.message, 'success');
+                location.reload();
             } else {
-                btn.classList.remove('bg-purple-600');
-                btn.classList.add('bg-gray-300');
-                btn.querySelector('span').classList.remove('translate-x-6');
-                btn.querySelector('span').classList.add('translate-x-1');
+                Swal.fire('Error', data.message, 'error');
             }
-        }
-    })
-    .catch(() => alert('Failed to update status'));
+        });
+    });
 }
 
 function deleteCourse(id) {

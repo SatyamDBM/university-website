@@ -20,7 +20,8 @@ class Facility extends Model
         'is_featured',
         'is_top',
         'is_highlight',
-        'status'
+        'status',
+        'hostel_details',
     ];
     protected $casts = [
         'hostel_details' => 'array',

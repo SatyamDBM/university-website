@@ -19,12 +19,10 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $universityId = Auth::user()->university_id;
-
         $query = Course::where('university_id', $universityId);
 
         // 🔥 ALWAYS handle AJAX (even empty search)
         if ($request->ajax()) {
-
             if ($request->search) {
                 $query->where(function ($q) use ($request) {
                     $q->where('course_name', 'like', "%{$request->search}%")
@@ -70,54 +68,57 @@ class CourseController extends Controller
     // }
     public function store(StoreCourseRequest $request)
     {
-        $data = $request->validated();
-
-        $data['slug'] = Str::slug($data['course_name']) . '-' . uniqid();
+        // dd($request->all());
 
         $user = auth()->user();
         if (!$user || !$user->university_id) {
             return redirect()->back()
-                ->withErrors(['You must be linked to a university to create a course.']);
+                ->withErrors(['error' => 'You must be linked to a university to create a course.']);
         }
 
+        $data = $request->validated();
+
+        $data['slug']          = Str::slug($data['course_name']) . '-' . uniqid();
         $data['university_id'] = $user->university_id;
-        $data['user_id'] = $user->id;
-        $data['status'] = $request->input('save_as_draft') ? 'Draft' : 'Pending';
+        $data['user_id']       = $user->id;
+        $data['status']        = $request->input('save_as_draft') ? 'Draft' : 'Pending';
 
-        // Upload file
+        // Compute total_fees server-side (never trust readonly JS-calculated field)
+        $data['total_fees'] = ($data['tuition_fees'] ?? 0)
+            + ($data['hostel_fees']   ?? 0)
+            + ($data['admission_fees'] ?? 0);
+
+        // Upload curriculum PDF
         if ($request->hasFile('curriculum_file')) {
-            $data['curriculum_file'] = $request->file('curriculum_file')->store('curriculums', 'public');
+            $data['curriculum_file'] = $request->file('curriculum_file')
+                ->store('curriculums', 'public');
         }
 
-        // =========================
-        // ✅ CURRICULUM (NEW CODE)
-        // =========================
-        if ($request->curriculum_text) {
-
+        // Save curriculum JSON
+        if (!empty($request->curriculum_text)) {
             $curriculum = json_decode($request->curriculum_text, true);
-
-            if (is_array($curriculum)) {
-                $data['curriculum_text'] = json_encode($curriculum);
-            }
+            $data['curriculum_text'] = is_array($curriculum)
+                ? json_encode($curriculum)
+                : null;
         }
 
-        // Create Course
+        // Remove fields not in courses table
+        unset($data['seat_category'], $data['seat_count']);
+
+        // Create course
         $course = Course::create($data);
 
-        // =========================
-        // ✅ SEATS (your existing code)
-        // =========================
-        if ($request->has('seat_category') && $request->has('seat_value')) {
-            foreach ($request->seat_category as $index => $category) {
+        // Save seat distribution
+        $categories = $request->input('seat_category', []);
+        $counts     = $request->input('seat_count', []);
 
-                if (!empty($category) && !empty($request->seat_value[$index])) {
-
-                    CourseSeat::create([
-                        'course_id' => $course->id,
-                        'category'  => $category,
-                        'seats'     => $request->seat_value[$index],
-                    ]);
-                }
+        foreach ($categories as $index => $category) {
+            if (!empty($category) && !empty($counts[$index])) {
+                CourseSeat::create([
+                    'course_id' => $course->id,
+                    'category'  => $category,
+                    'seats'     => $counts[$index],
+                ]);
             }
         }
 
@@ -159,34 +160,30 @@ class CourseController extends Controller
 
         try {
 
-            // Upload file
+            // ================= FILE UPLOAD =================
             if ($request->hasFile('curriculum_file')) {
                 $data['curriculum_file'] = $request->file('curriculum_file')
                     ->store('curriculums', 'public');
             }
 
-            // If course is Live → force Pending on edit
+            // ================= STATUS LOGIC =================
             if ($course->status === 'Live') {
                 $data['status'] = 'Pending';
             }
 
-            // Update course
+            // ================= UPDATE COURSE =================
             $course->update($data);
 
-            /**
-             * Seats Update (safe way)
-             * Make sure relation exists: Course hasMany CourseSeat
-             */
-            if ($request->has('seat_category') && $request->has('seat_value')) {
+            // ================= SEATS UPDATE =================
+            if ($request->filled('seat_category')) {
 
-                // delete old seats
                 $course->seats()->delete();
 
-                foreach ($request->seat_category as $index => $category) {
+                foreach ($request->seat_category as $i => $category) {
 
-                    $seats = $request->seat_value[$index] ?? null;
+                    $seats = $request->seat_count[$i] ?? null;
 
-                    if (!empty($category) && !empty($seats)) {
+                    if (!empty($category) && $seats !== null) {
                         $course->seats()->create([
                             'category' => $category,
                             'seats'    => $seats,
@@ -197,18 +194,18 @@ class CourseController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success'  => true,
-                'message'  => 'Course updated successfully',
-                'redirect' => route('university.courses.index')
-            ]);
+            // ================= SUCCESS REDIRECT =================
+            return redirect()
+                ->route('university.courses.index')
+                ->with('success', 'Course updated successfully');
         } catch (\Exception $e) {
+
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            // ================= ERROR REDIRECT BACK =================
+            return back()
+                ->withInput()
+                ->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
 
@@ -234,13 +231,24 @@ class CourseController extends Controller
         return response()->json(['success' => true, 'message' => 'Course rejected']);
     }
 
-    public function toggleActive(Course $course, Request $request)
+
+
+    public function toggleStatus(Request $request, Course $course)
     {
-        $course->update(['is_active' => $request->is_active]);
+        if ($request->action === 'draft' && $course->status === 'Live') {
+            $course->update(['status' => 'Draft']);
+        } elseif ($request->action === 'pending' && $course->status === 'Draft') {
+            $course->update(['status' => 'Pending']);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid action'
+            ]);
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Course status updated.'
+            'message' => 'Status updated successfully'
         ]);
     }
 }

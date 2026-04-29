@@ -57,35 +57,66 @@
                         </td>
 
                         {{-- Approval Status --}}
-                        <td class="px-4 py-4">
-                            @php
-                                $statusColor = match($course->status) {
-                                    'approved' => 'bg-green-100 text-green-700',
-                                    'pending'  => 'bg-amber-100 text-amber-700',
-                                    'draft'    => 'bg-gray-100 text-gray-600',
-                                    'rejected' => 'bg-red-100 text-red-600',
-                                    default    => 'bg-blue-100 text-blue-700',
-                                };
-                            @endphp
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold {{ $statusColor }}">
-                                {{ ucfirst($course->status) }}
-                            </span>
-                        </td>
+                       <td class="px-4 py-4">
+                        @php
+                            $statusColor = match($course->status) {
+                                'Live'     => 'bg-green-100 text-green-700',
+                                'Pending'  => 'bg-yellow-100 text-yellow-700',
+                                'Draft'    => 'bg-gray-100 text-gray-600',
+                                'Rejected' => 'bg-red-100 text-red-600',
+                                default    => 'bg-gray-100 text-gray-500',
+                            };
+                        @endphp
 
-                        {{-- Active Toggle --}}
-                        <td class="px-4 py-4">
-                            <button
-                                onclick="toggleActive({{ $course->id }}, this)"
-                                data-active="{{ $course->is_active ?? 1 }}"
-                                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none
-                                       {{ ($course->is_active ?? 1) ? 'bg-purple-600' : 'bg-gray-300' }}"
-                            >
-                                <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform
-                                             {{ ($course->is_active ?? 1) ? 'translate-x-6' : 'translate-x-1' }}">
+                        <span class="px-2 py-1 text-xs font-semibold rounded {{ $statusColor }}">
+                            {{ $course->status }}
+                        </span>
+                    </td>
+                                            {{-- Active Toggle --}}
+                    <td class="px-4 py-4">
+                        <div class="flex items-center gap-2">
+
+                            {{-- Live → Draft --}}
+                            @if($course->status === 'Live')
+                                <button
+                                    onclick="changeStatus({{ $course->id }}, 'draft', this)"
+                                    data-url="{{ route('university.courses.toggleStatus', $course) }}"
+                                    class="text-xs bg-gray-200 px-2 py-1 rounded">
+                                    Move to Draft
+                                </button>
+                            @endif
+
+                            {{-- Draft → Pending --}}
+                            @if($course->status === 'Draft')
+                                <button
+                                    onclick="changeStatus({{ $course->id }}, 'pending', this)"
+                                    data-url="{{ route('university.courses.toggleStatus', $course) }}"
+                                    class="text-xs bg-yellow-200 px-2 py-1 rounded">
+                                    Submit
+                                </button>
+                            @endif
+
+                            {{-- Pending → Show label --}}
+                            @if($course->status === 'Pending')
+                                <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                                    Waiting for approval
                                 </span>
-                            </button>
-                        </td>
+                            @endif
 
+                            {{-- Rejected (optional improvement) --}}
+                            @if($course->status === 'Rejected')
+                                <button
+                                    onclick="changeStatus({{ $course->id }}, 'pending', this)"
+                                    data-url="{{ route('university.courses.toggleStatus', $course) }}"
+                                    class="text-xs bg-red-100 px-2 py-1 rounded">
+                                    Resubmit
+                                </button>
+                            @endif
+
+                        </div>
+                    </td>
+
+                       
                         {{-- Actions --}}
                         <td class="px-4 py-4">
                             <div class="flex items-center gap-1.5">

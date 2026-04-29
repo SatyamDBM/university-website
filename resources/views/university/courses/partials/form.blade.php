@@ -163,44 +163,81 @@
         <div id="seat-wrapper" class="divide-y divide-gray-100">
 
             {{-- Prefill existing rows on edit --}}
-            @if(!empty($course->seat_distribution))
-                @foreach($course->seat_distribution as $cat => $count)
-                <div class="seat-row grid grid-cols-2 gap-0 items-center relative">
-                    <div class="px-4 py-3">
-                        <input type="text" name="seat_category[]"
-                               value="{{ $cat }}"
-                               placeholder="e.g. General, OBC, SC"
-                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition">
-                    </div>
-                    <div class="px-4 py-3 flex items-center gap-2">
-                        <input type="number" name="seat_count[]"
-                               value="{{ $count }}"
-                               placeholder="e.g. 60"
-                               min="0"
-                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition">
-                        <button type="button" onclick="removeRow(this)"
-                                class="text-red-400 hover:text-red-600 text-lg font-bold flex-shrink-0">✕</button>
-                    </div>
-                </div>
-                @endforeach
-            @else
-            {{-- Default empty row --}}
-            <div class="seat-row grid grid-cols-2 gap-0 items-center relative">
-                <div class="px-4 py-3">
-                    <input type="text" name="seat_category[]"
-                           placeholder="e.g. General"
-                           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition">
-                </div>
-                <div class="px-4 py-3 flex items-center gap-2">
-                    <input type="number" name="seat_count[]"
-                           placeholder="e.g. 60"
-                           min="0"
-                           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition">
-                    <button type="button" onclick="removeRow(this)"
-                            class="text-red-400 hover:text-red-600 text-lg font-bold flex-shrink-0">✕</button>
-                </div>
+          @if(old('seat_category') || old('seat_count'))
+    {{-- Show OLD INPUT (after validation error) --}}
+    @foreach(old('seat_category', []) as $i => $cat)
+        <div class="seat-row grid grid-cols-2 gap-0 items-center relative">
+            
+            <div class="px-4 py-3">
+                <input type="text" name="seat_category[]"
+                       value="{{ old('seat_category.' . $i) }}"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+
+                @error("seat_category.$i")
+                    <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
-            @endif
+
+            <div class="px-4 py-3 flex items-center gap-2">
+                <input type="number" name="seat_count[]"
+                       value="{{ old('seat_count.' . $i) }}"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+
+                @error("seat_count.$i")
+                    <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                @enderror
+
+                <button type="button" onclick="removeRow(this)"
+                        class="text-red-400 hover:text-red-600 text-lg font-bold">✕</button>
+            </div>
+
+        </div>
+    @endforeach
+
+@elseif(!empty($course->seats) && $course->seats->count())
+    {{-- EDIT MODE (DB DATA) --}}
+    @foreach($course->seats as $i => $seat)
+        <div class="seat-row grid grid-cols-2 gap-0 items-center relative">
+            
+            <div class="px-4 py-3">
+                <input type="text" name="seat_category[]"
+                       value="{{ $seat->category }}"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+            </div>
+
+            <div class="px-4 py-3 flex items-center gap-2">
+                <input type="number" name="seat_count[]"
+                       value="{{ $seat->seats }}"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+
+                <button type="button" onclick="removeRow(this)"
+                        class="text-red-400 hover:text-red-600 text-lg font-bold">✕</button>
+            </div>
+
+        </div>
+    @endforeach
+
+@else
+    {{-- DEFAULT EMPTY ROW --}}
+    <div class="seat-row grid grid-cols-2 gap-0 items-center relative">
+        
+        <div class="px-4 py-3">
+            <input type="text" name="seat_category[]"
+                   placeholder="e.g. General"
+                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+        </div>
+
+        <div class="px-4 py-3 flex items-center gap-2">
+            <input type="number" name="seat_count[]"
+                   placeholder="e.g. 60"
+                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+
+            <button type="button" onclick="removeRow(this)"
+                    class="text-red-400 hover:text-red-600 text-lg font-bold">✕</button>
+        </div>
+
+    </div>
+@endif
 
         </div>
     </div>
@@ -271,11 +308,12 @@
 
 <script>
 function calcTotalFees() {
-    const tuition   = parseFloat(document.getElementById('tuition_fees').value)   || 0;
-    const hostel    = parseFloat(document.getElementById('hostel_fees').value)     || 0;
-    const admission = parseFloat(document.getElementById('admission_fees').value)  || 0;
+    const tuition   = parseFloat(document.getElementById('tuition_fees').value)  || 0;
+    const hostel    = parseFloat(document.getElementById('hostel_fees').value)    || 0;
+    const admission = parseFloat(document.getElementById('admission_fees').value) || 0;
     document.getElementById('total_fees').value = tuition + hostel + admission;
 }
+
 document.getElementById('tuition_fees').addEventListener('input', calcTotalFees);
 document.getElementById('hostel_fees').addEventListener('input', calcTotalFees);
 document.getElementById('admission_fees').addEventListener('input', calcTotalFees);
@@ -309,47 +347,38 @@ function removeRow(btn) {
 
 function addCurriculumRow(title = '', type = 'Core') {
     const wrapper = document.getElementById('curriculum-wrapper');
-
     const row = document.createElement('div');
     row.className = "flex gap-1";
-
     row.innerHTML = `
         <input type="text" placeholder="Subject Name"
             class="flex-1 border border-gray-300 rounded-lg px-2 py-1 text-sm"
             value="${title}">
-
         <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm">
-            <option value="Core" ${type === 'Core' ? 'selected' : ''}>Core</option>
+            <option value="Core"           ${type === 'Core'           ? 'selected' : ''}>Core</option>
             <option value="Specialization" ${type === 'Specialization' ? 'selected' : ''}>Specialization</option>
-            <option value="Skill Based" ${type === 'Skill Based' ? 'selected' : ''}>Skill Based</option>
-            <option value="Elective" ${type === 'Elective' ? 'selected' : ''}>Elective</option>
+            <option value="Skill Based"    ${type === 'Skill Based'    ? 'selected' : ''}>Skill Based</option>
+            <option value="Elective"       ${type === 'Elective'       ? 'selected' : ''}>Elective</option>
         </select>
-
-        <button type="button"
-            onclick="this.parentElement.remove()"
-            class="px-2 text-red-500">
-            ✕
-        </button>
+        <button type="button" onclick="this.parentElement.remove()" class="px-2 text-red-500">✕</button>
     `;
     wrapper.appendChild(row);
 }
 
 function prepareCurriculum() {
     const rows = document.querySelectorAll("#curriculum-wrapper > div");
-    let data = [];
-
+    const data = [];
     rows.forEach(row => {
         const inputs = row.querySelectorAll("input, select");
-
-        data.push({
-            title: inputs[0].value,
-            type: inputs[1].value
-        });
+        if (inputs[0].value.trim()) {
+            data.push({ title: inputs[0].value, type: inputs[1].value });
+        }
     });
-
     document.getElementById('curriculum_text').value = JSON.stringify(data);
 }
 
-// auto run before form submit
-document.querySelector("form").addEventListener("submit", prepareCurriculum);
+// ✅ Single submit listener — runs BOTH functions in correct order
+document.querySelector("form").addEventListener("submit", function () {
+    calcTotalFees();
+    prepareCurriculum();
+});
 </script>

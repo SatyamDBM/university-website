@@ -12,6 +12,7 @@ class CourseStream extends Model
         'duration',
         'intake',
         'mode',
+        'description',
         'min_fee',
         'max_fee',
         'min_qualification',

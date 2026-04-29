@@ -80,7 +80,6 @@ class CourseStreamController extends Controller
     public function update(Request $request, $id)
     {
         $stream = CourseStream::findOrFail($id);
-
         $validated = $request->validate([
             'name'              => 'required|string|max:255|min:3',
             'course_id'         => 'required|exists:courses,id',
@@ -99,7 +98,7 @@ class CourseStreamController extends Controller
 
         $stream->update($validated);
 
-        return back()->with('success', 'Stream updated successfully');
+        return redirect()->route('university.streams.index')->with('success', 'Stream updated successfully');
     }
     public function destroy($id)
     {
