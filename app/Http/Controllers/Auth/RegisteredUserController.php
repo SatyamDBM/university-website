@@ -81,19 +81,21 @@ class RegisteredUserController extends Controller
             'otp'   => ['required'],
         ]);
 
-        // ✅ DB se user dhundho aur OTP match karo
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->withErrors(['email' => 'User not found.']);
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
+                ->withErrors(['email' => 'User not found.']);
         }
 
         if ((string)$user->email_otp !== (string)$request->otp) {
-            return back()->withErrors(['otp' => 'Invalid OTP.']);
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
+                ->withErrors(['otp' => 'Invalid OTP. Please try again.']);
         }
 
         if ($user->email_otp_expiry < now()) {
-            return back()->withErrors(['otp' => 'OTP expired.']);
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
+                ->withErrors(['otp' => 'OTP expired. Please resend.']);
         }
 
         $user->update([
