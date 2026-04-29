@@ -66,7 +66,7 @@ class AllCourses extends Page implements HasTable
                 Tables\Columns\TextColumn::make('mode')
                     ->label('Mode')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Online' => 'success',
                         'Offline' => 'warning',
                         'Hybrid' => 'info',
@@ -81,7 +81,7 @@ class AllCourses extends Page implements HasTable
                 Tables\Columns\TextColumn::make('admission_status')
                     ->label('Admission')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Open' => 'success',
                         'Closed' => 'danger',
                         default => 'gray',
@@ -90,7 +90,7 @@ class AllCourses extends Page implements HasTable
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Draft' => 'gray',
                         'Pending' => 'warning',
                         'Live' => 'success',
@@ -121,7 +121,7 @@ class AllCourses extends Page implements HasTable
                     ->extraAttributes([
                         'class' => 'approve-btn',
                     ])
-                    ->visible(fn (Course $record) => $record->status === 'Pending')
+                    ->visible(fn(Course $record) => $record->status === 'Pending')
                     ->requiresConfirmation()
                     ->modalHeading('Approve Course')
                     ->modalDescription('Are you sure you want to approve this course?')
@@ -131,6 +131,9 @@ class AllCourses extends Page implements HasTable
                             'status' => 'Live',
                             'admin_feedback' => null,
                         ]);
+                        // ✅ Save university_id to users table
+                        \App\Models\User::where('id', $record->university_id)
+                            ->update(['approved_university_id' => $record->university_id]);
 
                         Notification::make()
                             ->title('Course approved successfully')
@@ -146,7 +149,7 @@ class AllCourses extends Page implements HasTable
                     ->extraAttributes([
                         'class' => 'reject-btn',
                     ])
-                    ->visible(fn (Course $record) => in_array($record->status, ['Pending', 'Live']))
+                    ->visible(fn(Course $record) => in_array($record->status, ['Pending', 'Live']))
                     ->form([
                         Textarea::make('admin_feedback')
                             ->label('Reason for Rejection')
