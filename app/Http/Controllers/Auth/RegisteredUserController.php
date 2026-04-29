@@ -70,6 +70,8 @@ class RegisteredUserController extends Controller
     {
         $email = session('otp_email');
 
+        \Log::info('OTP Form - Session email: ' . ($email ?? 'NULL'));
+
         if (!$email) {
             return redirect()->route('university.register')
                 ->with('error', 'Session expired. Please register again.');
