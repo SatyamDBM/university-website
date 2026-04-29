@@ -48,12 +48,18 @@ class RegisteredUserController extends Controller
             'linking_status' => 'not_linked',
             'email_otp'      => $otp,
             'email_otp_expiry' => now()->addMinutes(10),
-            'is_email_verified'    => false,
+            'is_email_verified' => false,
         ]);
-        // Mail::to($user->email)->send(new SendOtpMail($otp));
-        $user->notify(new RegistrationSuccessNotification('otp', $otp));
-        // ✅ session mein email store karo
+
+        // ✅ try-catch mein wrap karo
+        try {
+            $user->notify(new RegistrationSuccessNotification('otp', $otp));
+        } catch (\Exception $e) {
+            \Log::error('OTP Notification failed: ' . $e->getMessage());
+        }
+
         session(['otp_email' => $user->email]);
+
         return redirect()->route('otp.verify.form');
     }
 
