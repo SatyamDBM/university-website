@@ -38,35 +38,26 @@ class RegisteredUserController extends Controller
 
         $otp = rand(100000, 999999);
 
+        $user = User::create([
+            'name'             => $validated['name'],
+            'email'            => $validated['email'],
+            'mobile'           => $validated['mobile'],
+            'password'         => Hash::make($validated['password']),
+            'role'             => 'university',
+            'status'           => 'active',
+            'linking_status'   => 'not_linked',
+            'email_otp'        => $otp,
+            'email_otp_expiry' => now()->addMinutes(10),
+            'is_email_verified' => false,
+        ]);
+
         try {
-            $user = User::create([
-                'name'              => $validated['name'],
-                'email'             => $validated['email'],
-                'mobile'            => $validated['mobile'],
-                'password'          => Hash::make($validated['password']),
-                'role'              => 'university',
-                'status'            => 'active',
-                'linking_status'    => 'not_linked',
-                'email_otp'         => $otp,
-                'email_otp_expiry'  => now()->addMinutes(10), // ✅ make sure this matches DB column
-                'is_email_verified' => false,
-            ]);
+            $user->notify(new RegistrationSuccessNotification('otp', $otp));
         } catch (\Exception $e) {
-            \Log::error('User Create Error: ' . $e->getMessage());
-            return back()->withErrors(['email' => 'Registration failed. Try again.'])->withInput();
+            \Log::error('Notification Error: ' . $e->getMessage());
         }
 
-        // Send OTP — don't let this block registration
-        try {
-            Mail::to($user->email)->send(new SendOtpMail($otp));
-        } catch (\Exception $e) {
-            \Log::error('OTP Mail Error: ' . $e->getMessage());
-            // Continue even if mail fails
-        }
-
-        \Log::info('User registered, redirecting to OTP: ' . $user->email);
-
-        // ✅ Redirect with email in URL
+        // ✅ Session bilkul nahi — sirf email URL mein
         return redirect()->route('otp.verify.form', ['email' => $user->email]);
     }
 
@@ -83,33 +74,27 @@ class RegisteredUserController extends Controller
         return view('auth.verify-otp', compact('email'));
     }
 
-
     public function verifyOtp(Request $request): RedirectResponse
     {
-        \Log::info('OTP Verify Request', $request->all());
-
         $request->validate([
             'email' => ['required', 'email'],
             'otp'   => ['required'],
         ]);
 
-        $email = $request->email;
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return redirect()->route('otp.verify.form', ['email' => $email])
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
                 ->withErrors(['email' => 'User not found.']);
         }
 
-        \Log::info('DB OTP: ' . $user->email_otp . ' | Request OTP: ' . $request->otp);
-
         if ((string)$user->email_otp !== (string)$request->otp) {
-            return redirect()->route('otp.verify.form', ['email' => $email])
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
                 ->withErrors(['otp' => 'Invalid OTP. Please try again.']);
         }
 
         if ($user->email_otp_expiry < now()) {
-            return redirect()->route('otp.verify.form', ['email' => $email])
+            return redirect()->route('otp.verify.form', ['email' => $request->email])
                 ->withErrors(['otp' => 'OTP expired. Please resend.']);
         }
 
@@ -121,8 +106,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        \Log::info('OTP Verified - Login success');
-
         return redirect()->route('dashboard');
     }
 
@@ -131,30 +114,29 @@ class RegisteredUserController extends Controller
      */
     public function resendOtp(Request $request): RedirectResponse
     {
+        // ✅ session hatao, sirf request se email lo
         $email = $request->email;
-        $user  = User::where('email', $email)->first();
+
+        $user = User::where('email', $email)->first();
 
         if (!$user) {
-            return redirect()->route('otp.verify.form', ['email' => $email])
-                ->withErrors(['email' => 'User not found.']);
+            return back()->withErrors(['email' => 'User not found.']);
         }
 
         $otp = rand(100000, 999999);
 
         $user->update([
             'email_otp'        => $otp,
-            'email_otp_expiry' => now()->addMinutes(10),
+            'email_otp_expiry' => now()->addMinutes(10), // ✅ sahi column name
         ]);
 
         try {
             Mail::to($user->email)->send(new SendOtpMail($otp));
         } catch (\Exception $e) {
-            \Log::error('Resend OTP Error: ' . $e->getMessage());
-            return redirect()->route('otp.verify.form', ['email' => $email])
-                ->with('error', 'Failed to send OTP.');
+            \Log::error('Resend OTP Mail Error: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send OTP. Try again.');
         }
 
-        return redirect()->route('otp.verify.form', ['email' => $email])
-            ->with('success', 'OTP resent successfully!');
+        return back()->with('success', 'OTP resent successfully!');
     }
 }
