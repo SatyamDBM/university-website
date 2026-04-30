@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // ✅ cPanel reverse proxy fix
+        // cPanel / proxy fix
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 Request::HEADER_X_FORWARDED_PROTO
         );
 
+        // CSRF exceptions
         $middleware->validateCsrfTokens(except: [
             'register/university',
             'login',
@@ -34,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'reset-password',
         ]);
 
+        // Aliases
         $middleware->alias([
             'admin.only' => \App\Http\Middleware\EnsureAdmin::class,
             'role' => CheckRole::class,
