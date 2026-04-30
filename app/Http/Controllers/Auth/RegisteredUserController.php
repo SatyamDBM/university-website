@@ -58,11 +58,13 @@ class RegisteredUserController extends Controller
         }
 
         // ✅ Use user ID (SAFE)
-        return redirect()->route('otp.verify.form', $user->id);
+        return redirect()->route('otp.verify.form', ['user' => $user->id]);
     }
 
-    public function showOtpForm(User $user)
+    public function showOtpForm($user)
     {
+        $user = User::findOrFail($user);
+
         if ($user->is_email_verified) {
             return redirect()->route('login')
                 ->with('success', 'Email already verified.');
