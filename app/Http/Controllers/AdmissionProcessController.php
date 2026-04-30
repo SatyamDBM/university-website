@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Scholarship;
 use App\Models\LoanPartner;
+use App\Models\Course;
 
 class AdmissionProcessController extends Controller
 {
 
     public function index(Request $request)
     {
-        $universityId = auth()->id();
+        $universityId = auth()->user()->university_id;
         $search = $request->search;
 
         // 📌 PROCESS (only ONE record, no need to re-filter by search unless required)
@@ -71,10 +72,21 @@ class AdmissionProcessController extends Controller
             'loanPartners'
         ));
     }
+    // public function create()
+    // {
+    //     $courses = Course::where('university_id', auth()->user()->university_id)->get();
+    //     return view('university.university_data.create', compact('courses'));
+    // }
     public function create()
     {
-        return view('university.university_data.create');
+        $courses = Course::where('university_id', auth()->user()->university_id)->get();
+
+        return view('university.university_data.create', [
+            'courses' => $courses,
+            'record' => null
+        ]);
     }
+
     public function edit($id)
     {
         $process = AdmissionProcess::with([
@@ -83,9 +95,11 @@ class AdmissionProcessController extends Controller
             'cutoffs'
         ])->findOrFail($id);
 
-        $universityId = auth()->id();
+        $universityId = auth()->user()->university_id;
 
-        // Separate models (NOT part of AdmissionProcess)
+        // Add this line — same as create()
+        $courses = Course::where('university_id', $universityId)->get();
+
         $scholarships = Scholarship::where('university_id', $universityId)->get();
         $loanPartners = LoanPartner::where('university_id', $universityId)->get();
 
@@ -94,7 +108,7 @@ class AdmissionProcessController extends Controller
 
             'admissionSteps' => $process->steps->map(function ($s) {
                 return [
-                    'title' => $s->title,
+                    'title'       => $s->title,
                     'description' => $s->description
                 ];
             })->toArray(),
@@ -108,32 +122,34 @@ class AdmissionProcessController extends Controller
 
             'cutoffs' => $process->cutoffs->map(function ($c) {
                 return [
-                    'course' => $c->course,
-                    'exam' => $c->exam,
+                    'course' => $c->course_id,  // fix: use course_id not course
+                    'exam'   => $c->exam,
+                    'year'   => $c->year,       // add year
                     'cutoff' => $c->cutoff
                 ];
             })->toArray(),
 
             'scholarships' => $scholarships->map(function ($s) {
                 return [
-                    'title' => $s->title,
+                    'title'       => $s->title,
                     'description' => $s->description,
-                    'badge' => $s->badge,
-                    'priority' => $s->priority
+                    'badge'       => $s->badge,
+                    'priority'    => $s->priority
                 ];
             })->toArray(),
 
             'loanPartners' => $loanPartners->map(function ($l) {
                 return [
-                    'bank_name' => $l->bank_name,
+                    'bank_name'     => $l->bank_name,
                     'interest_rate' => $l->interest_rate,
-                    'amount' => $l->amount,
-                    'logo' => $l->logo
+                    'amount'        => $l->amount,
+                    'logo'          => $l->logo
                 ];
             })->toArray(),
         ];
 
-        return view('university.university_data.edit', compact('record'));
+        // Pass both $record and $courses — same as create()
+        return view('university.university_data.edit', compact('record', 'courses'));
     }
 
 
@@ -171,10 +187,11 @@ class AdmissionProcessController extends Controller
             'dates.*.label' => 'required_with:dates|string|max:255',
             'dates.*.value' => 'required_with:dates|string|max:255',
 
-            'cutoffs' => 'nullable|array',
-            'cutoffs.*.course' => 'required_with:cutoffs|string|max:255',
-            'cutoffs.*.exam' => 'nullable|string|max:255',
-            'cutoffs.*.cutoff' => 'nullable|string|max:255',
+            'cutoffs'          => 'nullable|array',
+            'cutoffs.*.course' => 'required|exists:courses,id',
+            'cutoffs.*.exam'   => 'required|string|max:255',
+            'cutoffs.*.year'   => 'required|integer|min:2000|max:2099',
+            'cutoffs.*.cutoff' => 'required|integer',
 
             'scholarships' => 'nullable|array',
             'scholarships.*.title' => 'required_with:scholarships|string|max:255',
@@ -193,7 +210,7 @@ class AdmissionProcessController extends Controller
 
         try {
 
-            $universityId = auth()->id();
+            $universityId = auth()->user()->university_id;
 
             $process = AdmissionProcess::create([
                 'university_id' => $universityId
@@ -211,8 +228,16 @@ class AdmissionProcessController extends Controller
                 $process->dates()->create($date);
             }
 
+            // foreach ($validated['cutoffs'] ?? [] as $cutoff) {
+            //     $process->cutoffs()->create($cutoff);
+            // }
             foreach ($validated['cutoffs'] ?? [] as $cutoff) {
-                $process->cutoffs()->create($cutoff);
+                $process->cutoffs()->create([
+                    'course_id' => $cutoff['course'],
+                    'exam'      => $cutoff['exam'],
+                    'year'      => $cutoff['year'],
+                    'cutoff'    => $cutoff['cutoff'],
+                ]);
             }
 
             foreach ($validated['scholarships'] ?? [] as $sch) {
@@ -260,7 +285,7 @@ class AdmissionProcessController extends Controller
 
     public function show()
     {
-        $universityId = auth()->id();
+        $universityId = auth()->user()->university_id;
 
         $process = AdmissionProcess::with(['steps', 'dates', 'cutoffs'])
             ->where('university_id', $universityId)
@@ -286,10 +311,11 @@ class AdmissionProcessController extends Controller
             'dates.*.label' => 'required_with:dates|string|max:255',
             'dates.*.value' => 'required_with:dates|string|max:255',
 
-            'cutoffs' => 'nullable|array',
-            'cutoffs.*.course' => 'required_with:cutoffs|string|max:255',
-            'cutoffs.*.exam' => 'nullable|string|max:255',
-            'cutoffs.*.cutoff' => 'nullable|string|max:255',
+            'cutoffs'          => 'nullable|array',
+            'cutoffs.*.course' => 'required|exists:courses,id',
+            'cutoffs.*.exam'   => 'required|string|max:255',
+            'cutoffs.*.year'   => 'required|integer|min:2000|max:2099',
+            'cutoffs.*.cutoff' => 'required|integer',
 
             'scholarships' => 'nullable|array',
             'scholarships.*.title' => 'required_with:scholarships|string|max:255',
@@ -333,7 +359,12 @@ class AdmissionProcessController extends Controller
 
             // ================= CUTOFFS =================
             foreach ($validated['cutoffs'] ?? [] as $cutoff) {
-                $process->cutoffs()->create($cutoff);
+                $process->cutoffs()->create([
+                    'course_id' => $cutoff['course'],
+                    'exam'      => $cutoff['exam'],
+                    'year'      => $cutoff['year'],
+                    'cutoff'    => $cutoff['cutoff'],
+                ]);
             }
 
             // ================= SCHOLARSHIPS =================

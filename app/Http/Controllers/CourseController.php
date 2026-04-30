@@ -129,6 +129,8 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+        $course->load(['category', 'seats']);
+
         return view('university.courses.show', compact('course'));
     }
 
@@ -194,18 +196,20 @@ class CourseController extends Controller
 
             DB::commit();
 
-            // ================= SUCCESS REDIRECT =================
-            return redirect()
-                ->route('university.courses.index')
-                ->with('success', 'Course updated successfully');
+            // ✅ RETURN JSON INSTEAD OF REDIRECT
+            return response()->json([
+                'success' => true,
+                'message' => 'Course updated successfully',
+                'redirect' => route('university.courses.index')
+            ]);
         } catch (\Exception $e) {
 
             DB::rollBack();
 
-            // ================= ERROR REDIRECT BACK =================
-            return back()
-                ->withInput()
-                ->with('error', 'Something went wrong: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 

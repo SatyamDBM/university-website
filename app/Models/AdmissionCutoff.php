@@ -8,13 +8,18 @@ class AdmissionCutoff extends Model
 {
     protected $fillable = [
         'admission_process_id',
-        'course',
+        'course_id',
         'exam',
+        'year',
         'cutoff'
     ];
 
     public function process()
     {
         return $this->belongsTo(AdmissionProcess::class);
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

@@ -35,21 +35,44 @@ function addDate() {
 
 function addCutoff() {
     document.getElementById('cutoffs').insertAdjacentHTML('beforeend', `
-        <div class="cutoff-row grid grid-cols-3 gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 relative">
-            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Course <span class="text-red-500">*</span></label>
-                <input type="text" name="cutoffs[${cutoffIdx}][course]" placeholder="e.g. B.Tech CSE"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition"></div>
-            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Exam</label>
+        <div class="cutoff-row grid grid-cols-4 gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 relative">
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Course <span class="text-red-500">*</span></label>
+                <select name="cutoffs[${cutoffIdx}][course]"
+                        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition" required>
+                    <option value="">Select Course</option>
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}">{{ $course->course_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Exam <span class="text-red-500">*</span></label>
                 <input type="text" name="cutoffs[${cutoffIdx}][exam]" placeholder="e.g. JEE Main"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition"></div>
-            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Cutoff</label>
-                <input type="text" name="cutoffs[${cutoffIdx}][cutoff]" placeholder="e.g. 85 percentile"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition"></div>
-            <button type="button" onclick="this.closest('.cutoff-row').remove()" class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs">✕</button>
-        </div>`);
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Year <span class="text-red-500">*</span></label>
+                <input type="number" name="cutoffs[${cutoffIdx}][year]" placeholder="e.g. 2025"
+                       min="2000" max="2099"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Cutoff <span class="text-red-500">*</span></label>
+                <input type="number" name="cutoffs[${cutoffIdx}][cutoff]" placeholder="e.g. 85"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none transition">
+            </div>
+
+            <button type="button" onclick="this.closest('.cutoff-row').remove()"
+                    class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs">✕</button>
+        </div>
+    `);
     cutoffIdx++;
 }
-
 function addScholarship() {
     document.getElementById('scholarships').insertAdjacentHTML('beforeend', `
         <div class="scholarship-row p-4 bg-gray-50 rounded-xl border border-gray-200 relative">

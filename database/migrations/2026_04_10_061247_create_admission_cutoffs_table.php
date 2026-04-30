@@ -23,11 +23,11 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
 
-            $table->string('round'); // Round 1, Round 2 etc.
-            $table->year('year');    // 2024, 2025, 2026
-            $table->string('exam');  // JEE, NEET etc.
+            $table->string('round')->nullable(); // Round 1, Round 2 etc.
+            $table->year('year')->nullable();    // 2024, 2025, 2026
+            $table->string('exam')->nullable();  // JEE, NEET etc.
 
-            $table->integer('cutoff');
+            $table->integer('cutoff')->nullable(); // 85, 90 etc.
 
             $table->timestamps();
         });

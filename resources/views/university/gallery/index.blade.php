@@ -47,7 +47,7 @@
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Category</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Images</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Active</th>
+                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Active</th> --}}
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>

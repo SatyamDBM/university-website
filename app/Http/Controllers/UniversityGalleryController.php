@@ -64,7 +64,7 @@ class UniversityGalleryController extends Controller
             'category' => $request->category,
             'description' => $request->description,
             'date' => $request->date,
-            'status' => 'Draft',
+            'status' => 'Live',
         ]);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $idx => $file) {
@@ -75,7 +75,7 @@ class UniversityGalleryController extends Controller
                     'image_url' => $path,
                     'caption' => $request->caption[$idx] ?? null,
                     'alt_text' => $request->alt_text[$idx] ?? null,
-                    'status' => 'Pending',
+                    'status' => 'Live',
                 ]);
             }
         }
@@ -131,7 +131,7 @@ class UniversityGalleryController extends Controller
                     'image_url' => $path,
                     'caption' => $request->caption[$idx] ?? null,
                     'alt_text' => $request->alt_text[$idx] ?? null,
-                    'status' => 'Pending',
+                    'status' => 'Live',
                 ]);
             }
         }

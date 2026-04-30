@@ -43,7 +43,7 @@
                         </td>
 
                         {{-- Active Toggle --}}
-                        <td class="px-4 py-4">
+                        {{-- <td class="px-4 py-4">
                             <button
                                 onclick="toggleActive({{ $album->id }}, this)"
                                 data-active="{{ $album->is_active ?? 1 }}"
@@ -54,7 +54,7 @@
                                              {{ ($album->is_active ?? 1) ? 'translate-x-6' : 'translate-x-1' }}">
                                 </span>
                             </button>
-                        </td>
+                        </td> --}}
 
                         {{-- Actions --}}
                         <td class="px-4 py-4">

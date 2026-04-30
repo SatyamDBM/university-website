@@ -68,6 +68,7 @@ class StoreCourseRequest extends FormRequest
             'seat_count' => 'required|array|min:1',
 
             'seat_count.*' => 'required|integer|min:1|max:10000',
+            'degree_level' => 'required|in:Bachelors,Masters,Doctorate,Certification',
         ];
     }
 
@@ -84,6 +85,7 @@ class StoreCourseRequest extends FormRequest
             'seat_count.*.min' => 'Seat count must be at least 1.',
 
             'min_percentage.max' => 'Percentage cannot exceed 100.',
+            'degree_level.in' => 'Please select a valid degree level.',
         ];
     }
 }

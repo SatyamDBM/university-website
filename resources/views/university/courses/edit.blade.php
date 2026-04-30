@@ -27,7 +27,7 @@
             {{-- Actions --}}
             <div class="flex items-center gap-3 mt-8 pt-6 border-t border-gray-100">
                 <button type="submit"
-                        class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition">
+                        class="bg-[#6b4a36] text-white px-4 py-2 rounded-lg text-sm">
                     Update Course
                 </button>
                 <a href="{{ route('university.courses.index') }}"
@@ -40,26 +40,38 @@
 </div>
 
 <script>
-document.getElementById('courseForm').onsubmit = function(e) {
-    e.preventDefault();
-    let form = this;
-    let formData = new FormData(form);
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json',
-        },
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.getElementById('courseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let form = this;
+        let formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        .then(async res => {
+            let data = await res.json();
+
+            if (!res.ok) throw data;
+
+            return data;
+        })
+        .then(data => {
             showSwal('success', data.message, data.redirect);
-        } else {
-            showSwal('error', data.message || 'Error occurred');
-        }
-    })
-    .catch(() => showSwal('error', 'Error occurred'));
-};
+        })
+        .catch(err => {
+            console.log(err);
+            showSwal('error', err.message || 'Error occurred');
+        });
+
+    });
+
+});
 </script>
 @endsection

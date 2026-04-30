@@ -85,7 +85,7 @@
         <hr class="border-gray-100">
 
         {{-- Cutoffs --}}
-        <div>
+        {{-- <div>
             <div class="flex items-center justify-between mb-3">
                 <label class="text-sm font-semibold text-gray-700">Cutoffs</label>
                 <button type="button" onclick="addCutoff()"
@@ -99,10 +99,18 @@
                 <div class="cutoff-row grid grid-cols-3 gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 relative">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Course <span class="text-red-500">*</span></label>
-                        <input type="text" name="cutoffs[{{ $i }}][course]"
-                               value="{{ $cutoff['course'] ?? '' }}"
-                               placeholder="e.g. B.Tech CSE"
-                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition">
+                       <select name="cutoffs[{{ $i }}][course]"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition"
+                            required>
+                        <option value="">Select Course</option>
+                        
+                        @foreach($courses as $course)
+                            <option value="{{ $course->id }}"
+                                {{ (old("cutoffs.$i.course", $cutoff['course'] ?? '') == $course->id) ? 'selected' : '' }}>
+                                {{ $course->course_name }}
+                            </option>
+                        @endforeach
+                    </select>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Exam</label>
@@ -125,7 +133,69 @@
                 </div>
                 @endforeach
             </div>
+        </div> --}}
+        {{-- Cutoffs --}}
+<div>
+    <div class="flex items-center justify-between mb-3">
+        <label class="text-sm font-semibold text-gray-700">Cutoffs</label>
+        <button type="button" onclick="addCutoff()"
+                class="text-xs font-medium px-3 py-1.5 rounded-lg border-2 border-dashed border-gray-300 text-gray-500 hover:border-amber-800 hover:text-amber-800 transition">
+            + Add Cutoff
+        </button>
+    </div>
+    <div id="cutoffs" class="space-y-3">
+        @php $cutoffs = old('cutoffs', $record->cutoffs ?? [['course'=>'','exam'=>'','year'=>'','cutoff'=>'']]) @endphp
+        @foreach($cutoffs as $i => $cutoff)
+        <div class="cutoff-row grid grid-cols-4 gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 relative">
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Course <span class="text-red-500">*</span></label>
+                <select name="cutoffs[{{ $i }}][course]"
+                        class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition"
+                        required>
+                    <option value="">Select Course</option>
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}"
+                            {{ (old("cutoffs.$i.course", $cutoff['course'] ?? '') == $course->id) ? 'selected' : '' }}>
+                            {{ $course->course_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Exam <span class="text-red-500">*</span></label>
+                <input type="text" name="cutoffs[{{ $i }}][exam]"
+                       value="{{ old("cutoffs.$i.exam", $cutoff['exam'] ?? '') }}"
+                       placeholder="e.g. JEE Main"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Year <span class="text-red-500">*</span></label>
+                <input type="number" name="cutoffs[{{ $i }}][year]"
+                       value="{{ old("cutoffs.$i.year", $cutoff['year'] ?? '') }}"
+                       placeholder="e.g. 2025"
+                       min="2000" max="2099"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">Cutoff <span class="text-red-500">*</span></label>
+                <input type="number" name="cutoffs[{{ $i }}][cutoff]"
+                       value="{{ old("cutoffs.$i.cutoff", $cutoff['cutoff'] ?? '') }}"
+                       placeholder="e.g. 85"
+                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-amber-800 transition">
+            </div>
+
+            @if($loop->index > 0)
+            <button type="button" onclick="this.closest('.cutoff-row').remove()"
+                    class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs">✕</button>
+            @endif
         </div>
+        @endforeach
+    </div>
+</div>
 
     </div>
 </div>

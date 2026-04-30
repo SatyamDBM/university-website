@@ -38,11 +38,11 @@
 </div>
 
 {{-- Success Alert --}}
-@if(session('success'))
+{{-- @if(session('success'))
     <div class="mb-4 px-4 py-3 rounded-lg bg-green-100 text-green-700 text-sm">
         {{ session('success') }}
     </div>
-@endif
+@endif --}}
 
 {{-- Table --}}
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">

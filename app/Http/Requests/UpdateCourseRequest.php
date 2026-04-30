@@ -51,6 +51,7 @@ class UpdateCourseRequest extends FormRequest
 
             'seat_count'        => 'required|array|min:1',
             'seat_count.*'      => 'required|integer|min:0',
+            'degree_level' => 'required|in:Bachelors,Masters,Doctorate,Certification',
         ];
     }
 
@@ -81,6 +82,7 @@ class UpdateCourseRequest extends FormRequest
 
             'seat_count.required' => 'Seat count is required.',
             'seat_count.*.required' => 'Seat count is required for each category.',
+            'degree_level.in' => 'Please select a valid degree level.',
         ];
     }
 }

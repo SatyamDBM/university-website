@@ -8,11 +8,19 @@
         <p class="text-sm text-gray-500 mt-1">Update campus facility details</p>
     </div>
 
-    @php
+    {{-- @php
         $hostel = $facility->hostel_details ?? [];
         $boys   = $hostel['boys']  ?? [];
         $girls  = $hostel['girls'] ?? [];
-    @endphp
+    @endphp --}}
+    @php
+    $hostel = $facility->hostel_details ?? [];
+    $boys   = $hostel['boys']  ?? [];
+    $girls  = $hostel['girls'] ?? [];
+
+    $boysRooms    = $boys['rooms'] ?? [];
+    $girlsRooms   = $girls['rooms'] ?? [];
+@endphp
 
     <form method="POST" action="{{ route('university.facilities.update', $facility->id) }}"
           enctype="multipart/form-data"
@@ -124,7 +132,7 @@
                                 @foreach(['single','double','triple'] as $room)
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" name="boys_rooms_ac[]" value="{{ $room }}"
-                                        {{ in_array($room, old('boys_rooms_ac', $boys['rooms_ac'] ?? [])) ? 'checked' : '' }}>
+                                        {{ in_array($room, old('boys_rooms_ac', $boysRooms['ac'] ?? [])) ? 'checked' : '' }}>
                                     {{ ucfirst($room) }}
                                 </label>
                                 @endforeach
@@ -138,7 +146,7 @@
                                 @foreach(['single','double','triple'] as $room)
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" name="boys_rooms_non_ac[]" value="{{ $room }}"
-                                        {{ in_array($room, old('boys_rooms_non_ac', $boys['rooms_non_ac'] ?? [])) ? 'checked' : '' }}>
+                                     {{ in_array($room, old('boys_rooms_non_ac', $boysRooms['non_ac'] ?? [])) ? 'checked' : '' }}>
                                     {{ ucfirst($room) }}
                                 </label>
                                 @endforeach
@@ -194,7 +202,7 @@
                                 @foreach(['single','double'] as $room)
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" name="girls_rooms_ac[]" value="{{ $room }}"
-                                        {{ in_array($room, old('girls_rooms_ac', $girls['rooms_ac'] ?? [])) ? 'checked' : '' }}>
+                                  {{ in_array($room, old('girls_rooms_ac', $girlsRooms['ac'] ?? [])) ? 'checked' : '' }}>
                                     {{ ucfirst($room) }}
                                 </label>
                                 @endforeach
@@ -208,7 +216,7 @@
                                 @foreach(['single','double'] as $room)
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" name="girls_rooms_non_ac[]" value="{{ $room }}"
-                                        {{ in_array($room, old('girls_rooms_non_ac', $girls['rooms_non_ac'] ?? [])) ? 'checked' : '' }}>
+                                       {{ in_array($room, old('girls_rooms_non_ac', $girlsRooms['non_ac'] ?? [])) ? 'checked' : '' }}>        
                                     {{ ucfirst($room) }}
                                 </label>
                                 @endforeach

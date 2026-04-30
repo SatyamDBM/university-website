@@ -11,42 +11,67 @@
 
 {{-- Category + Sub-Category + Course Type in 1 row --}}
 {{-- Row 1: Course Name + Category + Course Type --}}
-<div class="mb-4 grid grid-cols-3 gap-4">
+<div class="mb-4 grid grid-cols-4 gap-4">
+    
+    {{-- Course Name --}}
     <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Course Name <span class="text-red-500">*</span></label>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Course Name <span class="text-red-500">*</span>
+        </label>
         <input type="text" name="course_name"
-               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition"
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                required value="{{ old('course_name', $course->course_name ?? '') }}">
-        @error('course_name')<p class="text-red-600 text-xs mt-1">{{ $message }}</p>@enderror
     </div>
+
+    {{-- Category --}}
     <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Category <span class="text-red-500">*</span></label>
-        <select name="category_id"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition bg-white"
-                required>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Category <span class="text-red-500">*</span>
+        </label>
+        <select name="category_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required>
             <option value="">Select Category</option>
-            @isset($categories)
-                @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}" {{ old('category_id', $course->category_id ?? '') == $cat->id ? 'selected' : '' }}>
-                        {{ $cat->name }}
-                    </option>
-                @endforeach
-            @endisset
+            @foreach($categories as $cat)
+                <option value="{{ $cat->id }}"
+                    {{ old('category_id', $course->category_id ?? '') == $cat->id ? 'selected' : '' }}>
+                    {{ $cat->name }}
+                </option>
+            @endforeach
         </select>
-        @error('category_id')<p class="text-red-600 text-xs mt-1">{{ $message }}</p>@enderror
     </div>
+
+    {{-- Course Type --}}
     <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1">Course Type <span class="text-red-500">*</span></label>
-        <select name="course_type"
-                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#6b4a36] transition bg-white"
-                required>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Course Type <span class="text-red-500">*</span>
+        </label>
+        <select name="course_type" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required>
             <option value="">Select Type</option>
             <option value="Full-time" {{ old('course_type', $course->course_type ?? '') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
             <option value="Part-time" {{ old('course_type', $course->course_type ?? '') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
-            <option value="Online"    {{ old('course_type', $course->course_type ?? '') == 'Online'    ? 'selected' : '' }}>Online</option>
+            <option value="Online" {{ old('course_type', $course->course_type ?? '') == 'Online' ? 'selected' : '' }}>Online</option>
         </select>
-        @error('course_type')<p class="text-red-600 text-xs mt-1">{{ $message }}</p>@enderror
     </div>
+
+    {{-- Degree Level --}}
+    <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Degree Level <span class="text-red-500">*</span>
+        </label>
+        <select name="degree_level"
+                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                required>
+            <option value="">Select Degree</option>
+            <option value="Bachelors" {{ old('degree_level', $course->degree_level ?? '') == 'Bachelors' ? 'selected' : '' }}>Bachelors</option>
+            <option value="Masters" {{ old('degree_level', $course->degree_level ?? '') == 'Masters' ? 'selected' : '' }}>Masters</option>
+            <option value="Doctorate" {{ old('degree_level', $course->degree_level ?? '') == 'Doctorate' ? 'selected' : '' }}>Doctorate</option>
+            <option value="Certification" {{ old('degree_level', $course->degree_level ?? '') == 'Certification' ? 'selected' : '' }}>Certification</option>
+        </select>
+
+        @error('degree_level')
+            <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+
 </div>
 
 {{-- Row 2: Duration + Mode + Admission Status --}}

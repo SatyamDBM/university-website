@@ -28,8 +28,8 @@
         @method('PUT')
 
         <div class="space-y-6">
-            @include('university.university_data.form', ['record' => $record])
-
+            {{-- @include('university.university_data.form', ['record' => $record]) --}}
+            @include('university.university_data.form', ['courses' => $courses, 'record' => $record])
             {{-- Actions --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-between">
                 <a href="{{ route('university.finance.index') }}"

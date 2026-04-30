@@ -36,6 +36,7 @@ class Course extends Model
         'admission_status',
         'status',
         'admin_feedback',
+        'degree_level',
     ];
 
     public function university()

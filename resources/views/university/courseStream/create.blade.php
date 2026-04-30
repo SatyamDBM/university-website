@@ -34,7 +34,7 @@
                 <div id="warningText" class="text-sm text-amber-700"></div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-between">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-end gap-3">
                 <a href="{{ route('university.streams.index') }}"
                    class="inline-flex items-center gap-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 px-5 py-2.5 rounded-lg transition">
                     Cancel

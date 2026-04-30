@@ -48,7 +48,7 @@
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Type</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Status</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Featured</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Active</th>
+                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Active</th> --}}
                         <th class="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Actions</th>
                     </tr>
                 </thead>
