@@ -101,6 +101,7 @@ class RegisteredUserController extends Controller
             'is_email_verified' => true,
             'email_otp'         => null,
             'email_otp_expiry'  => null,
+            'email_verified_at' => now(), // REQUIRED
         ]);
 
         Auth::login($user);

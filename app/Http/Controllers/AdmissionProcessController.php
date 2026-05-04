@@ -120,6 +120,7 @@ class AdmissionProcessController extends Controller
                 ];
             })->toArray(),
 
+
             'cutoffs' => $process->cutoffs->map(function ($c) {
                 return [
                     'course' => $c->course_id,  // fix: use course_id not course
