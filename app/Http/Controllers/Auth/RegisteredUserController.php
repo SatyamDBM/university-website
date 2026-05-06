@@ -142,4 +142,6 @@ class RegisteredUserController extends Controller
 
         return back()->with('success', 'OTP resent successfully!');
     }
+
+    // hhgggh
 }
