@@ -30,7 +30,7 @@ Thumbs.db
 /public/hot
 
 # ❌ IMPORTANT: DO NOT IGNORE BUILD (FOR CPANEL)
-# /public/build   ← REMOVE THIS
+
 
 # Composer (recommended to track for production stability)
 # composer.lock  ← KEEP in repo (important)
